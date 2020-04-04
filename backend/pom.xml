@@ -18,6 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <rest-assured.version>3.3.0</rest-assured.version>
+    <start-class>com.akim.backend.BackendApplicationKt</start-class>
   </properties>
 
   <dependencies>
@@ -63,14 +64,17 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <mainClass>com.akim.backend.BackendApplicationKtKt</mainClass>
+          <mainClass>com.akim.backend.BackendApplicationKt</mainClass>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
         <configuration>
-         <compilerPlugins>
+          <args>
+            <arg>-Xjsr305=strict</arg>
+          </args>
+          <compilerPlugins>
             <plugin>spring</plugin>
           </compilerPlugins>
         </configuration>
@@ -110,5 +114,6 @@
       </plugin>
     </plugins>
   </build>
+
 
 </project>

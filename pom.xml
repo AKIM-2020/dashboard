@@ -25,13 +25,32 @@
 
   <properties>
     <main.basedir>${project.basedir}</main.basedir>
+    <!-- Analysis Tools for CI -->
+    <build-plugin.jacoco.version>0.8.2</build-plugin.jacoco.version>
+    <build-plugin.coveralls.version>4.3.0</build-plugin.coveralls.version>
+    <kotlin.version>1.2.71</kotlin.version>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib-jdk8</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test</artifactId>
+      <version>${kotlin.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${build-plugin.jacoco.version}</version>
         <executions>
           <!-- Prepares the property pointing to the JaCoCo
           runtime agent which is passed as VM argument when Maven the Surefire plugin
@@ -53,7 +72,11 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>${build-plugin.coveralls.version}</version>
+      </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -80,4 +103,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>
