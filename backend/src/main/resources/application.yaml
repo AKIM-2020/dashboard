@@ -1,0 +1,26 @@
+spring:
+  jpa:
+    database:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      hibernate.id.new_generator_mappings: true
+      jdbc:
+        lob:
+          non-contextual-creation: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    userName: postgres
+    password: mysecretpassword
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    changeLog: classpath:config/liquibase/master.xml
+    contexts: pg
+assm:
+  app:
+    jwtSecret: jwtAssmSecretKey
+    jwtExpiration: 86400
+

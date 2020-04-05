@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+  <changeSet author="k.a.lebedev" id="add user and role tables">
+
+    <createTable tableName="users">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="user_name" type="varchar(25)"/>
+      <column name="first_name" type="varchar(50)"/>
+      <column name="last_name" type="varchar(50)"/>
+      <column name="email" type="varchar(50)"/>
+      <column name="password" type="varchar(20)"/>
+      <column name="enabled" type="boolean"/>
+    </createTable>
+
+    <createTable tableName="roles">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="name" type="varchar(50)"/>
+    </createTable>
+
+    <createTable tableName="users_roles">
+      <column name="id" type="bigserial">
+        <constraints primaryKey="true"/>
+      </column>
+      <column name="user_id" type="bigint"/>
+      <column name="role_id" type="bigint"/>
+    </createTable>
+
+  </changeSet>
+
+</databaseChangeLog>
