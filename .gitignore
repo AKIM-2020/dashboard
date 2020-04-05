@@ -73,3 +73,6 @@ atlassian-ide-plugin.xml
 ehthumbs.db
 Thumbs.db
 /frontend/build/
+/backend/src/main/resources/public/static/
+/backend/src/main/resources/public/favicon.ico
+/backend/src/main/resources/public/index.html
