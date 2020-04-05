@@ -10,50 +10,61 @@
    </parent>
 
    <properties>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-      <java.version>1.8</java.version>
-      <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+      <frontend-src-dir>${project.basedir}/src/</frontend-src-dir>
+      <frontend-maven-plugin.version>1.9.0</frontend-maven-plugin.version>
+      <node.version>v12.16.1</node.version>
+      <yarn.version>v1.22.4</yarn.version>
    </properties>
 
    <build>
       <plugins>
          <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+               <execution>
+                  <id>default-jar</id>
+                  <phase>none</phase>
+                  <configuration>
+                     <finalName>unwanted</finalName>
+                     <classifier>unwanted</classifier>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+         <plugin>
             <groupId>com.github.eirslett</groupId>
             <artifactId>frontend-maven-plugin</artifactId>
             <version>${frontend-maven-plugin.version}</version>
+            <configuration>
+               <nodeVersion>${node.version}</nodeVersion>
+               <yarnVersion>${yarn.version}</yarnVersion>
+               <workingDirectory>${frontend-src-dir}</workingDirectory>
+               <installDirectory>${project.build.directory}</installDirectory>
+            </configuration>
             <executions>
-               <!-- Install our node and npm version to run npm/node scripts-->
                <execution>
-                  <id>install node and npm</id>
+                  <id>install-frontend-tools</id>
                   <goals>
-                     <goal>install-node-and-npm</goal>
+                     <goal>install-node-and-yarn</goal>
                   </goals>
-                  <configuration>
-                     <nodeVersion>v11.8.0</nodeVersion>
-                  </configuration>
                </execution>
-               <!-- Install all project dependencies -->
                <execution>
-                  <id>npm install</id>
+                  <id>yarn-install</id>
                   <goals>
-                     <goal>npm</goal>
+                     <goal>yarn</goal>
                   </goals>
-                  <!-- optional: default phase is "generate-resources" -->
-                  <phase>generate-resources</phase>
-                  <!-- Optional configuration which provides for running any npm command -->
                   <configuration>
                      <arguments>install</arguments>
                   </configuration>
                </execution>
-               <!-- Build and minify static files -->
                <execution>
-                  <id>npm run build</id>
+                  <id>build-frontend</id>
                   <goals>
-                     <goal>npm</goal>
+                     <goal>yarn</goal>
                   </goals>
+                  <phase>prepare-package</phase>
                   <configuration>
-                     <arguments>run build</arguments>
+                     <arguments>build</arguments>
                   </configuration>
                </execution>
             </executions>
