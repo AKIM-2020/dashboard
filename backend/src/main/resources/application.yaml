@@ -1,28 +1,3 @@
-server:
-  port: 5000
 spring:
-  jpa:
-    database:
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-      hibernate.id.new_generator_mappings: true
-      jdbc:
-        lob:
-          non-contextual-creation: true
-  datasource:
-    url: jdbc:postgresql://database.c1cj2zcatje8.us-east-2.rds.amazonaws.com:5432/database
-    userName: postgres
-    password: mysecretpassword
-    driverClassName: org.postgresql.Driver
-  liquibase:
-    changeLog: classpath:config/liquibase/master.xml
-    contexts: pg
-assm:
-  app:
-    jwtSecret: jwtAssmSecretKey
-    jwtExpiration: 86400
-
+  profiles:
+    active: @activatedProperties@
