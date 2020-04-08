@@ -1,6 +1,6 @@
-package com.akim.backend.security.repositories
+package com.akim.security.repositories
 
-import com.akim.backend.security.domain.User
+import com.akim.security.domain.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.transaction.annotation.Transactional

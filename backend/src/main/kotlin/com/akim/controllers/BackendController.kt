@@ -1,7 +1,7 @@
-package com.akim.backend.controllers
+package com.akim.controllers
 
-import com.akim.backend.security.domain.User
-import com.akim.backend.security.repositories.UserRepository
+import com.akim.security.domain.User
+import com.akim.security.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.Authentication

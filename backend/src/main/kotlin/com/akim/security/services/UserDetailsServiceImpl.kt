@@ -1,6 +1,6 @@
-package com.akim.backend.security.services
+package com.akim.security.services
 
-import com.akim.backend.security.repositories.UserRepository
+import com.akim.security.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

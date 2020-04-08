@@ -1,8 +1,8 @@
-package com.akim.backend.security
+package com.akim.security
 
-import com.akim.backend.security.jwt.JwtAuthEntryPoint
-import com.akim.backend.security.jwt.JwtAuthTokenFilter
-import com.akim.backend.security.services.UserDetailsServiceImpl
+import com.akim.security.jwt.JwtAuthEntryPoint
+import com.akim.security.jwt.JwtAuthTokenFilter
+import com.akim.security.services.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.beans.factory.annotation.Autowired

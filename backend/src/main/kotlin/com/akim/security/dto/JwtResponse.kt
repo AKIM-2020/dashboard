@@ -1,4 +1,4 @@
-package com.akim.backend.security.dto
+package com.akim.security.dto
 
 import org.springframework.security.core.GrantedAuthority
 

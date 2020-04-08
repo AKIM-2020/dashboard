@@ -1,4 +1,4 @@
-package com.akim.backend.security.dto
+package com.akim.security.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable

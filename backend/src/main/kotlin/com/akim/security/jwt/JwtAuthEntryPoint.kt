@@ -1,4 +1,4 @@
-package com.akim.backend.security.jwt
+package com.akim.security.jwt
 
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServletRequest

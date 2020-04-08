@@ -1,6 +1,6 @@
-package com.akim.backend.security.jwt
+package com.akim.security.jwt
 
-import com.akim.backend.security.services.UserDetailsServiceImpl
+import com.akim.security.services.UserDetailsServiceImpl
 import java.io.IOException
 
 import javax.servlet.FilterChain

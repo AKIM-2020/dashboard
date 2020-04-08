@@ -1,13 +1,13 @@
-package com.akim.backend.security
+package com.akim.security
 
-import com.akim.backend.security.domain.User
-import com.akim.backend.security.dto.JwtResponse
-import com.akim.backend.security.dto.LoginUser
-import com.akim.backend.security.dto.NewUser
-import com.akim.backend.security.dto.ResponseMessage
-import com.akim.backend.security.jwt.JwtProvider
-import com.akim.backend.security.repositories.RoleRepository
-import com.akim.backend.security.repositories.UserRepository
+import com.akim.security.domain.User
+import com.akim.security.dto.JwtResponse
+import com.akim.security.dto.LoginUser
+import com.akim.security.dto.NewUser
+import com.akim.security.dto.ResponseMessage
+import com.akim.security.jwt.JwtProvider
+import com.akim.security.repositories.RoleRepository
+import com.akim.security.repositories.UserRepository
 import javax.validation.Valid
 import java.util.*
 import java.util.stream.Collectors

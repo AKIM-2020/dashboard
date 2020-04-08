@@ -1,6 +1,6 @@
-package com.akim.backend.security.repositories
+package com.akim.security.repositories
 
-import com.akim.backend.security.domain.Role
+import com.akim.security.domain.Role
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.Param
 

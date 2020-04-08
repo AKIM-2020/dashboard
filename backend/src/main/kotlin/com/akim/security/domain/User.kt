@@ -1,6 +1,5 @@
-package com.akim.backend.security.domain
+package com.akim.security.domain
 
-import com.akim.backend.security.domain.Role
 import javax.persistence.*
 
 @Entity

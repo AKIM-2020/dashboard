@@ -1,4 +1,4 @@
-package com.akim.backend.security.exceptions
+package com.akim.security.exceptions
 
 class UserAlreadyExistException : RuntimeException {
 

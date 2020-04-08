@@ -1,6 +1,6 @@
-package com.akim.backend.security.jwt
+package com.akim.security.jwt
 
-import com.akim.backend.security.repositories.UserRepository
+import com.akim.security.repositories.UserRepository
 import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.slf4j.Logger

@@ -1,4 +1,4 @@
-package com.akim.backend
+package com.akim
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

@@ -1,4 +1,4 @@
-package com.akim.backend.security.domain
+package com.akim.security.domain
 
 import javax.persistence.Entity
 import javax.persistence.Id
