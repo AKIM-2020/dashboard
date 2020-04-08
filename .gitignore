@@ -77,3 +77,5 @@ Thumbs.db
 /backend/src/main/resources/public/favicon.ico
 /backend/src/main/resources/public/index.html
 /frontend/node/
+/backend/src/main/resources/public/
+/frontend/build/
