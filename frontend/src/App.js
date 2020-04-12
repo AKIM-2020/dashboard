@@ -1,15 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { SignIn } from "./containers/LoginPage/SignInPage";
+import HomePage from "./containers/HomePage";
+import { connect } from "react-redux";
 
-function App() {
-  return (
+const App = ({ isSignedIn }) => (
     <div className="App">
-      <header className="App-header">
-          Edit
-      </header>
+        {isSignedIn
+            ? <HomePage/>
+            : <SignIn/>
+        }
     </div>
-  );
-}
+);
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        isSignedIn: state.authentication.loggedIn
+    };
+};
+
+export default connect(mapStateToProps)(App);
