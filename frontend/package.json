@@ -9,7 +9,8 @@
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "rxjs": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -39,5 +40,6 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from './SignIn.module.sass'
 import { userActions } from "../../actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-export const SignIn = () => {
+const SignIn = ({ login }) => {
+    const [userName, setUserName] = useState("");
+    const [userPassword, setUserPassword] = useState("");
+
     return <div className={styles.wrapper}>
         <div className={styles.formContent}>
             <div>
@@ -11,9 +16,23 @@ export const SignIn = () => {
             </div>
 
             <form>
-                <input className={styles.input} type="text" id="login" name="login" placeholder="login"/>
-                <input className={styles.input} type="text" id="password" name="login" placeholder="password"/>
-                <input className={styles.input} type="submit" value="Log In" onClick={ userActions.login }/>
+                <input className={styles.input}
+                       type="text"
+                       id="login"
+                       name="login"
+                       placeholder="login"
+                       onChange={event => setUserName(event.target.value)}
+                />
+                <input className={styles.input}
+                       type="text"
+                       id="password"
+                       name="login"
+                       placeholder="password"
+                       onChange={event => setUserPassword(event.target.value)}
+                />
+                <input className={styles.input} type="submit" value="Log In"
+                       onClick={ () => login(userName, userPassword) }
+                />
             </form>
 
             <div className={styles.formFooter}>
@@ -22,3 +41,7 @@ export const SignIn = () => {
         </div>
     </div>
 };
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({ ...userActions }, dispatch);
+
+export default connect(null, mapDispatchToProps)(SignIn)

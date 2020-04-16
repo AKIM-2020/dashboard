@@ -7,7 +7,7 @@ const login = (username, password) => {
         body: JSON.stringify({ username, password })
     };
 
-    return api.post(`/users/authenticate`, requestOptions)
+    return api.post(`/api/auth/signin`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -22,10 +22,26 @@ const login = (username, password) => {
 
 
 const handleResponse = (response) => {
+    return response.text().then(text => {
+        const data = text && JSON.parse(text);
+        if (!response.ok) {
+            if ([401, 403].indexOf(response.status) !== -1) {
+                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+                logout();
+                window.location.reload();
+            }
 
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+
+        return data;
+    });
 };
 
-const logout = () => {}
+const logout = () => {
+    localStorage.removeItem('currentUSer');
+};
 
 export const userService = {
     login,
