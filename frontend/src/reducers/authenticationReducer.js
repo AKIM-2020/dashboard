@@ -1,7 +1,7 @@
 import { userConstants } from "../constants/userConstants";
 
-let user = JSON.parse(localStorage.getItem('user')); // todo create user item
-const initialState = user ? { loggedIn: false, user } : { loggedIn: false }; // todo remove negative case
+let user = JSON.parse(localStorage.getItem('user'));
+const initialState = user ? { loggedIn: true, user } : { loggedIn: false };
 
 export function authentication(state = initialState, action) {
     switch (action.type) {
