@@ -1,18 +1,19 @@
-import { userService } from "../service";
 import { userConstants } from "../constants/userConstants";
-import { history } from '../helpers'
+import { api, history } from '../helpers'
 
 const login = (username, password) => {
     return dispatch => {
         dispatch(request({ username }));
-        userService.login(username, password)
+        api.post(`/api/auth/signin`, { username: username, password: password })
             .then(
-                user => {
-                    dispatch(success(user));
-                    history.push('/');
+                response => {
+                    localStorage.setItem('user', JSON.stringify(response.data))
+                    dispatch(success(response.data));
+                    //history.push('/');
                 },
                 error => {
-                    //dispatch(failure(error));
+                    logout();
+                    dispatch(failure(error));
                     //dispatch(alertActions.error(error));
                 }
             );
@@ -23,7 +24,9 @@ const login = (username, password) => {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 };
 
-const logout = () => {};
+const logout = () => {
+    localStorage.removeItem('user');
+};
 
 export const userActions = {
     login,
