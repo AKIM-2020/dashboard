@@ -24,7 +24,7 @@ const SignIn = ({ login }) => {
                        onChange={event => setUserName(event.target.value)}
                 />
                 <input className={styles.input}
-                       type="text"
+                       type="password"
                        id="password"
                        name="login"
                        placeholder="password"
