@@ -30,7 +30,7 @@ const SignIn = ({ login }) => {
                        placeholder="password"
                        onChange={event => setUserPassword(event.target.value)}
                 />
-                <input className={styles.input} type="submit" value="Log In"
+                <input className={styles.input} type="button" value="Log In"
                        onClick={ () => login(userName, userPassword) }
                 />
             </form>
