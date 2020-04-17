@@ -1,6 +1,6 @@
 import React from 'react';
-import SignIn from "./containers/LoginPage/SignInPage";
-import HomePage from "./containers/HomePage";
+import SignIn from "../LoginPage/SignInPage";
+import HomePage from "../HomePage";
 import { connect } from "react-redux";
 
 const App = ({ isSignedIn }) => (
