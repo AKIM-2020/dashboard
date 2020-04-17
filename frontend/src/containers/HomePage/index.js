@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "../Header";
 import MySidebar from "../Sidebar";
+import Content from "../Content";
 
 const HomePage = () => {
     return <div>
-        <Header/>
         <MySidebar/>
+        <Content/>
     </div>
 };
 
