@@ -26,6 +26,7 @@ const login = (username, password) => {
 
 const logout = () => {
     localStorage.removeItem('user');
+    window.location.reload();
 };
 
 export const userActions = {

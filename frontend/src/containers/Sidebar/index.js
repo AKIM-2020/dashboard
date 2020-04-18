@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,6 +17,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { AccountCircle } from "@material-ui/icons";
+import { userActions } from "../../actions";
+import { connect } from "react-redux";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 240;
@@ -41,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
     },
     hide: {
         display: 'none',
@@ -78,10 +84,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Sidebar() {
+const Sidebar = ({ logout }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -96,9 +102,7 @@ export default function Sidebar() {
             <CssBaseline/>
             <AppBar
                 position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
+                className={clsx(classes.appBar, { [classes.appBarShift]: open })}
             >
                 <Toolbar>
                     <IconButton
@@ -110,17 +114,17 @@ export default function Sidebar() {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" noWrap>
+                    <Typography variant="h6" noWrap className={classes.title}>
                         Menu
                     </Typography>
                     <IconButton
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={ logout }
                         color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => { }}
-                        edge="edgeEnd"
-                        className={clsx(classes.menuButton, open && classes.hide)}
                     >
-                        <ExitToAppIcon/>
+                        <ExitToAppIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
@@ -159,4 +163,10 @@ export default function Sidebar() {
             </Drawer>
         </div>
     );
-}
+};
+
+const mapDispatchToProps = {
+    ...userActions
+};
+
+export default connect(null, mapDispatchToProps)(Sidebar);
