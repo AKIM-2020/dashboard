@@ -33,7 +33,20 @@
       <column name="user_id" type="bigint"/>
       <column name="role_id" type="bigint"/>
     </createTable>
-
+    <addForeignKeyConstraint baseColumnNames="user_id"
+                             baseTableName="users_roles"
+                             constraintName="FK_user_id"
+                             referencedColumnNames="id"
+                             onDelete="CASCADE"
+                             onUpdate="CASCADE"
+                             referencedTableName="users"/>
+    <addForeignKeyConstraint baseColumnNames="role_id"
+                             baseTableName="users_roles"
+                             constraintName="FK_role_id"
+                             referencedColumnNames="id"
+                             onDelete="CASCADE"
+                             onUpdate="CASCADE"
+                             referencedTableName="roles"/>
   </changeSet>
 
 </databaseChangeLog>
