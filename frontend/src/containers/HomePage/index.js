@@ -1,12 +1,13 @@
 import React from "react";
-import MySidebar from "../Sidebar";
+import Sidebar from "../Sidebar";
 import Content from "../Content";
+import Box from "@material-ui/core/Box";
 
 const HomePage = () => {
-    return <div>
-        <MySidebar/>
+    return <Box display="flex">
+        <Sidebar/>
         <Content/>
-    </div>
+    </Box>
 };
 
 export default HomePage;
