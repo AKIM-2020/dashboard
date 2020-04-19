@@ -1,10 +1,12 @@
+import clsx from "clsx";
 import React from "react";
 import { PrivateRoute } from '../../components';
 
-const Content = ({ items }) => (
-    <div style={{ marginTop: '65px' }}>
-        {items.map(it => <PrivateRoute path={ it.link } component={ it.component } roles={ it.roles }/>)}
-    </div>
-);
+const Content = ({classes, open, items }) => {
+    return <div className={clsx(classes.content, {[classes.contentShift]: open})}>
+        <div className={classes.drawerHeader} />
+        { items.map(it => <PrivateRoute path={ it.link } component={ it.component } roles={ it.roles }/>) }
+    </div>;
+};
 
 export default Content;

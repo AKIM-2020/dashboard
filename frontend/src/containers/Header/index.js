@@ -8,10 +8,8 @@ import clsx from "clsx";
 import React from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
-import { useStyles } from "./styles";
 
-const Header = ({ open, logout, handleDrawerOpen }) => {
-    const classes = useStyles();
+const Header = ({ classes, open, logout, handleDrawerOpen }) => {
     return (
         <AppBar
             position="fixed"

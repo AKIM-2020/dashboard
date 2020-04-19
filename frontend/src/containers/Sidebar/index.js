@@ -12,15 +12,13 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import React from 'react';
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
-import { useStyles } from "./styles";
 import NavLink from "react-router-dom/es/NavLink";
 
-const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
-    const classes = useStyles();
+const Sidebar = ({ classes, open, handleDrawerClose, items, logout }) => {
     const theme = useTheme();
 
     return (
-        <div className={ classes.root }>
+        <div>
             <CssBaseline/>
             <Drawer
                 className={ classes.drawer }
