@@ -3,6 +3,9 @@ import Sidebar from "../Sidebar";
 import Content from "../Content";
 import Box from "@material-ui/core/Box";
 import Header from "../Header";
+import Administrators from "../SidebarContent/Administrators";
+import {Route} from "react-router-dom";
+import Cashier from "../SidebarContent/Cashier";
 
 const HomePage = () => {
     const ownerItems = [
@@ -43,7 +46,9 @@ const HomePage = () => {
     return <Box display="flex">
         <Header open={ open } handleDrawerOpen={ handleDrawerOpen }/>
         <Sidebar open={ open } handleDrawerClose={ handleDrawerClose } items={ ownerItems }/>
-        <Content/>
+        <Route path='/administrators' render={() => <Administrators />}/>
+        <Route path='/cashier' render={() => <Cashier />}/>
+        {/*<Content/>*/}
     </Box>
 };
 

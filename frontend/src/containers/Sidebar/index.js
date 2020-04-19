@@ -13,6 +13,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 import { useStyles } from "./styles";
+import NavLink from "react-router-dom/es/NavLink";
 
 const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
     const classes = useStyles();
@@ -38,9 +39,10 @@ const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { items.map((it, index) => (
-                        <ListItem button key={ it.name }>
-                            <ListItemText primary={ it.name }/>
+                        <NavLink to={it.link}> <ListItem button key={it.name}>
+                            <ListItemText primary={it.name }/>
                         </ListItem>
+                        </NavLink>
                     )) }
                 </List>
                 <Divider/>
