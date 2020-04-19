@@ -115,7 +115,7 @@ const items = [
     }, {
         name: 'admin_transactions',
         link: '/admin_trx',
-        roles: [Role.Admin, Role.Owner],
+        roles: [Role.Admin],
         component: () => <AdminTransactions/>
     },
 ];

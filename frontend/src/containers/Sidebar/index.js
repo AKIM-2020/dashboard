@@ -27,9 +27,7 @@ const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
                 variant="persistent"
                 anchor="left"
                 open={ open }
-                classes={ {
-                    paper: classes.drawerPaper,
-                } }
+                classes={{ paper: classes.drawerPaper }}
             >
                 <div className={ classes.drawerHeader }>
                     <IconButton onClick={ handleDrawerClose }>
@@ -39,8 +37,8 @@ const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { items.map((it, index) => (
-                        <NavLink to={ it.link }>
-                            <ListItem button key={ it.name }>
+                        <NavLink to={ it.link } style={{ color: 'black' }}>
+                            <ListItem button key={ it.name } >
                                 <ListItemText primary={ it.name }/>
                             </ListItem>
                         </NavLink>
