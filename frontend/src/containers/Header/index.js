@@ -1,14 +1,14 @@
 import AppBar from "@material-ui/core/AppBar";
-import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import MenuIcon from "@material-ui/icons/Menu";
+import clsx from "clsx";
 import React from "react";
-import { useStyles } from "./styles";
-import { userActions } from "../../actions";
 import { connect } from "react-redux";
+import { userActions } from "../../actions";
+import { useStyles } from "./styles";
 
 const Header = ({ open, logout, handleDrawerOpen }) => {
     const classes = useStyles();
