@@ -8,7 +8,7 @@ export const PrivateRoute = ({ component: Component, roles, ...rest }) => (
         if (!currentUser) {
             return <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         }
-        const authorities = currentUser.authorities.map((it) => it.authority);
+        const authorities = authenticationService.currentUserAuthorities;
         if (roles && roles.filter(it => authorities.includes(it)).length === 0) {
             return <Redirect to={{ pathname: '/'}} />
         }

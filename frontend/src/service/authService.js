@@ -4,5 +4,6 @@ const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('
 
 export const authenticationService = {
     currentUser: currentUserSubject.asObservable(),
+    currentUserAuthorities: currentUserSubject.value.authorities.map((it) => it.authority),
     get currentUserValue() { return currentUserSubject.value }
 };

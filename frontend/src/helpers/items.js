@@ -1,9 +1,10 @@
 import React from "react";
 import Administrators from "../containers/Content/Administrators";
 import Cashier from "../containers/Content/Cashier";
+import { authenticationService } from "../service";
 import { Role } from "./roles.js";
 
-export const items = [
+const items = [
     {
         name: 'Charge or discard balance',
         link: '/charge',
@@ -102,7 +103,12 @@ export const items = [
     }, {
         name: 'admin_transactions',
         link: '/admin_trx',
-        roles: [Role.Owner],
+        roles: [Role.Admin, Role.Owner],
         component: () => {}
     },
 ];
+
+export const getUserItems = () => {
+    const authorities = authenticationService.currentUserAuthorities;
+    return items.filter(it => it.roles.filter(role => authorities.includes(role)).length === 1)
+};
