@@ -1,7 +1,10 @@
 import React from "react";
+import { PrivateRoute } from '../../components';
 
-const Content = () => (
-    <div>Content</div>
+const Content = ({ items }) => (
+    <div>
+        {items.map(it => <PrivateRoute path={ it.link } component={ it.component } roles={ it.roles }/>)}
+    </div>
 );
 
 export default Content;

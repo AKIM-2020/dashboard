@@ -39,9 +39,10 @@ const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { items.map((it, index) => (
-                        <NavLink to={it.link}> <ListItem button key={it.name}>
-                            <ListItemText primary={it.name }/>
-                        </ListItem>
+                        <NavLink to={ it.link }>
+                            <ListItem button key={ it.name }>
+                                <ListItemText primary={ it.name }/>
+                            </ListItem>
                         </NavLink>
                     )) }
                 </List>
