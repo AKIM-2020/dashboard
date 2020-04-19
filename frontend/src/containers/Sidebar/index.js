@@ -39,7 +39,7 @@ const Sidebar = ({ open, handleDrawerClose, items, logout }) => {
                 <List>
                     { items.map((it, index) => (
                         <ListItem button key={ it.name }>
-                            <ListItemText primary={ it.label }/>
+                            <ListItemText primary={ it.name }/>
                         </ListItem>
                     )) }
                 </List>
