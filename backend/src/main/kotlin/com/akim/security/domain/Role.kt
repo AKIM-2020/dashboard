@@ -6,8 +6,8 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "roles")
-class Role (
-        @Id
-        val id: Long,
-        val name: String
+data class Role(
+    @Id
+    val id: Long,
+    val name: String
 )
