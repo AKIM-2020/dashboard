@@ -1,73 +1,73 @@
 import React from "react";
 
 export const Charge = () => {
-    return <div>Cashier</div>
+    return <div>Charge</div>
 }
 
 export const Tree = () => {
-    return <div>Cashier</div>
+    return <div>Tree</div>
 }
 
 export const Users = () => {
-    return <div>Cashier</div>
+    return <div>Users</div>
 }
 
 export const Statistics = () => {
-    return <div>Cashier</div>
+    return <div>Statistics</div>
 }
 
 export const CashReports = () => {
-    return <div>Cashier</div>
+    return <div>CashReports</div>
 }
 
 export const Bets = () => {
-    return <div>Cashier</div>
+    return <div>Bets</div>
 }
 
 export const Withdraw = () => {
-    return <div>Cashier</div>
+    return <div>Withdraw</div>
 }
 
 export const Rates = () => {
-    return <div>Cashier</div>
+    return <div>Rates</div>
 }
 
 export const Mails = () => {
-    return <div>Cashier</div>
+    return <div>Mails</div>
 }
 
 export const Pages = () => {
-    return <div>Cashier</div>
+    return <div>Pages</div>
 }
 
 export const Inbet = () => {
-    return <div>Cashier</div>
+    return <div>Inbet</div>
 }
 
 export const Transfers = () => {
-    return <div>Cashier</div>
+    return <div>Transfers</div>
 }
 
 export const Promocodes = () => {
-    return <div>Cashier</div>
+    return <div>Promocodes</div>
 }
 
 export const PromoActivation = () => {
-    return <div>Cashier</div>
+    return <div>PromoActivation</div>
 }
 
 export const Configuration = () => {
-    return <div>Cashier</div>
+    return <div>Configuration</div>
 }
 
 export const Slider = () => {
-    return <div>Cashier</div>
+    return <div>Slider</div>
 }
 
 export const Report = () => {
-    return <div>Cashier</div>
+    return <div>Report</div>
 }
 
 export const AdminTransactions = () => {
-    return <div>Cashier</div>
+    return <div>AdminTransactions</div>
 }
