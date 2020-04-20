@@ -1,7 +1,30 @@
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import makeStyles from "@material-ui/core/styles/makeStyles.js";
 import React from "react";
 
+const useStyles = makeStyles({
+    button: {
+        marginLeft: '20px',
+    },
+});
+
 export const Charge = () => {
-    return <div>Charge</div>
+    const classes = useStyles();
+    const [name, setName] = React.useState('');
+
+    return <Box component="div" display="flex" justifyContent="center">
+        <FormControl>
+            <Box component="div" display="inline">
+                <InputLabel>User number or Login</InputLabel>
+                <Input value={name} onChange={() => {}} />
+                <Button variant="contained" className={classes.button}>Check</Button>
+            </Box>
+        </FormControl>
+    </Box>
 }
 
 export const Users = () => {
