@@ -1,2 +1,2 @@
 export * from './PrivateRoute'
-export * from './Table'
+export * from './EditableTable.js'

@@ -4,10 +4,6 @@ export const Charge = () => {
     return <div>Charge</div>
 }
 
-export const Tree = () => {
-    return <div>Tree</div>
-}
-
 export const Users = () => {
     return <div>Users</div>
 }

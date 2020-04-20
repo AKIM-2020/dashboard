@@ -1,6 +1,7 @@
 import React from "react";
 import Administrators from "../containers/Content/Administrators";
 import Cashier from "../containers/Content/Cashier";
+import TreePage from '../containers/Content/TreePage.js'
 import {
     AdminTransactions,
     Bets,
@@ -9,10 +10,10 @@ import {
     Mails, Pages, PromoActivation, Promocodes,
     Rates, Report, Slider,
     Statistics, Transfers,
-    Tree,
     Users,
     Withdraw
 } from "../containers/Content/Charge.js";
+import { treeData } from "../mocks";
 import { authenticationService } from "../service";
 import { Role } from "./roles.js";
 
@@ -26,7 +27,8 @@ const items = [
         name: 'Tree',
         link: '/tree',
         roles: [Role.Owner],
-        component: () => <Tree/>
+        data: treeData,
+        component: () => <TreePage data={ treeData }/>
     }, {
         name: 'Administrators',
         link: '/administrators',
