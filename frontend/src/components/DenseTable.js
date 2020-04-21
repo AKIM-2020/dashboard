@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     }
 });
 
-const DenseTable = ({ tableData }) => {
+export const DenseTable = ({ tableData, openFilters }) => {
     const classes = useStyles();
     const columnsHeader = tableData.columns;
     const rows = tableData.data;
@@ -40,7 +40,7 @@ const DenseTable = ({ tableData }) => {
                 { tableData.title }
             </Typography>
             <Tooltip title="Filter list" className={ classes.filter }>
-                <IconButton aria-label="filter list">
+                <IconButton aria-label="filter list" onClick={ () => openFilters(true) }>
                     <FilterListIcon/>
                 </IconButton>
             </Tooltip>
@@ -65,5 +65,3 @@ const DenseTable = ({ tableData }) => {
         </Table>
     </TableContainer>
 };
-
-export default DenseTable;
