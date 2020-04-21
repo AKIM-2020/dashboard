@@ -1,10 +1,10 @@
 import React from "react";
 import { EditableTable } from "../../components";
 
-const Cashier = ({ data }) => {
+const Users = ({ data }) => {
     return <div>
         <EditableTable tableData={ data }/>
     </div>
 }
 
-export default Cashier;
+export default Users;

@@ -27,14 +27,6 @@ export const Charge = () => {
     </Box>
 }
 
-export const Users = () => {
-    return <div>Users</div>
-}
-
-export const Statistics = () => {
-    return <div>Statistics</div>
-}
-
 export const CashReports = () => {
     return <div>CashReports</div>
 }

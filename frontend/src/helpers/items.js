@@ -1,6 +1,7 @@
 import React from "react";
 import Administrators from "../containers/Content/Administrators";
 import Cashier from "../containers/Content/Cashier";
+import Statistics from "../containers/Content/Statistics.js";
 import TreePage from '../containers/Content/TreePage.js'
 import {
     AdminTransactions,
@@ -9,11 +10,14 @@ import {
     Charge, Configuration, Inbet,
     Mails, Pages, PromoActivation, Promocodes,
     Rates, Report, Slider,
-    Statistics, Transfers,
-    Users,
+    Transfers,
     Withdraw
 } from "../containers/Content/Charge.js";
+import Users from "../containers/Content/Users.js";
 import { treeData } from "../mocks";
+import { cashiersData } from "../mocks/cashiersData.js";
+import { statisticsData } from "../mocks/statisticsData.js";
+import { usersTableData } from "../mocks/usersTableData.js";
 import { authenticationService } from "../service";
 import { Role } from "./roles.js";
 
@@ -38,17 +42,20 @@ const items = [
         name: 'Cashier',
         link: '/cashier',
         roles: [Role.Owner],
-        component: () => <Cashier/>
+        data: cashiersData,
+        component: () => <Cashier data={ cashiersData }/>
     }, {
         name: 'Users',
         link: '/users',
         roles: [Role.Owner],
-        component: () => <Users/>
+        data: usersTableData,
+        component: () => <Users data={ usersTableData }/>
     }, {
         name: 'Admin_statistics',
         link: '/statistics',
         roles: [Role.Owner],
-        component: () => <Statistics/>
+        data: statisticsData,
+        component: () => <Statistics data={ statisticsData }/>
     }, {
         name: 'Cashier reports',
         link: '/cash_reports',

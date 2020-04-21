@@ -1,4 +1,4 @@
-export const tableData = {
+export const adminData = {
     title: "Administrators",
     columns: [
         { title: 'Id', field: 'id' },

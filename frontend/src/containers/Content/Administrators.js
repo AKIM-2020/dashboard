@@ -1,13 +1,11 @@
 import React from "react";
 import { EditableTable } from '../../components'
-import { tableData } from "../../mocks/adminTableData.js";
+import { adminData } from "../../mocks/adminTableData.js";
 
 const Administrators = () => {
     return <div>
-        <EditableTable tableData={ tableData }/>
+        <EditableTable tableData={ adminData }/>
     </div>
 };
-
-
 
 export default Administrators;
