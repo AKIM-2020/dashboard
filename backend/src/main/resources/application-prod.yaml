@@ -1,29 +1,6 @@
-server:
-  port: ${PORT:5000}
 spring:
-  jpa:
-    database:
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-      hibernate.id.new_generator_mappings: true
-      jdbc:
-        lob:
-          non-contextual-creation: true
   datasource:
     url: ${JDBC_DATABASE_URL:}
-    driverClassName: org.postgresql.Driver
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
-  liquibase:
-    changeLog: classpath:config/liquibase/master.xml
-    contexts: pg
-assm:
-  app:
-    jwtSecret: jwtAssmSecretKey
-    jwtExpiration: 86400
-
