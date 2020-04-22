@@ -14,9 +14,9 @@ spring:
         lob:
           non-contextual-creation: true
   datasource:
-    url: jdbc:postgresql://aa1lwagye87gzt1.c1cj2zcatje8.us-east-2.rds.amazonaws.com:5432/postgres
-    userName: postgres
-    password: postgres
+    url: jdbc:postgresql://ec2-3-223-21-106.compute-1.amazonaws.com:5432/d54pg430rlu0i9
+    userName: siddjcoyujsyyv
+    password: d7c1309231c8e36ee52215f3d2cb9a8dd145f01d2f0ee1fee9f65bd5849e40f4
     driverClassName: org.postgresql.Driver
   liquibase:
     changeLog: classpath:config/liquibase/master.xml
