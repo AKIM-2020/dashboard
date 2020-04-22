@@ -130,6 +130,6 @@ const items = [
 ];
 
 export const getUserItems = () => {
-    const authorities = authenticationService.currentUserAuthorities;
+    const authorities = authenticationService.currentUserValue.authorities.map((it) => it.authority);
     return items.filter(it => it.roles.filter(role => authorities.includes(role)).length === 1)
 };

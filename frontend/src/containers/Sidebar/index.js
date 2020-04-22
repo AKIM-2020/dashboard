@@ -12,7 +12,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import React from 'react';
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
-import NavLink from "react-router-dom/es/NavLink";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ classes, open, handleDrawerClose, items, logout }) => {
     const theme = useTheme();
