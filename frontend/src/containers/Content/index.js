@@ -5,7 +5,7 @@ import { PrivateRoute } from '../../components';
 const Content = ({classes, open, items }) => {
     return <div className={clsx(classes.content, {[classes.contentShift]: open})}>
         <div className={classes.drawerHeader} />
-        { items.map(it => <PrivateRoute path={ it.link } component={ it.component } roles={ it.roles }/>) }
+        { items && items.map(it => <PrivateRoute path={ it.link } component={ it.component } roles={ it.roles }/>) }
     </div>;
 };
 
