@@ -1,35 +1,51 @@
-import makeStyles from "@material-ui/core/styles/makeStyles.js";
-import React from "react";
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
-
-const useStyles = makeStyles({
-    root: {
-        height: 110,
-        flexGrow: 1,
-        maxWidth: 400,
-    },
-});
+import { CustomTreeData, TreeDataState, } from '@devexpress/dx-react-grid';
+import { Grid, Table, TableHeaderRow, TableTreeColumn, } from '@devexpress/dx-react-grid-material-ui';
+import Paper from "@material-ui/core/Paper";
+import React, { useState } from "react";
 
 const TreePage = ({ data }) => {
-    const classes = useStyles();
 
-    const renderTree = (nodes) => (
-        <TreeItem key={ nodes.id } nodeId={ nodes.id } label={ nodes.name }>
-            { Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null }
-        </TreeItem>
+    const flatten = (data) => {
+        const arr = Array.isArray(data) ? data : [data];
+        return arr.reduce((acc, value) => {
+            let row = Object.assign({}, value.data);
+            row.id = value.id;
+            row.parentId = value.parentId;
+            acc.push(row);
+            if (value.children) {
+                acc = acc.concat(flatten(value.children));
+                delete value.children;
+            }
+            return acc;
+        }, []);
+    };
+
+    const getChildRows = (row, rootRows) => {
+        const childRows = rootRows.filter(r => r.parentId === (row ? row.id : null));
+        return childRows.length ? childRows : null;
+    };
+
+    const [tableColumnExtensions] = useState([
+        { columnName: 'login', width: 300 },
+    ]);
+
+    const [rows] = useState(flatten(data));
+    const [columns] = useState(Object.keys(data.data).map(name => { return {name} }))
+
+    return (
+        <Paper>
+            <Grid
+                rows={ rows }
+                columns={ columns }
+            >
+                <TreeDataState />
+                <CustomTreeData getChildRows={ getChildRows }/>
+                <Table columnExtensions={ tableColumnExtensions }/>
+                <TableHeaderRow />
+                <TableTreeColumn for="login"/>
+            </Grid>
+        </Paper>
     );
-
-    return <TreeView
-        className={ classes.root }
-        defaultCollapseIcon={ <ExpandMoreIcon/> }
-        defaultExpanded={ ['root'] }
-        defaultExpandIcon={ <ChevronRightIcon/> }
-    >
-        { renderTree(data) }
-    </TreeView>
-};
+}
 
 export default TreePage;
