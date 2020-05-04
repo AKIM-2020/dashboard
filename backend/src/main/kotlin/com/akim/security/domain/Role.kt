@@ -1,13 +1,14 @@
 package com.akim.security.domain
 
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import com.akim.dto.Roles
+import javax.persistence.*
 
 @Entity
 @Table(name = "roles")
-class Role (
-        @Id
-        val id: Long,
-        val name: String
+data class Role(
+    @Id
+    val id: Long,
+
+    @Enumerated(EnumType.STRING)
+    val name: Roles
 )

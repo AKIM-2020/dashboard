@@ -1,0 +1,10 @@
+spring:
+    datasource:
+        driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+        url: jdbc:tc:postgresql:11-alpine:///databasename
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+        database: postgresql
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
