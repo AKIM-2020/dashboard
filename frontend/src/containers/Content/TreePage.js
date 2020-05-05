@@ -1,7 +1,7 @@
 import { CustomTreeData, TreeDataState, } from '@devexpress/dx-react-grid';
 import { Grid, Table, TableHeaderRow, TableTreeColumn, } from '@devexpress/dx-react-grid-material-ui';
 import Paper from "@material-ui/core/Paper";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const TreePage = ({ data }) => {
 
@@ -14,7 +14,6 @@ const TreePage = ({ data }) => {
             acc.push(row);
             if (value.children) {
                 acc = acc.concat(flatten(value.children));
-                delete value.children;
             }
             return acc;
         }, []);
@@ -30,7 +29,8 @@ const TreePage = ({ data }) => {
     ]);
 
     const [rows] = useState(flatten(data));
-    const [columns] = useState(Object.keys(data.data).map(name => { return {name} }))
+    const [defaultExpandedRowIds] = useState([0, 1]);
+    const [columns] = useState(Object.keys(data.data).map(name => { return {name} }));
 
     return (
         <Paper>
@@ -38,7 +38,9 @@ const TreePage = ({ data }) => {
                 rows={ rows }
                 columns={ columns }
             >
-                <TreeDataState />
+                <TreeDataState
+                    defaultExpandedRowIds={defaultExpandedRowIds}
+                />
                 <CustomTreeData getChildRows={ getChildRows }/>
                 <Table columnExtensions={ tableColumnExtensions }/>
                 <TableHeaderRow />
