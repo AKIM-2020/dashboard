@@ -1,13 +1,14 @@
-import React from "react";
-import { DenseTable, FilterPopup } from "../../components";
+import React, { useMemo, useState, useEffect } from "react";
+import StatisticsTable from "../../components/Tables/StatisticsTable";
+import {statisticsData} from '../../mocks/statisticsData'
 
-const Statistics = ({ data }) => {
-    const [open, setOpen] = React.useState(false);
+const Statistics = () => {
 
-    return <div>
-        <DenseTable tableData={ data } openFilters={ setOpen }/>
-        <FilterPopup open={ open } setOpen={ setOpen }/>
-    </div>
+    return (
+        <div>
+            <StatisticsTable columns={statisticsData.columns} rows={statisticsData.rows} />
+        </div>
+    );
 }
 
 export default Statistics;

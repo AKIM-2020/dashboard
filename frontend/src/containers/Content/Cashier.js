@@ -1,9 +1,10 @@
 import React from "react";
-import { EditableTable } from "../../components";
+import AdminsTable from "../../components/Tables/AdminsTable";
+import {cashiersData} from "../../mocks/cashiersData";
 
 const Cashier = ({ data }) => {
     return <div>
-        <EditableTable tableData={ data }/>
+        <AdminsTable columns={ cashiersData.columns } data={cashiersData.data}/>
     </div>
 }
 

@@ -35,8 +35,8 @@ const Sidebar = ({ classes, open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { items && items.map((it, index) => (
-                        <NavLink to={ it.link } style={{ color: 'black' }}>
-                            <ListItem button key={ it.name } >
+                        <NavLink to={ it.link } style={{ color: 'black' }} key={ index }>
+                            <ListItem button dense={ true }>
                                 <ListItemText primary={ it.name }/>
                             </ListItem>
                         </NavLink>
@@ -45,8 +45,8 @@ const Sidebar = ({ classes, open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { ['Logout'].map((text, index) => (
-                        <ListItem button key={ text }>
-                            <IconButton onClick={ logout }>
+                        <ListItem button key={ index } onClick={ logout }>
+                            <IconButton >
                                 <ExitToAppIcon/>
                             </IconButton>
                             <ListItemText primary={ text }/>
