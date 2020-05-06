@@ -1,4 +1,4 @@
-import { userConstants } from "../constants/userConstants";
+import { userConstants } from "../constants";
 import { api, history } from '../helpers'
 
 const login = (username, password) => {
