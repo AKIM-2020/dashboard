@@ -4,11 +4,11 @@ import SignIn from "../LoginPage/SignInPage";
 import HomePage from "../HomePage";
 import { connect } from "react-redux";
 
-const App = ({ user, isSignedIn }) => (
+const App = ({ isSignedIn }) => (
     <BrowserRouter>
         <div className="App">
             {isSignedIn
-                ? <HomePage user={ user }/>
+                ? <HomePage/>
                 : <SignIn/>
             }
         </div>
@@ -17,8 +17,7 @@ const App = ({ user, isSignedIn }) => (
 
 const mapStateToProps = state => {
     return {
-        isSignedIn: state.authentication.loggedIn,
-        user: state.authentication.user
+        isSignedIn: state.authentication.loggedIn
     };
 };
 
