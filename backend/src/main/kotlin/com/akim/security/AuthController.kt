@@ -31,9 +31,9 @@ class AuthController(
 
     @PostMapping("/signin")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginUser): ResponseEntity<*> {
-        val user = userRepository.findByUserName(loginRequest.username)
+        val user = userRepository.findByLogin(loginRequest.login)
         return if (user != null) {
-            val authenticationToken = UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
+            val authenticationToken = UsernamePasswordAuthenticationToken(loginRequest.login, loginRequest.password)
             val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
             SecurityContextHolder.getContext().authentication = authentication
 
@@ -42,7 +42,7 @@ class AuthController(
             val authorities: List<GrantedAuthority> = user.roles!!.stream()
                 .map { role -> SimpleGrantedAuthority(role.name.name) }
                 .collect(Collectors.toList<GrantedAuthority>())
-            ResponseEntity.ok(JwtResponse(jwt, user.userName, authorities))
+            ResponseEntity.ok(JwtResponse(jwt, user.login, authorities))
         } else {
             ResponseEntity(ResponseMessage("User not found!"), HttpStatus.BAD_REQUEST)
         }

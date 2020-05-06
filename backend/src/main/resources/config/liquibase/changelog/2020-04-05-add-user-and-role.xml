@@ -7,29 +7,26 @@
 
   <changeSet author="k.a.lebedev" id="add user and role tables">
 
+     <createSequence sequenceName="users_seq"/>
+     <createSequence sequenceName="roles_seq"/>
+
     <createTable tableName="users">
-      <column name="id" type="bigserial">
+      <column name="id" type="bigint">
         <constraints primaryKey="true"/>
       </column>
-      <column name="user_name" type="varchar(25)"/>
-      <column name="first_name" type="varchar(50)"/>
-      <column name="last_name" type="varchar(50)"/>
+      <column name="login" type="varchar(25)"/>
       <column name="email" type="varchar(50)"/>
       <column name="password" type="text"/>
-      <column name="enabled" type="boolean"/>
     </createTable>
 
     <createTable tableName="roles">
-      <column name="id" type="bigserial">
+      <column name="id" type="bigint">
         <constraints primaryKey="true"/>
       </column>
       <column name="name" type="varchar(50)"/>
     </createTable>
 
     <createTable tableName="users_roles">
-      <column name="id" type="bigserial">
-        <constraints primaryKey="true"/>
-      </column>
       <column name="user_id" type="bigint"/>
       <column name="role_id" type="bigint"/>
     </createTable>

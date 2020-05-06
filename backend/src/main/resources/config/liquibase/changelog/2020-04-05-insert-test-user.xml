@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+    <changeSet author="k.a.lebedev" id="add user and role test values">
+        <insert tableName="roles">
+            <column name="id" valueSequenceNext="roles_seq"/>
+            <column name="name" value="OWNER"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" valueSequenceNext="users_seq"/>
+            <column name="login" value="test"/>
+            <column name="email" value="test"/>
+            <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
+        </insert>
+        <insert tableName="users_roles">
+            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="role_id" valueSequenceCurrent="roles_seq"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" valueSequenceNext="roles_seq"/>
+            <column name="name" value="SUPER_ADMIN"/>
+        </insert>
+        <insert tableName="users_roles">
+            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="role_id" valueSequenceCurrent="roles_seq"/>
+        </insert>
 
-  <changeSet author="k.a.lebedev" id="add user and role test values">
-
-    <insert tableName="roles">
-      <column name="id" valueSequenceNext="roles_id_seq"/>
-      <column name="name" value="ROLE_USER"/>
-    </insert>
-
-
-    <insert tableName="users">
-      <column name="id" valueSequenceNext="users_id_seq"/>
-      <column name="user_name" value="test"/>
-      <column name="first_name" value="test"/>
-      <column name="last_name" value="test"/>
-      <column name="email" value="test"/>
-      <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
-      <column name="enabled" value="true"/>
-    </insert>
-
-    <insert tableName="users_roles">
-      <column name="id" valueSequenceNext="users_roles_id_seq"/>
-      <column name="user_id" valueSequenceCurrent="users_id_seq"/>
-      <column name="role_id" valueSequenceCurrent="roles_id_seq"/>
-    </insert>
-
-  </changeSet>
+        <insert tableName="users">
+            <column name="id" valueSequenceNext="users_seq"/>
+            <column name="login" value="test1"/>
+            <column name="email" value="test1"/>
+            <column name="password" value="$2a$08$KEE1k5m/l.ajBjXrMKYNEOp7kq/rhQ1xZoOs9ZN9xYHh2KkmyteeC"/>
+        </insert>
+        <insert tableName="users_roles">
+            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="role_id" valueSequenceCurrent="roles_seq"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" valueSequenceNext="roles_seq"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" valueSequenceNext="roles_seq"/>
+            <column name="name" value="CASHIER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="id" valueSequenceNext="roles_seq"/>
+            <column name="name" value="CASHIER"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>

@@ -7,7 +7,6 @@ data class AdminDto(
     var login: String,
     var name: String,
     var surname: String,
-    var superadmin_id: Long,
     var city: String,
     var role: Roles,
     var balance: BigDecimal

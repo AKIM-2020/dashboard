@@ -1,6 +1,5 @@
 package com.akim.security.domain
 
-import com.github.pozo.KotlinBuilder
 import javax.persistence.*
 
 @Entity
@@ -8,11 +7,12 @@ import javax.persistence.*
 data class User(
 
     @Id
-    var id: Long,
-    var userName: String,
+    @GeneratedValue(generator="users_seq")
+    @SequenceGenerator(name="users_seq",sequenceName="users_seq", allocationSize = 1)
+    var id: Long?,
+    var login: String,
     var email: String,
     var password: String,
-    var enabled: Boolean,
 
     @ManyToMany
     @JoinTable(name = "users_roles",
