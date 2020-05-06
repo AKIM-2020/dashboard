@@ -1,5 +1,6 @@
 spring:
   datasource:
+    driverClassName: org.postgresql.Driver
     url: ${JDBC_DATABASE_URL:}
     hikari:
       connection-timeout: 30000

@@ -1,11 +1,12 @@
 package com.akim.security.jwt
 
-import com.akim.security.repositories.UserRepository
 import io.jsonwebtoken.*
-import org.springframework.beans.factory.annotation.Autowired
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
 import java.util.Date
 
@@ -13,24 +14,38 @@ import java.util.Date
 @Component
 class JwtProvider {
 
-    private val logger: Logger = LoggerFactory.getLogger(JwtProvider::class.java)
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-
     @Value("\${assm.app.jwtSecret}")
     lateinit var jwtSecret: String
 
     @Value("\${assm.app.jwtExpiration}")
-    var jwtExpiration:Int?=0
+    var jwtExpiration: Long? = 0
 
-    fun generateJwtToken(username: String): String {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(Date())
-                .setExpiration(Date((Date()).time + jwtExpiration!! * 1000))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact()
+    fun createToken(authentication: Authentication): String {
+        val authorities = authentication.authorities
+            .joinToString { grantedAuthority -> grantedAuthority.authority }
+        val now = (Date()).time
+        val validity = Date(now + jwtExpiration!! * 1000)
+        return Jwts
+            .builder()
+            .setSubject(authentication.name)
+            .claim(AUTHORITIES_KEY, authorities)
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .setExpiration(validity)
+            .compact()
+    }
+
+    fun getAuthentication(token: String): Authentication {
+        val claims = Jwts.parser().parseClaimsJwt(token).body
+
+        val authorities = claims[AUTHORITIES_KEY]
+            .toString()
+            .split(",")
+            .map { role -> SimpleGrantedAuthority(role) }
+            .toCollection(ArrayList())
+
+        val principal = User(claims.subject, "", authorities)
+
+        return UsernamePasswordAuthenticationToken(principal, token, authorities)
     }
 
     fun validateJwtToken(authToken: String): Boolean {
@@ -48,14 +63,11 @@ class JwtProvider {
         } catch (e: IllegalArgumentException) {
             logger.error("JWT claims string is empty -> Message: {}", e)
         }
-
         return false
     }
 
-    fun getUserNameFromJwtToken(token: String): String {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .body.subject
+    companion object {
+        private val logger = LoggerFactory.getLogger(JwtAuthTokenFilter::class.java)
+        private const val AUTHORITIES_KEY = "auth"
     }
 }

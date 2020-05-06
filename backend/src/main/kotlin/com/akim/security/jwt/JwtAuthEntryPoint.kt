@@ -18,11 +18,11 @@ class JwtAuthEntryPoint : AuthenticationEntryPoint {
                           response: HttpServletResponse,
                           e: AuthenticationException) {
 
-        logger.error("Unauthorized error. Message - {}", e!!.message)
+        LOG.error("Unauthorized error. Message - {}", e.message)
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials")
     }
 
     companion object {
-        private val logger = LoggerFactory.getLogger(JwtAuthEntryPoint::class.java)
+        private val LOG = LoggerFactory.getLogger(JwtAuthEntryPoint::class.java)
     }
 }
