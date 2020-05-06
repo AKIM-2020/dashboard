@@ -20,6 +20,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getAdminRows } from "../helpers";
 
+
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -50,6 +51,7 @@ const useStyles = makeStyles({
 export function EditableTable({ tableData }) {
     const classes = useStyles();
     const [state, setState] = useState(tableData);
+
     useEffect(() => {
         getAdminRows(state)
             .then(response => {
@@ -60,7 +62,7 @@ export function EditableTable({ tableData }) {
             });
     }, []);
 
-    const addNewRow = newData => new Promise((resolve) => {
+    const addNewRow = (newData) => new Promise((resolve) => {
         console.log("onrowadd", newData);
         setState((prevState) => {
             const data = [...prevState.data];
@@ -79,7 +81,35 @@ export function EditableTable({ tableData }) {
                 title={ state.title }
                 editable={{
                     onRowAdd: addNewRow,
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    const data = [...state.data];
+                                    const index = data.indexOf(oldData);
+                                    data[index] = newData;
+                                    this.setState({ data }, () => resolve());
+                                }
+                                resolve();
+                            }, 1000);
+                        }),
+                    onRowDelete: oldData =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    let data = [...state.data];
+                                    const index = data.indexOf(oldData);
+                                    data.splice(index, 1);
+                                    this.setState({ data }, () => resolve());
+                                }
+                                resolve();
+                            }, 1000);})
                 }}
+                options={
+                    {
+                        filtering: true
+                    }
+                }
             />
         </div>
     );
