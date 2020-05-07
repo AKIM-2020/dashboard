@@ -17,14 +17,6 @@
             <column name="user_id" type="bigint"/>
             <column name="currency" type="varchar(100)"/>
         </createTable>
-
-        <addForeignKeyConstraint baseColumnNames="role_id"
-                                 baseTableName="users_roles"
-                                 constraintName="FK_role_id"
-                                 referencedColumnNames="id"
-                                 onDelete="CASCADE"
-                                 onUpdate="CASCADE"
-                                 referencedTableName="roles"/>
     </changeSet>
 
 </databaseChangeLog>
