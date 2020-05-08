@@ -54,8 +54,7 @@ class SuperAdminControllerTest {
             "Testov",
             "Taraz",
             "test@email",
-            Currency.USD,
-            BigDecimal(12345)
+            Currency.USD
         )
         this.mockMvc.perform(post(URL)
             .content(mapper.writeValueAsString(saveRequest))
@@ -72,8 +71,7 @@ class SuperAdminControllerTest {
             "Testov",
             "UpdateCity",
             null,
-            null,
-            BigDecimal(12345)
+            null
         )
 
         this.mockMvc.perform(put(URL_WITH_ID, persisted.id)
@@ -85,7 +83,6 @@ class SuperAdminControllerTest {
         val updated = repository.findAll()[0]
         assertEquals(updateRequest.login, updated.user.login)
         assertEquals(updateRequest.city, updated.city)
-        assertEquals(updateRequest.balance, updated.balance)
 
         this.mockMvc.perform(get(URL)
             .contentType(MediaType.APPLICATION_JSON)

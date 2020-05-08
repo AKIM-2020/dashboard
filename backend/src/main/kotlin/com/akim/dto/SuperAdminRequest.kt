@@ -1,6 +1,5 @@
 package com.akim.dto
 
-import java.math.BigDecimal
 
 data class SuperAdminRequest(
     var login: String?,
@@ -9,6 +8,5 @@ data class SuperAdminRequest(
     var lastName: String?,
     var city: String?,
     var email: String?,
-    var currency: Currency?,
-    var balance: BigDecimal?
+    var currency: Currency?
 )
