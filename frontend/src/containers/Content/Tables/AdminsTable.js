@@ -1,3 +1,4 @@
+import { makeStyles } from "@material-ui/core/styles";
 import React, {useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
@@ -18,35 +19,22 @@ import {
     TableEditRow,
     TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui';
-import withStyles from "@material-ui/core/styles/withStyles";
 
-const styles = () => ({
-    header: {
-        fontWeight: 'bold',
-        fontSize: 12,
-
+const TableHeaderContent = ({ column, ...restProps }) => {
+    const classes = makeStyles({
+        header: {
+            fontWeight: 'bold',
+            fontSize: 12,
         },
-
-});
-
-const TableHeaderContentBase = ({
-                                    column, classes, ...restProps
-                                }) => (
-    <TableHeaderRow.Content
-        column={column}
-        {...restProps}
-        className={classes.header}
-    />
-);
-
-export const TableHeaderContent = withStyles(styles, { name: 'TableHeaderContent' })(TableHeaderContentBase);
+    })();
+    return <TableHeaderRow.Content
+        column={ column }
+        { ...restProps }
+        className={ classes.header }
+    />;
+};
 
 const AdminsTable = ({columns, data}) => {
-    // const [filteringStateColumnExtensions] = useState([
-    //     { columnName: 'sa_to_admin', filteringEnabled: false },
-    //     { columnName: 'admin_to_sa', filteringEnabled: false },
-    //     { columnName: 'total', filteringEnabled: false },
-    // ]);
     const [rows, setRows] = useState(data);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
@@ -54,6 +42,10 @@ const AdminsTable = ({columns, data}) => {
     const [pageSize, setPageSize] = useState(30);
     const [pageSizes] = useState([30, 50, 100]);
     const getRowId = row => row.id;
+
+    const [colExt] = useState(columns.map(it => (
+        { columnName: it.name, width: 'auto' }
+    )))
 
     const commitChanges = ({ added, changed, deleted }) => {
         let changedRows;
@@ -96,7 +88,6 @@ const AdminsTable = ({columns, data}) => {
                     />
                     <FilteringState
                         defaultFilters={[]}
-                        // columnExtensions={filteringStateColumnExtensions}
                     />
                     <EditingState
                         editingRowIds={editingRowIds}
@@ -108,7 +99,7 @@ const AdminsTable = ({columns, data}) => {
                     <IntegratedFiltering />
                     <IntegratedSorting/>
                     <IntegratedPaging />
-                    <Table/>
+                    <Table columnExtensions={ colExt }/>
                     <TableHeaderRow showSortingControls contentComponent={TableHeaderContent}/>
                     <TableFilterRow />
                     <TableEditRow />

@@ -1,6 +1,6 @@
 import React from "react";
 import { adminData } from "../../mocks/adminTableData.js";
-import AdminsTable from "../../components/Tables/AdminsTable";
+import AdminsTable from "./Tables/AdminsTable";
 
 const Administrators = () => {
     return <div>

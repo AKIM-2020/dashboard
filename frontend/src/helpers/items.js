@@ -18,7 +18,6 @@ import { treeData } from "../mocks";
 import { cashiersData } from "../mocks/cashiersData.js";
 import { statisticsData } from "../mocks/statisticsData.js";
 import { usersTableData } from "../mocks/usersTableData.js";
-import { authenticationService } from "../service";
 import { Role } from "./roles.js";
 
 const items = [

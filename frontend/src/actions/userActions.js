@@ -4,7 +4,7 @@ import { api, history } from '../helpers'
 const login = (username, password) => {
     return dispatch => {
         dispatch(request({ username }));
-        api.post(`/api/auth/signin`, { username: username, password: password })
+        api.post(`/api/auth/signin`, { login: username, password: password })
             .then(
                 response => {
                     localStorage.setItem('user', JSON.stringify(response.data))
