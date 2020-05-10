@@ -17,14 +17,14 @@
     </changeSet>
 
     <changeSet id="add test super_admins" author="k.a.lebedev">
-        <insert tableName="users">
-            <column name="id" valueSequenceNext="users_seq"/>
+        <insert tableName="auth_users_seq">
+            <column name="id" valueSequenceNext="auth_users_seq"/>
             <column name="login" value="super_admin"/>
             <column name="email" value="supadmin@gmail.com"/>
             <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
         </insert>
-        <insert tableName="users_roles">
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+        <insert tableName="auth_users_seq">
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="role_id" value="2"/>
         </insert>
         <insert tableName="super_admins">
@@ -33,18 +33,18 @@
             <column name="last_name" value="Adminov"/>
             <column name="city" value="Tomsk"/>
             <column name="balance" value="0"/>
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="currency" value="USD"/>
         </insert>
 
-        <insert tableName="users">
-            <column name="id" valueSequenceNext="users_seq"/>
+        <insert tableName="auth_users_seq">
+            <column name="id" valueSequenceNext="auth_users_seq"/>
             <column name="login" value="super_admin_1"/>
             <column name="email" value="supadmin@gmail_1.com"/>
             <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
         </insert>
         <insert tableName="users_roles">
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="role_id" value="2"/>
         </insert>
         <insert tableName="super_admins">
@@ -53,18 +53,18 @@
             <column name="last_name" value="Adminov_1"/>
             <column name="city" value="Moscow"/>
             <column name="balance" value="0"/>
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="currency" value="USD"/>
         </insert>
 
-        <insert tableName="users">
-            <column name="id" valueSequenceNext="users_seq"/>
+        <insert tableName="auth_users_seq">
+            <column name="id" valueSequenceNext="auth_users_seq"/>
             <column name="login" value="super_admin_2"/>
             <column name="email" value="supadmin@gmail_2.com"/>
             <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
         </insert>
         <insert tableName="users_roles">
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="role_id" value="2"/>
         </insert>
         <insert tableName="super_admins">
@@ -73,7 +73,7 @@
             <column name="last_name" value="Adminov_2"/>
             <column name="city" value="London"/>
             <column name="balance" value="0"/>
-            <column name="user_id" valueSequenceCurrent="users_seq"/>
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="currency" value="USD"/>
         </insert>
     </changeSet>

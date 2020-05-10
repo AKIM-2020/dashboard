@@ -2,7 +2,7 @@ package com.akim.dto
 
 import java.math.BigDecimal
 
-data class AdminDto(
+data class UserInfo(
     var id: Long,
     var login: String,
     var name: String,

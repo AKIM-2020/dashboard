@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="k.a.lebedev" id="add user and role tables">
+
+        <createSequence sequenceName="users_seq"/>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(100)"/>
+            <column name="last_name" type="varchar(100)"/>
+            <column name="city" type="varchar(100)"/>
+            <column name="role" type="varchar(30)"/>
+            <column name="balance" type="currency"/>
+            <column name="auth_user_id" type="bigint"/>
+            <column name="parent_id" type="bigint"/>
+            <column name="version" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="add owner" author="k.a.lebedev">
+        <insert tableName="auth_users">
+            <column name="id" valueSequenceNext="auth_users_seq"/>
+            <column name="login" value="test"/>
+            <column name="email" value="test@email.com"/>
+            <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
+        </insert>
+        <insert tableName="users_roles">
+            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name = "id" valueSequenceNext="users_seq"/>
+            <column name = "auth_user_id" valueSequenceCurrent="auth_users_seq"/>
+            <column name = "balance" value="1000000000"/>
+            <column name = "first_name" value="test"/>
+            <column name = "last_name" value="test"/>
+            <column name = "city" value="test"/>
+            <column name = "version" value="1"/>
+            <column name = "role" value="OWNER"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

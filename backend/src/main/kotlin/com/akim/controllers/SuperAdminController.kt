@@ -1,8 +1,10 @@
 package com.akim.controllers
 
-import com.akim.dto.AdminDto
-import com.akim.services.SuperAdminService
-import com.akim.dto.SuperAdminRequest
+import com.akim.dto.Roles
+import com.akim.dto.UserInfo
+import com.akim.services.UserService
+import com.akim.dto.UserCreateRequest
+import com.akim.dto.UserUpdateRequest
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.ResponseEntity
@@ -12,12 +14,12 @@ import org.springframework.web.bind.annotation.*
 @Api("superAdmin-resource")
 @Controller
 @RequestMapping("/api/v1/owner")
-class SuperAdminController(private val superAdminService: SuperAdminService) {
+class SuperAdminController(private val userService: UserService) {
 
     @PostMapping("/super-admin")
     @ApiOperation("creating super admin")
-    fun createSuperAdmin(@RequestBody request: SuperAdminRequest): ResponseEntity<Any> {
-        superAdminService.createSuperAdmin(request)
+    fun createSuperAdmin(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
+        userService.createUser(createRequest, Roles.SUPER_ADMIN)
         return ResponseEntity.accepted().build()
     }
 
@@ -25,8 +27,8 @@ class SuperAdminController(private val superAdminService: SuperAdminService) {
     @ApiOperation("updating")
     fun updateSuperAdmin(
         @PathVariable("id") id: Long,
-        @RequestBody request: SuperAdminRequest): ResponseEntity<Any> {
-        superAdminService.updateSuperAdmin(id, request)
+        @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
+        userService.updateSuperAdmin(id, request, Roles.SUPER_ADMIN)
             ?: return ResponseEntity.notFound().build()
         return ResponseEntity.accepted().build()
     }
@@ -34,19 +36,21 @@ class SuperAdminController(private val superAdminService: SuperAdminService) {
     @DeleteMapping("/super-admin/{id}")
     @ApiOperation("deleting")
     fun deleteSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
-        superAdminService.deleteSuperAdmin(id)
+        userService.deleteUser(id, Roles.SUPER_ADMIN)
         return ResponseEntity.accepted().build()
     }
 
     @GetMapping("/super-admin")
     @ApiOperation("getting list of superAdmins")
-    fun getSuperAdmins(): ResponseEntity<List<AdminDto>> = ResponseEntity.ok(superAdminService.getSuperAdmins())
+    fun getSuperAdmins(): ResponseEntity<List<UserInfo>> =
+        ResponseEntity.ok(userService.getUsers(Roles.SUPER_ADMIN))
 
-
-
-
-
-
-
-
+    @GetMapping("/super-admin/{id}")
+    @ApiOperation("getting by id")
+    fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+        val response = userService.getUserById(id)
+            ?: return ResponseEntity.notFound().build()
+        return ResponseEntity.ok(response)
+    }
 }
+
