@@ -10,14 +10,15 @@ import javax.persistence.Table
 @Table(name = "operations")
 class Operations(
     val oldBalance: BigDecimal,
-    val operationType: OperationType
+    val operationType: OperationType,
+    @ManyToOne
+    var user: User
 
 ) {
     @Id
     val id: Long = 0
 
-    @ManyToOne
-    var user:
+
 
     @ManyToOne
     val transaction: Transaction? = null

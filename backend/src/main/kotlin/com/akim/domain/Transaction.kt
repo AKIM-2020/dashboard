@@ -9,9 +9,9 @@ import javax.persistence.*
 class Transaction(
 
     @ManyToOne
-    val source: RoleEntity,
+    val source: User,
     @ManyToOne
-    val destination: RoleEntity,
+    val destination: User,
 
     val note: String,
 

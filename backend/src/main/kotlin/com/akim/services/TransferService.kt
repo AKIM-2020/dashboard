@@ -1,9 +1,6 @@
 package com.akim.services
 
-import com.akim.domain.OperationType
-import com.akim.domain.Operations
-import com.akim.domain.RoleEntity
-import com.akim.domain.Transaction
+import com.akim.domain.*
 import com.akim.exceptions.LowBalanceException
 import com.akim.repositories.TransactionRepository
 import org.springframework.stereotype.Service
@@ -12,46 +9,41 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Service
-class TransferService<T : RoleEntity> (private val transactionRepository: TransactionRepository){
-
-    //transaction manger
+class TransferService(private val transactionRepository: TransactionRepository) {
 
     @Transactional
-    fun transferMoney(source: T, destination: T, amount: BigDecimal, note: String) {
+    fun transferMoney(source: User, destination: User, amount: BigDecimal, note: String) {
 
-        // open
-        //1 timestamp
-        if(source.getBalance() < amount) {
-            throw LowBalanceException(source.getId())
+        if (source.balance < amount) {
+            throw LowBalanceException(source.id)
         }
 
-        val sourceOperation = Operations(
-            source.getBalance(),
-            OperationType.DEBITING,
-            source
-        ).also {
-            source.setBalance(source.getBalance().minus(amount))
-        }
+        val sourceOperation =
+            Operations(
+                source.balance,
+                OperationType.DEBITING,
+                source
+            ).also {
+                source.balance = source.balance.minus(amount)
+            }
 
         val destinationOperation = Operations(
-            destination.getBalance(),
+            destination.balance,
             OperationType.ACCRUAL,
             destination
         ).also {
-            destination.setBalance(destination.getBalance().plus(amount))
+            destination.balance = destination.balance.plus(amount)
         }
 
-        transactionRepository.save(Transaction(
-            source,
-            destination,
-            note,
-            amount,
-            LocalDateTime.now(),
-            listOf(sourceOperation, destinationOperation))
+        transactionRepository.save(
+            Transaction(
+                source,
+                destination,
+                note,
+                amount,
+                LocalDateTime.now(),
+                listOf(sourceOperation, destinationOperation)
+            )
+        )
     }
-
-
-    // bd - timestamp
-    //
-    // close
 }
