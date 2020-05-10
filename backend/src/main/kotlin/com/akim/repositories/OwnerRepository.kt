@@ -1,4 +1,4 @@
-package com.akim.security.repositories
+package com.akim.repositories
 
 import com.akim.domain.OwnerEntity
 import org.springframework.data.jpa.repository.JpaRepository

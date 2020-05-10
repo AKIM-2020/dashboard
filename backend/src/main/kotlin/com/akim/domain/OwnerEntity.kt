@@ -1,21 +1,10 @@
 package com.akim.domain
 
-import com.akim.dto.Roles
-import com.akim.security.domain.User
-import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
 @Table(name = "owners")
-class OwnerEntity(
-
-    val balance: BigDecimal,
-
-    @OneToOne(cascade = [CascadeType.ALL], optional = false)
-    @JoinColumn(name = "user_id")
-    val user: User
-
-) {
+class OwnerEntity : RoleEntity() {
 
     @Id
     val id: Long = 0

@@ -19,5 +19,5 @@ data class User(
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
     )
-    var roles: Collection<Role>? = null
+    var roles: Collection<Role>
 )

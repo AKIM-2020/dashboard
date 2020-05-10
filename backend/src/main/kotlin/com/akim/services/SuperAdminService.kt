@@ -6,7 +6,7 @@ import com.akim.repositories.SuperAdminRepository
 import com.akim.dto.SuperAdminRequest
 import com.akim.dto.Roles
 import com.akim.security.dto.NewUser
-import com.akim.security.repositories.OwnerRepository
+import com.akim.repositories.OwnerRepository
 import com.akim.security.services.UserService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
