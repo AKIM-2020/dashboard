@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
     PagingState,
@@ -34,8 +34,8 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />;
 };
 
-const AdminsTable = ({columns, data}) => {
-    const [rows, setRows] = useState(data);
+const AdminsTable = ({columns, fetchFunc}) => {
+    const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
@@ -46,6 +46,8 @@ const AdminsTable = ({columns, data}) => {
     const [colExt] = useState(columns.map(it => (
         { columnName: it.name, width: 'auto' }
     )))
+
+    useEffect(() => fetchFunc(setRows), [])
 
     const commitChanges = ({ added, changed, deleted }) => {
         let changedRows;
