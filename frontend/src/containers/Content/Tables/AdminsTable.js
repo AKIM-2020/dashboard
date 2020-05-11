@@ -47,7 +47,7 @@ const AdminsTable = ({ columns, fetchFunc }) => {
         { columnName: it.name, width: 'auto' }
     )))
 
-    useEffect(() => fetchFunc(setRows), [])
+    useEffect(() => { fetchFunc(setRows) }, [])
 
     const commitChanges = ({ added, changed, deleted }) => {
         let changedRows;
