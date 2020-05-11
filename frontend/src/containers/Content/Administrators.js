@@ -1,12 +1,15 @@
 import React from "react";
+import { api } from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
-import axios from 'axios';
 
 const Administrators = () => {
-    const fetchData = async (setData) => await axios.get("/api/v1/owner/super-admin")
+    const fetchData = async (setData) => await api.get("/api/v1/owner/super-admin")
         .then(res => setData(res.data));
 
-    return <AdminsTable columns={ columns } fetchFunc={ fetchData }/>
+    const addRow = (row) => api.post("/api/v1/owner/super-admin", row)
+        .then(res => console.log(`added ${ res }`));
+
+    return <AdminsTable columns={ columns } fetchFunc={ fetchData } addFunc={ addRow }/>
 };
 
 const columns = [

@@ -34,7 +34,7 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />;
 };
 
-const AdminsTable = ({ columns, fetchFunc }) => {
+const AdminsTable = ({ columns, fetchFunc, addFunc }) => {
     const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
@@ -49,17 +49,22 @@ const AdminsTable = ({ columns, fetchFunc }) => {
 
     useEffect(() => { fetchFunc(setRows) }, [])
 
-    const commitChanges = ({ added, changed, deleted }) => {
+    const commitChanges = async ({ added, changed, deleted }) => {
         let changedRows;
         if (added) {
             const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-            changedRows = [
-                ...rows,
-                ...added.map((row, index) => ({
-                    id: startingAddedId + index,
-                    ...row,
-                })),
-            ];
+            await addFunc(added).then(response => {
+                changedRows = [
+                    ...rows,
+                    response.data.map((row, index) => ({
+                        id: startingAddedId + index,
+                        ...row,
+                    })),
+                ];
+            }, error => {
+                console.log(error)
+                changedRows = [...rows];
+            });
         }
         if (changed) {
             changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
