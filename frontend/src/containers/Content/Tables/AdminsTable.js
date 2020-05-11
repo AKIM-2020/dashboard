@@ -34,7 +34,7 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />;
 };
 
-const AdminsTable = ({columns, fetchFunc}) => {
+const AdminsTable = ({ columns, fetchFunc }) => {
     const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
