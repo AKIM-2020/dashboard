@@ -3,10 +3,12 @@ import { api } from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
 
 const Administrators = () => {
-    const fetchData = async (setData) => await api.get("/api/v1/owner/super-admin")
+    const url = "/api/v1/owner/super-admin";
+
+    const fetchData = async (setData) => await api.get(url)
         .then(res => setData(res.data));
 
-    const addRow = (row) => api.post("/api/v1/owner/super-admin", row)
+    const addRow = (row) => api.post(url, row)
         .then(res => console.log(`added ${ res }`));
 
     return <AdminsTable columns={ columns } fetchFunc={ fetchData } addFunc={ addRow }/>
