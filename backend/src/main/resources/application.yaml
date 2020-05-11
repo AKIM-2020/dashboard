@@ -12,7 +12,7 @@ spring:
     hibernate:
       ddl-auto: none
   liquibase:
-    changeLog: classpath:config/liquibase/master.xml
+    change-log: classpath:/liquibase/master.xml
     contexts: pg
 assm:
   app:

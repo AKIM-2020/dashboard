@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+  <include file="classpath:/liquibase/changelog/2020-04-05-add-user-and-role.xml"/>
+  <include file="classpath:/liquibase/changelog/2020-04-05-insert-test-user.xml"/>
+  <include file="classpath:/liquibase/changelog/2020-05-03-create-super_admin-table.xml"/>
+  <include file="classpath:/liquibase/changelog/2020-07-03-create-owner-table.xml"/>
+  <include file="classpath:/liquibase/changelog/2020-07-05-insert-test-data.xml"/>
+
+  <includeAll path="/liquibase/migrations"/>
+</databaseChangeLog>

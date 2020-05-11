@@ -34,7 +34,7 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />;
 };
 
-const AdminsTable = ({ columns, fetchFunc, addFunc }) => {
+const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
     const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
@@ -71,6 +71,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc }) => {
         }
         if (deleted) {
             const deletedSet = new Set(deleted);
+            await deleted.forEach(it => deleteFunc(it).catch(e => console.log(e)));
             changedRows = rows.filter(row => !deletedSet.has(row.id));
         }
         setRows(changedRows);
