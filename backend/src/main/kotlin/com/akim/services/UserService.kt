@@ -75,7 +75,7 @@ class UserService(
         .map { it.toUserInfo() }
         .toCollection(arrayListOf())
 
-    fun getUserById(id: Long, role: Roles): UserInfo = getUserByIdAndRole(id, role).toUserInfo()
+    fun getUserById(id: Long, role: Roles): UserInfo? = getUserByIdAndRole(id, role)?.toUserInfo()
 
     fun getCurrentUserInfo(): UserInfo = getCurrentUser().toUserInfo()
 

@@ -45,7 +45,7 @@
                                  referencedTableName="roles"/>
     </changeSet>
 
-    <changeSet id="add roles" author="k.a.lebedev">
+    <changeSet id="add roles value" author="k.a.lebedev">
         <insert tableName="roles">
             <column name="id" valueSequenceNext="roles_seq"/>
             <column name="name" value="OWNER"/>

@@ -45,6 +45,13 @@ class User(
     )
     private val children = mutableListOf<User>()
 
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
+        fetch = FetchType.LAZY
+    )
+    private val operations = mutableListOf<Operations>()
+
     @Version
     private val version: Long = 0
 
@@ -61,6 +68,10 @@ class User(
         child.parent = null
     }
 
+    fun addOperation(operation: Operations) {
+        operations.add(operation)
+        operation.user = this
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

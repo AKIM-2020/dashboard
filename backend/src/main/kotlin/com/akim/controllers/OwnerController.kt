@@ -24,8 +24,10 @@ class OwnerController(
 
 
     @PostMapping("/transfer")
-    fun transferToSuperAdmin(request: TransferDto) {
+    fun transferToSuperAdmin(@RequestBody request: TransferDto) {
+
         val currentOwner = userService.getCurrentUser()
+
         val superAdmin =
             userService.getUserByIdAndRole(request.id, Roles.SUPER_ADMIN)
 
@@ -38,7 +40,5 @@ class OwnerController(
                 superAdmin, currentOwner,
                 request.amount, request.note)
         }
-
-
     }
 }
