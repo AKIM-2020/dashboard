@@ -36,10 +36,8 @@ class WebSecurityConfig(
     override fun configure(http: HttpSecurity) {
         http
             .csrf().disable()
-
             .authorizeRequests()
-            .antMatchers("/**").permitAll()
-            .antMatchers("/api/v1/**").authenticated()
+            .antMatchers("/api/v1/owner/**").hasAuthority("OWNER")
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(unauthorizedHandler)

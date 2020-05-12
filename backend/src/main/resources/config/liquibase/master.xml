@@ -7,6 +7,7 @@
   <include file="classpath:config/liquibase/changelog/2020-04-05-add-auth_user-and-role-tables.xml"/>
   <include file="classpath:config/liquibase/changelog/2020-04-05-add-user-table.xml"/>
   <include file="classpath:config/liquibase/changelog/2020-05-10-add-transaction-and-operation.xml"/>
+  <include file="classpath:config/liquibase/changelog/2020-07-05-insert-test-data.xml"/>
 
 
 </databaseChangeLog>

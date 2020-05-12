@@ -4,77 +4,71 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <changeSet author="k.a.lebedev" id="add owner and delete SUPER_ADMIN role">
-        <insert tableName="owners">
-            <column name = "id" valueSequenceNext="owners_id_seq"/>
-            <column name = "user_id" value="1"/>
-            <column name = "balance" value="1000000000"/>
-        </insert>
-
-        <delete tableName="users_roles">
-            <where>user_id = 1 and role_id = 2</where>
-        </delete>
-    </changeSet>
-
-    <changeSet id="add test super_admins" author="k.a.lebedev">
-        <insert tableName="auth_users_seq">
+    <changeSet id="add super admin value" author="k.a.lebedev">
+        <insert tableName="auth_users">
             <column name="id" valueSequenceNext="auth_users_seq"/>
-            <column name="login" value="super_admin"/>
-            <column name="email" value="supadmin@gmail.com"/>
-            <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
-        </insert>
-        <insert tableName="auth_users_seq">
-            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
-            <column name="role_id" value="2"/>
-        </insert>
-        <insert tableName="super_admins">
-            <column name="id" valueSequenceNext="super_admins_seq"/>
-            <column name="first_name" value="Super-Admin"/>
-            <column name="last_name" value="Adminov"/>
-            <column name="city" value="Tomsk"/>
-            <column name="balance" value="0"/>
-            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
-            <column name="currency" value="USD"/>
-        </insert>
-
-        <insert tableName="auth_users_seq">
-            <column name="id" valueSequenceNext="auth_users_seq"/>
-            <column name="login" value="super_admin_1"/>
-            <column name="email" value="supadmin@gmail_1.com"/>
+            <column name="login" value="testSuperAdmin"/>
+            <column name="email" value="testSuperAdmin@email.com"/>
             <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
         </insert>
         <insert tableName="users_roles">
             <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="role_id" value="2"/>
         </insert>
-        <insert tableName="super_admins">
-            <column name="id" valueSequenceNext="super_admins_seq"/>
-            <column name="first_name" value="Super-Admin_1"/>
-            <column name="last_name" value="Adminov_1"/>
-            <column name="city" value="Moscow"/>
-            <column name="balance" value="0"/>
-            <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
-            <column name="currency" value="USD"/>
+        <insert tableName="users">
+            <column name = "id" valueSequenceNext="users_seq"/>
+            <column name = "auth_user_id" valueSequenceCurrent="auth_users_seq"/>
+            <column name = "balance" value="0"/>
+            <column name = "first_name" value="SuperAdmin"/>
+            <column name = "last_name" value="SuperAdminov"/>
+            <column name = "city" value="TOMSK"/>
+            <column name = "version" value="0"/>
+            <column name = "parent_id" value="1"/>
+            <column name = "role" value="SUPER_ADMIN"/>
         </insert>
 
-        <insert tableName="auth_users_seq">
+        <insert tableName="auth_users">
             <column name="id" valueSequenceNext="auth_users_seq"/>
-            <column name="login" value="super_admin_2"/>
-            <column name="email" value="supadmin@gmail_2.com"/>
+            <column name="login" value="testSuperAdmin_1"/>
+            <column name="email" value="testSuperAdmin_1@email.com"/>
             <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
         </insert>
         <insert tableName="users_roles">
             <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
             <column name="role_id" value="2"/>
         </insert>
-        <insert tableName="super_admins">
-            <column name="id" valueSequenceNext="super_admins_seq"/>
-            <column name="first_name" value="Super-Admin_2"/>
-            <column name="last_name" value="Adminov_2"/>
-            <column name="city" value="London"/>
-            <column name="balance" value="0"/>
+        <insert tableName="users">
+            <column name = "id" valueSequenceNext="users_seq"/>
+            <column name = "auth_user_id" valueSequenceCurrent="auth_users_seq"/>
+            <column name = "balance" value="0"/>
+            <column name = "first_name" value="SuperAdmin-1"/>
+            <column name = "last_name" value="SuperAdminov-1"/>
+            <column name = "city" value="TARAZ"/>
+            <column name = "version" value="0"/>
+            <column name = "parent_id" value="1"/>
+            <column name = "role" value="SUPER_ADMIN"/>
+        </insert>
+
+        <insert tableName="auth_users">
+            <column name="id" valueSequenceNext="auth_users_seq"/>
+            <column name="login" value="testSuperAdmin_2"/>
+            <column name="email" value="testSuperAdmin_2@email.com"/>
+            <column name="password" value="$2a$10$jBQeZgN8uEByZ4XHwnV82eRnTbnmm2VvzyXy7zoGgYQhyUmZhsAoe"/>
+        </insert>
+        <insert tableName="users_roles">
             <column name="user_id" valueSequenceCurrent="auth_users_seq"/>
-            <column name="currency" value="USD"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="users">
+            <column name = "id" valueSequenceNext="users_seq"/>
+            <column name = "auth_user_id" valueSequenceCurrent="auth_users_seq"/>
+            <column name = "balance" value="0"/>
+            <column name = "first_name" value="SuperAdmin-2"/>
+            <column name = "last_name" value="SuperAdminov-2"/>
+            <column name = "city" value="MOSCOW"/>
+            <column name = "version" value="0"/>
+            <column name = "parent_id" value="1"/>
+            <column name = "role" value="SUPER_ADMIN"/>
         </insert>
     </changeSet>
 

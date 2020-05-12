@@ -23,7 +23,7 @@ class UserDetailsServiceImpl(
             ?: throw UsernameNotFoundException("User '$userName' not found")
 
         val authorities: List<GrantedAuthority> =
-            user.roles!!
+            user.roles
                 .map { role -> SimpleGrantedAuthority(role.name.name) }
                 .toCollection(ArrayList<GrantedAuthority>())
         return User
