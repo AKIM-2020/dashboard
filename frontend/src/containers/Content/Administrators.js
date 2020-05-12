@@ -5,8 +5,7 @@ import AdminsTable from "./Tables/AdminsTable";
 const Administrators = () => {
     const url = "/api/v1/owner/super-admin";
 
-    const fetchData = async (setData) => await api.get(url)
-        .then(res => setData(res.data));
+    const fetchData = () => api.get(url)
 
     const addRow = (row) => api.post(url, row)
         .then(res => console.log(`added ${ res }`));

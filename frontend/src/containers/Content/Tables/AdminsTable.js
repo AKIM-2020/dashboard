@@ -49,7 +49,12 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
         { columnName: it.name, width: 'auto' }
     )))
 
-    useEffect(() => { fetchFunc(setRows) }, [])
+    useEffect( () => {
+         fetchFunc().then(
+            response => { setRows(response.data) },
+            error => { setError(error) }
+        )
+    }, [])
 
     const commitChanges = async ({ added, changed, deleted }) => {
         let changedRows;
@@ -73,8 +78,11 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
             changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
         }
         if (deleted) {
-            const deletedSet = new Set(deleted);
-            await deleted.forEach(it => deleteFunc(it).catch(e => console.log(e)));
+            const deletedSet = new Set();
+            await deleted.forEach(it => deleteFunc(it).then(
+                response => { deletedSet.add(response.data) },
+                error => { setError(error) }
+            ));
             changedRows = rows.filter(row => !deletedSet.has(row.id));
         }
         setRows(changedRows);
