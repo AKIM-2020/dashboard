@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
     PagingState,
@@ -18,60 +19,70 @@ import {
     TableEditRow,
     TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui';
-import withStyles from "@material-ui/core/styles/withStyles";
+import ErrorAlert from "../../Alert/Error.js";
 
-const styles = () => ({
-    header: {
-        fontWeight: 'bold',
-        fontSize: 12,
-
+const TableHeaderContent = ({ column, ...restProps }) => {
+    const classes = makeStyles({
+        header: {
+            fontWeight: 'bold',
+            fontSize: 12,
         },
+    })();
+    return <TableHeaderRow.Content
+        column={ column }
+        { ...restProps }
+        className={ classes.header }
+    />;
+};
 
-});
-
-const TableHeaderContentBase = ({
-                                    column, classes, ...restProps
-                                }) => (
-    <TableHeaderRow.Content
-        column={column}
-        {...restProps}
-        className={classes.header}
-    />
-);
-
-export const TableHeaderContent = withStyles(styles, { name: 'TableHeaderContent' })(TableHeaderContentBase);
-
-const AdminsTable = ({columns, data}) => {
-    // const [filteringStateColumnExtensions] = useState([
-    //     { columnName: 'sa_to_admin', filteringEnabled: false },
-    //     { columnName: 'admin_to_sa', filteringEnabled: false },
-    //     { columnName: 'total', filteringEnabled: false },
-    // ]);
-    const [rows, setRows] = useState(data);
+const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
+    const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(30);
     const [pageSizes] = useState([30, 50, 100]);
+    const [error, setError] = useState(null);
     const getRowId = row => row.id;
 
-    const commitChanges = ({ added, changed, deleted }) => {
+    const [colExt] = useState(columns.map(it => (
+        { columnName: it.name, width: 'auto' }
+    )))
+
+    useEffect( () => {
+         fetchFunc().then(
+            response => { setRows(response.data) },
+            error => { setError(error) }
+        )
+    }, [])
+
+    const commitChanges = async ({ added, changed, deleted }) => {
         let changedRows;
         if (added) {
             const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-            changedRows = [
-                ...rows,
-                ...added.map((row, index) => ({
-                    id: startingAddedId + index,
-                    ...row,
-                })),
-            ];
+            await addFunc(added).then(response => {
+                changedRows = [
+                    ...rows,
+                    response.data.map((row, index) => ({
+                        id: startingAddedId + index,
+                        ...row,
+                    })),
+                ];
+            }, error => {
+                console.log(error);
+                setError(error);
+                changedRows = [...rows];
+            });
         }
         if (changed) {
             changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
         }
         if (deleted) {
-            const deletedSet = new Set(deleted);
+            const deletedSet = new Set();
+            await deleted.forEach(it => deleteFunc(it).then(
+                response => { deletedSet.add(response.data) },
+                error => { setError(error) }
+            ));
             changedRows = rows.filter(row => !deletedSet.has(row.id));
         }
         setRows(changedRows);
@@ -80,6 +91,7 @@ const AdminsTable = ({columns, data}) => {
      return (
         <div>
             <Paper>
+                {error && <ErrorAlert open={!!error} setOpen={ setError } message={ error.message }/>}
                 <Grid
                     rows={rows}
                     columns={columns}
@@ -96,7 +108,6 @@ const AdminsTable = ({columns, data}) => {
                     />
                     <FilteringState
                         defaultFilters={[]}
-                        // columnExtensions={filteringStateColumnExtensions}
                     />
                     <EditingState
                         editingRowIds={editingRowIds}
@@ -108,7 +119,7 @@ const AdminsTable = ({columns, data}) => {
                     <IntegratedFiltering />
                     <IntegratedSorting/>
                     <IntegratedPaging />
-                    <Table/>
+                    <Table columnExtensions={ colExt }/>
                     <TableHeaderRow showSortingControls contentComponent={TableHeaderContent}/>
                     <TableFilterRow />
                     <TableEditRow />

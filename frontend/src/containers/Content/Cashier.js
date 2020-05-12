@@ -1,6 +1,6 @@
 import React from "react";
-import AdminsTable from "../../components/Tables/AdminsTable";
 import {cashiersData} from "../../mocks/cashiersData";
+import AdminsTable from "./Tables/AdminsTable.js";
 
 const Cashier = ({ data }) => {
     return <div>

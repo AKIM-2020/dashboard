@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
-import StatisticsTable from "../../components/Tables/StatisticsTable";
 import {statisticsData} from '../../mocks/statisticsData'
+import StatisticsTable from "./Tables/StatisticsTable.js";
 
 const Statistics = () => {
 
