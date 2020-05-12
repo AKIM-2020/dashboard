@@ -35,7 +35,8 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />;
 };
 
-const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
+const AdminsTable = ({ columns, editingFunc }) => {
+    const {getData, addRow, deleteRow} = editingFunc;
     const [rows, setRows] = useState([]);
     const [editingRowIds, setEditingRowIds] = useState([]);
     const [rowChanges, setRowChanges] = useState({});
@@ -50,7 +51,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
     )))
 
     useEffect( () => {
-         fetchFunc().then(
+         getData().then(
             response => { setRows(response.data) },
             error => { setError(error) }
         )
@@ -60,7 +61,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
         let changedRows;
         if (added) {
             const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-            await addFunc(added).then(response => {
+            await addRow(added).then(response => {
                 changedRows = [
                     ...rows,
                     response.data.map((row, index) => ({
@@ -79,7 +80,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
         }
         if (deleted) {
             const deletedSet = new Set();
-            await deleted.forEach(it => deleteFunc(it).then(
+            await deleted.forEach(it => deleteRow(it).then(
                 response => { deletedSet.add(response.data) },
                 error => { setError(error) }
             ));
