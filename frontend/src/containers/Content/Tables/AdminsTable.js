@@ -19,6 +19,7 @@ import {
     TableEditRow,
     TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui';
+import ErrorAlert from "../../Alert/Error.js";
 
 const TableHeaderContent = ({ column, ...restProps }) => {
     const classes = makeStyles({
@@ -41,6 +42,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageSize, setPageSize] = useState(30);
     const [pageSizes] = useState([30, 50, 100]);
+    const [error, setError] = useState(null);
     const getRowId = row => row.id;
 
     const [colExt] = useState(columns.map(it => (
@@ -62,7 +64,8 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
                     })),
                 ];
             }, error => {
-                console.log(error)
+                console.log(error);
+                setError(error);
                 changedRows = [...rows];
             });
         }
@@ -80,6 +83,7 @@ const AdminsTable = ({ columns, fetchFunc, addFunc, deleteFunc }) => {
      return (
         <div>
             <Paper>
+                {error && <ErrorAlert open={!!error} setOpen={ setError } message={ error.message }/>}
                 <Grid
                     rows={rows}
                     columns={columns}

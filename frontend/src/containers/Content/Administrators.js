@@ -11,7 +11,7 @@ const Administrators = () => {
     const addRow = (row) => api.post(url, row)
         .then(res => console.log(`added ${ res }`));
 
-    const deleteRow = (rowId) => api.delete(`${url}\/${rowId}`)
+    const deleteRow = (rowId) => api.delete(`${url}/${rowId}`)
         .then((res => console.log(res)));
 
     return <AdminsTable columns={ columns } fetchFunc={ fetchData } addFunc={ addRow } deleteFunc={ deleteRow }/>
