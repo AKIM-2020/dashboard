@@ -1,12 +1,10 @@
 package com.akim.dto
 
 
-data class SuperAdminRequest(
-    var login: String?,
+data class UserUpdateRequest(
     var password: String?,
     var firstName: String?,
     var lastName: String?,
     var city: String?,
-    var email: String?,
-    var currency: Currency?
+    var email: String?
 )

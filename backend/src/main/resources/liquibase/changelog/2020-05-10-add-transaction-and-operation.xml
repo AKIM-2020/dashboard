@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="k.a.lebedev" id="add transactions and operations tables">
+
+        <createSequence sequenceName="transaction_seq"/>
+        <createSequence sequenceName="operation_seq"/>
+
+        <createTable tableName="transactions">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="source_user_id" type="bigint"/>
+            <column name="destination_user_id" type="bigint"/>
+            <column name="note" type="text"/>
+            <column name="amount" type="currency"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+
+        <createTable tableName="operations">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="operation_type" type="varchar(100)"/>
+            <column name = "old_balance" type = "currency"/>
+            <column name = "user_id" type = "bigint"/>
+            <column name = "transaction_id" type = "bigint"/>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>

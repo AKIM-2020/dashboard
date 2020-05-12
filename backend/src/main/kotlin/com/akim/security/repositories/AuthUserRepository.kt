@@ -1,11 +1,11 @@
 package com.akim.security.repositories
 
-import com.akim.security.domain.User
+import com.akim.security.domain.AuthUser
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface UserRepository: JpaRepository<User, Long> {
+interface AuthUserRepository: JpaRepository<AuthUser, Long> {
 
-    fun findByLogin(login: String): User?
+    fun findByLogin(login: String): AuthUser?
 
     fun existsByLogin(userName: String): Boolean
 

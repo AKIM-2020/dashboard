@@ -4,7 +4,7 @@ import com.akim.security.dto.JwtResponse
 import com.akim.security.dto.LoginUser
 import com.akim.security.dto.ResponseMessage
 import com.akim.security.jwt.JwtProvider
-import com.akim.security.repositories.UserRepository
+import com.akim.security.repositories.AuthUserRepository
 import javax.validation.Valid
 import java.util.stream.Collectors
 
@@ -25,13 +25,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/auth")
 class AuthController(
     var authenticationManagerBuilder: AuthenticationManagerBuilder,
-    var userRepository: UserRepository,
+    var authUserRepository: AuthUserRepository,
     var jwtProvider: JwtProvider
 ) {
 
     @PostMapping("/signin")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginUser): ResponseEntity<*> {
-        val user = userRepository.findByLogin(loginRequest.login)
+        val user = authUserRepository.findByLogin(loginRequest.login)
         return if (user != null) {
             val authenticationToken = UsernamePasswordAuthenticationToken(loginRequest.login, loginRequest.password)
             val authentication = authenticationManagerBuilder.`object`.authenticate(authenticationToken)
