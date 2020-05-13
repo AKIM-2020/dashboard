@@ -17,7 +17,7 @@ const HomePage = ({ user }) => {
     return <div className={classes.root}>
         <Header  classes={ classes } open={ open } handleDrawerOpen={ () => setOpen(true) }/>
         <Sidebar classes={ classes } open={ open } handleDrawerClose={ () => setOpen(false) } items={ items }/>
-        <Content classes={ classes } open={ open } items={ items } />
+        <Content classes={ classes } open={ open } items={ items } user={ user } />
     </div>
 };
 
