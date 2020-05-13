@@ -37,7 +37,7 @@ const items = [
         link: '/administrators',
         roles: [Role.Owner],
         component: () => <Administrators/>
-    }, {
+    /*}, {
         name: 'Cashier',
         link: '/cashier',
         roles: [Role.Owner],
@@ -124,7 +124,7 @@ const items = [
         name: 'admin_transactions',
         link: '/admin_trx',
         roles: [Role.Admin],
-        component: () => <AdminTransactions/>
+        component: () => <AdminTransactions/>*/
     },
 ];
 

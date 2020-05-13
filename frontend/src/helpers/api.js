@@ -3,7 +3,7 @@ import { authenticationService } from "../service";
 
 export const api = axios.create({
     headers: {
-        'Authorization': `${authenticationService.currentUserValue.accessToken}`
+        'Authorization': `${authenticationService.currentToken}`
     },
     responseType: "json"
 });
