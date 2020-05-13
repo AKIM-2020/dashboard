@@ -1,6 +1,7 @@
 package com.akim.controllers
 
 import com.akim.dto.Roles
+import com.akim.dto.TransactionInfo
 import com.akim.dto.TransferDto
 import com.akim.dto.UserInfo
 import com.akim.security.services.UaaService
@@ -22,7 +23,6 @@ class OwnerController(
         return userService.getCurrentUserInfo()
     }
 
-
     @PostMapping("/transfer")
     fun transferToSuperAdmin(@RequestBody request: TransferDto) {
 
@@ -31,7 +31,7 @@ class OwnerController(
         val superAdmin =
             userService.getUserByIdAndRole(request.id, Roles.SUPER_ADMIN)
 
-        if(request.isTransfer) {
+        if (request.isTransfer) {
             transferService.transferMoney(
                 currentOwner, superAdmin,
                 request.amount, request.note)
@@ -40,5 +40,10 @@ class OwnerController(
                 superAdmin, currentOwner,
                 request.amount, request.note)
         }
+    }
+
+    @GetMapping("/transactions")
+    fun getTransactionList(): List<TransactionInfo> {
+        return transferService.getTransactionListByUserId(userService.getCurrentUser())
     }
 }

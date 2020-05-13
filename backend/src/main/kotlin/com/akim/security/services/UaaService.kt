@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import javax.persistence.EntityNotFoundException
 
 @Service
 class UaaService(
@@ -40,7 +41,8 @@ class UaaService(
             } else {
                 authentication.principal as String
             }
-        return authUserRepository.findByLogin(userLogin!!)!!
+        return authUserRepository.findByLogin(userLogin)
+            ?: throw EntityNotFoundException("User with login=$userLogin not found")
 
     }
 
