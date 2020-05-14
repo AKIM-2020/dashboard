@@ -21,22 +21,8 @@ class TransferService(
             throw LowBalanceException(source.id)
         }
 
-        val sourceOperation =
-            Operation(
-                source.balance,
-                OperationType.DEBITING,
-                source
-            ).also {
-                source.balance = source.balance.minus(amount)
-            }
-
-        val destinationOperation = Operation(
-            destination.balance,
-            OperationType.ACCRUAL,
-            destination
-        ).also {
-            destination.balance = destination.balance.plus(amount)
-        }
+        source.balance = source.balance.minus(amount)
+        destination.balance = destination.balance.plus(amount)
 
         transactionRepository.save(
             Transaction(
@@ -45,17 +31,20 @@ class TransferService(
                 note,
                 amount,
                 LocalDateTime.now(),
-                listOf(sourceOperation, destinationOperation)
+                listOf(
+                    source.toOperation(OperationType.DEBITING),
+                    destination.toOperation(OperationType.ACCRUAL)
+                )
             )
         )
     }
 
-    fun getTransactionListByUserId(user: User) : List<TransactionInfo> =
+    fun getTransactionListByUserId(user: User): List<TransactionInfo> =
         transactionRepository.getAllBySourceOrDestination(user, user)
             .map { it ->
                 var type = OperationType.ACCRUAL
                 var destinationId = it.destination.id
-                if(it.source.id == user.id) {
+                if (it.source.id == user.id) {
                     type = OperationType.DEBITING
                     destinationId = it.source.id
                 }
@@ -65,5 +54,13 @@ class TransferService(
                 )
             }
             .toCollection(arrayListOf())
+
+    private fun User.toOperation(operationType: OperationType) =
+        Operation(
+            oldBalance = this.balance,
+            operationType = operationType,
+            user = this
+        )
+
 
 }

@@ -8,6 +8,8 @@ import com.akim.security.services.UaaService
 import com.akim.services.TransferService
 import com.akim.services.UserService
 import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @Api("owner-resource")
@@ -23,7 +25,22 @@ class OwnerController(
         return userService.getCurrentUserInfo()
     }
 
-    @PostMapping("/transfer")
+    @GetMapping("/admins")
+    @ApiOperation("getting list of Admins")
+    fun getAdmins(): ResponseEntity<List<UserInfo>> =
+        ResponseEntity.ok(userService.getUsers(Roles.ADMIN))
+
+    @GetMapping("/cashiers")
+    @ApiOperation("getting list of cashiers")
+    fun getCashiers(): ResponseEntity<List<UserInfo>> =
+        ResponseEntity.ok(userService.getUsers(Roles.CASHIER))
+
+    @GetMapping("/users")
+    @ApiOperation("getting list of users")
+    fun getUsers(): ResponseEntity<List<UserInfo>> =
+        ResponseEntity.ok(userService.getUsers(Roles.USER))
+
+    @PostMapping("/transaction")
     fun transferToSuperAdmin(@RequestBody request: TransferDto) {
 
         val currentOwner = userService.getCurrentUser()

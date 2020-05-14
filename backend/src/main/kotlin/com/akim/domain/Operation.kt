@@ -6,6 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "operations")
 class Operation(
+
     val oldBalance: BigDecimal,
     val operationType: OperationType,
 
