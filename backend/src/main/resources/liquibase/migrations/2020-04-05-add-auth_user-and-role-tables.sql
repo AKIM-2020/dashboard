@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset k.a.lebedev:a
+--changeset k.a.lebedev:add-auth_user-and-roles
 CREATE SEQUENCE auth_users_seq
        INCREMENT BY 1
        MINVALUE 1
@@ -50,7 +50,7 @@ ALTER TABLE users_roles
   ON UPDATE CASCADE
   ON DELETE CASCADE;
 
---changeset add roles values
+--changeset k.a.lebedev:add-roles-values
 insert into roles (id, name) values (nextval('roles_seq'), 'OWNER');
 insert into roles (id, name) values (nextval('roles_seq'), 'SUPER_ADMIN');
 insert into roles (id, name) values (nextval('roles_seq'), 'ADMIN');

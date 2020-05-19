@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset add transactions and operations tables
+--changeset k.a.lebedev:add-transactions-and-operations-tables
 
 CREATE SEQUENCE transaction_seq
        INCREMENT BY 1

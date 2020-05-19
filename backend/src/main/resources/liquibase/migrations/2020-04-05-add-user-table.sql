@@ -1,5 +1,11 @@
 --liquibase formatted sql
---changeset add user table
+--changeset k.a.lebedev:add-user-table
+CREATE SEQUENCE users_seq
+       INCREMENT BY 1
+       MINVALUE 1
+       CACHE 1
+       NO CYCLE;
+
 CREATE TABLE users
 (
    id            bigint         NOT NULL,
