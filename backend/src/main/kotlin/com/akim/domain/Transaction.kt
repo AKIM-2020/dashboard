@@ -33,7 +33,7 @@ class Transaction(
         cascade = [CascadeType.PERSIST, CascadeType.MERGE],
         fetch = FetchType.LAZY
     )
-    var operations: List<Operations>
+    var operations: List<Operation>
 
 ) {
     @Id

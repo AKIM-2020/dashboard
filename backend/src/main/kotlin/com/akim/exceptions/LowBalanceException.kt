@@ -6,6 +6,6 @@ class LowBalanceException: RuntimeException {
 
     constructor() : super() {}
 
-    constructor(id: Long) : super("User [$id] doesn't have enough money to transfer") {}
+    constructor(id: Long) : super("User [$id] doesn't have enough money to transfer")
 
 }

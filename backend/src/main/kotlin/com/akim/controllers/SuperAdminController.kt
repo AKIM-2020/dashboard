@@ -40,17 +40,12 @@ class SuperAdminController(private val userService: UserService) {
         return ResponseEntity.accepted().build()
     }
 
-    @GetMapping("/super-admin")
-    @ApiOperation("getting list of superAdmins")
-    fun getSuperAdmins(): ResponseEntity<List<UserInfo>> =
-        ResponseEntity.ok(userService.getUsers(Roles.SUPER_ADMIN))
+
 
     @GetMapping("/super-admin/{id}")
     @ApiOperation("getting by id")
     fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
-        val response = userService.getUserById(id, Roles.SUPER_ADMIN)
-            ?: return ResponseEntity.notFound().build()
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(userService.getUserById(id, Roles.SUPER_ADMIN))
     }
 }
 

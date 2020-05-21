@@ -50,7 +50,7 @@ class User(
         cascade = [CascadeType.PERSIST, CascadeType.MERGE],
         fetch = FetchType.LAZY
     )
-    private val operations = mutableListOf<Operations>()
+    private val operations = mutableListOf<Operation>()
 
     @Version
     private val version: Long = 0
@@ -68,7 +68,7 @@ class User(
         child.parent = null
     }
 
-    fun addOperation(operation: Operations) {
+    fun addOperation(operation: Operation) {
         operations.add(operation)
         operation.user = this
     }
