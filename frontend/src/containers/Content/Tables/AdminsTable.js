@@ -56,7 +56,7 @@ const AdminsTable = ({ columns, editingFunc }) => {
             error => { setError(error) }
         )
     }, [])
-
+    debugger
     const commitChanges = async ({ added, changed, deleted }) => {
         let changedRows;
         if (added) {

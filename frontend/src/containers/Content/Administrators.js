@@ -3,7 +3,7 @@ import { api } from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
 
 const Administrators = () => {
-    const url = "/api/v1/owner/super-admin";
+    const url = "/api/v1/owner/admins";
 
     const editingProps = {
         getData: () => api.get(url),

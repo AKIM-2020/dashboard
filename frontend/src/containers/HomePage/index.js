@@ -5,6 +5,7 @@ import Content from "../Content";
 import Header from "../Header";
 import { useStyles } from "./style.js";
 
+
 const HomePage = ({ user }) => {
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState(null);
