@@ -12,15 +12,21 @@ const useStyles = makeStyles({
     },
 });
 
+
 export const Charge = () => {
     const classes = useStyles();
     const [name, setName] = React.useState('');
+
+    let textChange = (event) => {
+        let text = event.target.value;
+        setName(text)
+    }
 
     return <Box component="div" display="flex" justifyContent="center">
         <FormControl>
             <Box component="div" display="inline">
                 <InputLabel>User number or Login</InputLabel>
-                <Input value={name} onChange={() => {}} />
+                <Input value={name} onChange={textChange} />
                 <Button variant="contained" className={classes.button}>Check</Button>
             </Box>
         </FormControl>

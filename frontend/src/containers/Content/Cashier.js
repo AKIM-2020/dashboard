@@ -1,10 +1,18 @@
 import React from "react";
 import {cashiersData} from "../../mocks/cashiersData";
-import AdminsTable from "./Tables/AdminsTable.js";
+import {api} from "../../helpers";
+import StatisticsTable from "./Tables/StatisticsTable";
 
 const Cashier = ({ data }) => {
+    const url = "/api/v1/owner/cashiers";
+
+    const tableProps = {
+        getData: () => api.get(url),
+        getInfo: (id) => api.get(`${url}/${id}`),
+    }
+
     return <div>
-        <AdminsTable columns={ cashiersData.columns } data={cashiersData.data}/>
+        <StatisticsTable columns={ cashiersData.columns } getFunc={ tableProps }/>
     </div>
 }
 

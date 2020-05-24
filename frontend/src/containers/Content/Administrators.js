@@ -4,10 +4,11 @@ import AdminsTable from "./Tables/AdminsTable";
 
 const Administrators = () => {
     const url = "/api/v1/owner/admins";
+    const postUrl = "/api/v1/owner/super-admin";
 
     const editingProps = {
         getData: () => api.get(url),
-        addRow: (row) => api.post(url, row),
+        addRow: () => api.post(postUrl),
         deleteRow: (rowId) => api.delete(`${url}/${rowId}`),
     }
 
