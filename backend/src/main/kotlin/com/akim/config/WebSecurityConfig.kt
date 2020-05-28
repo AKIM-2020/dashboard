@@ -5,8 +5,6 @@ import com.akim.security.jwt.JwtAuthTokenFilter
 import com.akim.security.services.UserDetailsServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,9 +19,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 class WebSecurityConfig(
-    private val userDetailsService: UserDetailsServiceImpl,
-    private val unauthorizedHandler: JwtAuthEntryPoint,
-    private val jwtAuthTokenFilter: JwtAuthTokenFilter
+        private val userDetailsService: UserDetailsServiceImpl,
+        private val unauthorizedHandler: JwtAuthEntryPoint,
+        private val jwtAuthTokenFilter: JwtAuthTokenFilter
 
 ) : WebSecurityConfigurerAdapter() {
 
@@ -35,15 +33,16 @@ class WebSecurityConfig(
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/v1/owner/**").hasAuthority("OWNER")
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/api/v1/**").authenticated()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
@@ -51,8 +50,8 @@ class WebSecurityConfig(
     @Throws(Exception::class)
     override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
         authenticationManagerBuilder
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder())
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder())
     }
 
 

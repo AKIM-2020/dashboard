@@ -4,7 +4,6 @@ import com.akim.dto.Roles
 import com.akim.dto.TransactionInfo
 import com.akim.dto.TransferDto
 import com.akim.dto.UserInfo
-import com.akim.security.services.UaaService
 import com.akim.services.TransferService
 import com.akim.services.UserService
 import io.swagger.annotations.Api
@@ -24,6 +23,11 @@ class OwnerController(
     fun getOwnerInfo(): UserInfo {
         return userService.getCurrentUserInfo()
     }
+
+    @GetMapping("/super-admins")
+    @ApiOperation("getting list of Super Admins")
+    fun getSuperAdmins(): ResponseEntity<List<UserInfo>> =
+            ResponseEntity.ok(userService.getUsers(Roles.SUPER_ADMIN))
 
     @GetMapping("/admins")
     @ApiOperation("getting list of Admins")
