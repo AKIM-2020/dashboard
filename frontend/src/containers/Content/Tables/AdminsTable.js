@@ -25,7 +25,7 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     const classes = makeStyles({
         header: {
             fontWeight: 'bold',
-            fontSize: 12,
+            fontSize: 11,
         },
     })();
     return <TableHeaderRow.Content

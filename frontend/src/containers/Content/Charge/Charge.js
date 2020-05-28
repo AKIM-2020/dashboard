@@ -1,14 +1,17 @@
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import makeStyles from "@material-ui/core/styles/makeStyles.js";
-import React from "react";
+import React, {useEffect} from "react";
+import PayForm from './PayForm'
+import {api} from "../../../helpers";
+import TextField from "@material-ui/core/TextField";
+
 
 const useStyles = makeStyles({
     button: {
-        marginLeft: '20px',
+        marginLeft: '10px',
+        marginTop: '5px'
     },
 });
 
@@ -16,18 +19,42 @@ const useStyles = makeStyles({
 export const Charge = () => {
     const classes = useStyles();
     const [name, setName] = React.useState('');
+    const [data, setData] = React.useState(null);
+    const [id, setId] = React.useState(null);
+    const [button, setButton] = React.useState(false);
+    const [action, setAction] = React.useState("");
+
+    useEffect(() => {
+        api.get(`/api/v1/owner/super-admin/${id}`).then(response => {
+            setData(response.data)
+        })
+    }, [id])
+
 
     let textChange = (event) => {
         let text = event.target.value;
         setName(text)
     }
 
+    let isClicked = () => {
+        setButton(true);
+        if (id != name) {
+            setId(name);
+            setData(null);
+            setAction("")
+        }
+    }
+
+    debugger
     return <Box component="div" display="flex" justifyContent="center">
         <FormControl>
             <Box component="div" display="inline">
-                <InputLabel>User number or Login</InputLabel>
-                <Input value={name} onChange={textChange} />
-                <Button variant="contained" className={classes.button}>Check</Button>
+                <TextField value={name} onChange={textChange} id="idField" label="Enter user ID" color="blue" />
+                <Button variant="contained" className={classes.button} onClick={isClicked}>Check</Button>
+                {button
+                    ? <PayForm id={id} data={data} setData={setData} action={action} setAction={setAction}/>
+                    : null
+                }
             </Box>
         </FormControl>
     </Box>

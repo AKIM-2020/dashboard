@@ -12,7 +12,7 @@ import {
     Rates, Report, Slider,
     Transfers,
     Withdraw
-} from "../containers/Content/Charge.js";
+} from "../containers/Content/Charge/Charge.js";
 import Users from "../containers/Content/Users.js";
 import { treeData } from "../mocks";
 import { cashiersData } from "../mocks/cashiersData.js";
