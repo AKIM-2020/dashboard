@@ -13,4 +13,8 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun findAllByRole(role: Roles): List<User>
 
+    fun findByIdAndParent(id: Long, parent: User): User?
+
+    fun findAllByParent(parent: User): List<User>
+
 }

@@ -26,19 +26,27 @@ class Transaction(
 
     val amount: BigDecimal,
 
-    val created: LocalDateTime,
-
-    @OneToMany(
-        mappedBy = "transaction",
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE],
-        fetch = FetchType.LAZY
-    )
-    var operations: List<Operation>
+    val created: LocalDateTime
 
 ) {
     @Id
     @GeneratedValue(generator = "transaction_seq")
     @SequenceGenerator(name = "transaction_seq", sequenceName = "transaction_seq", allocationSize = 1)
-    val id: Long = 0
+    private val id: Long = 0
+
+    @OneToMany(
+            mappedBy = "transaction",
+            cascade = [CascadeType.PERSIST, CascadeType.MERGE],
+            fetch = FetchType.LAZY
+    )
+    private var operations: List<Operation> = emptyList()
+
+    fun addOperations(operations: List<Operation>) {
+        this.operations = operations
+        operations.forEach {
+            it.transaction = this
+        }
+
+    }
 }
 

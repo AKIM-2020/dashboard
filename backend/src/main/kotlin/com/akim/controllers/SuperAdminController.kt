@@ -1,10 +1,10 @@
 package com.akim.controllers
 
 import com.akim.dto.Roles
-import com.akim.dto.UserInfo
 import com.akim.services.UserService
 import com.akim.dto.UserCreateRequest
 import com.akim.dto.UserUpdateRequest
+import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.ResponseEntity
@@ -28,24 +28,21 @@ class SuperAdminController(private val userService: UserService) {
     fun updateSuperAdmin(
         @PathVariable("id") id: Long,
         @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
-        userService.updateSuperAdmin(id, request, Roles.SUPER_ADMIN)
-            ?: return ResponseEntity.notFound().build()
+        userService.updateUser(id, request, Roles.SUPER_ADMIN)
         return ResponseEntity.accepted().build()
     }
 
     @DeleteMapping("/super-admin/{id}")
     @ApiOperation("deleting")
     fun deleteSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
-        userService.deleteUser(id, Roles.SUPER_ADMIN)
+        userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
-
-
 
     @GetMapping("/super-admin/{id}")
     @ApiOperation("getting by id")
     fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
-        return ResponseEntity.ok(userService.getUserById(id, Roles.SUPER_ADMIN))
+        return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
     }
 }
 
