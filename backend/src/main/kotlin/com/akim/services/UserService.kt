@@ -3,7 +3,6 @@ package com.akim.services
 import com.akim.domain.User
 import com.akim.dto.Roles
 import com.akim.dto.UserCreateRequest
-import com.akim.dto.UserInfo
 import com.akim.dto.UserUpdateRequest
 import com.akim.repositories.UserRepository
 import com.akim.security.services.UaaService
@@ -22,8 +21,8 @@ class UserService(
             ?: throw EntityNotFoundException("You don't have user with id=$id ")
 
     fun getAllChildUsers() = userRepository.findAllByParent(getCurrentUser())
-            .map { it.toUserInfo() }
-            .toCollection(arrayListOf())
+
+    fun getAllChildUsersByUserList(users: List<User>) = userRepository.findAllByParentIn(users)
 
     fun createUser(createRequest: UserCreateRequest, role: Roles) {
 
@@ -37,7 +36,7 @@ class UserService(
                 .also { userRepository.save(it) }
     }
 
-    fun updateUser(id: Long, updateRequest: UserUpdateRequest, role: Roles) {
+    fun updateUser(id: Long, updateRequest: UserUpdateRequest) {
 
         val user = getChildUserById(id)
 
@@ -70,8 +69,6 @@ class UserService(
 
     fun getUsersByRole(role: Roles): List<User> =
             userRepository.findAllByRole(role)
-
-
 
     fun getCurrentUser(): User {
         return userRepository.findByAuthUser(uaaService.getCurrentUser())

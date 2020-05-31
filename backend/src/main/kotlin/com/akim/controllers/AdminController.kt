@@ -11,32 +11,28 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
-@Api("superAdmin-resource")
+@Api("admin-resource")
 @Controller
-@RequestMapping("/api/v1/super-admin")
-class SuperAdminController(
+@RequestMapping("/api/v1/admin")
+class AdminController(
         private val userService: UserService,
         private val transferService: TransferService
 ) {
 
     @GetMapping
-    fun getOwnerInfo(): UserInfo {
+    fun getCurrentUserInfo(): UserInfo {
         return userService.getCurrentUser().toUserInfo()
     }
 
     @GetMapping("/{role}/user-list")
     @ApiOperation("getting list users")
-    fun getAdmins(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
+    fun getUsers(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
 
         val users = userService.getAllChildUsers()
 
         val response = when (role) {
-            Roles.ADMIN -> users
-            Roles.CASHIER -> userService.getAllChildUsersByUserList(users)
-            Roles.USER -> {
-                val cashiers = userService.getAllChildUsersByUserList(users)
-                userService.getAllChildUsersByUserList(cashiers)
-            }
+            Roles.CASHIER -> users
+            Roles.USER -> userService.getAllChildUsersByUserList(users)
             else -> throw BadRequestException()
         }
 
@@ -47,18 +43,20 @@ class SuperAdminController(
 
 
     @PostMapping("/transaction")
-    fun transferWithSuperAdmin(@RequestBody request: TransferDto) {
+    @ApiOperation("make Transaction")
+    fun makeTransaction(@RequestBody request: TransferDto) {
         val currentUser = userService.getCurrentUser()
         val childUser = userService.getChildUserById(request.id)
         transferService.makeTransaction(request, currentUser, childUser)
     }
 
     @GetMapping("/transaction-list")
+    @ApiOperation("get transaction history")
     fun getTransactionList(
             @RequestParam(required = false) role: Roles?
     ): TransactionCollectionDto {
 
-        if(role == Roles.OWNER || role == Roles.SUPER_ADMIN) {
+        if(role != Roles.CASHIER || role != Roles.USER) {
             throw BadRequestException()
         }
         val users =
@@ -69,15 +67,15 @@ class SuperAdminController(
     }
 
     @PostMapping("/user")
-    @ApiOperation("creating admin")
-    fun createSuperAdmin(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
-        userService.createUser(createRequest, Roles.ADMIN)
+    @ApiOperation("creating cashier")
+    fun createChild(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
+        userService.createUser(createRequest, Roles.CASHIER)
         return ResponseEntity.accepted().build()
     }
 
     @PutMapping("/user/{id}")
-    @ApiOperation("updating admin")
-    fun updateSuperAdmin(
+    @ApiOperation("updating cashier")
+    fun updateChild(
             @PathVariable("id") id: Long,
             @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
         userService.updateUser(id, request)
@@ -85,15 +83,15 @@ class SuperAdminController(
     }
 
     @DeleteMapping("/user/{id}")
-    @ApiOperation("deleting admin")
-    fun deleteSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+    @ApiOperation("deleting cashier")
+    fun deleteChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
 
     @GetMapping("/user/{id}")
-    @ApiOperation("getting by id admin")
-    fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+    @ApiOperation("getting by id cashier")
+    fun getChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
     }
 }
