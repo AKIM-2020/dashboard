@@ -1,13 +1,18 @@
 import React from "react";
 import { api } from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
+import {authenticationService} from "../../service";
 
 const Administrators = () => {
-    const url = "/api/v1/owner/super-admins";
-    const postUrl = "/api/v1/owner/super-admin";
+    const url = "/api/v1/owner/SUPER_ADMIN/user-list";
+    const postUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
 
     const editingProps = {
-        getData: () => api.get(url),
+        getData: () => api.get(url, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
         addRow: () => api.post(postUrl),
         deleteRow: (rowId) => api.delete(`${url}/${rowId}`),
     }
