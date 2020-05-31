@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @Api("cashier-resource")
 @Controller
-@RequestMapping("/api/v1/admin")
+@RequestMapping("/api/v1/cahier")
 class CashierController(
         private val userService: UserService,
         private val transferService: TransferService
