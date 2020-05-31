@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuItem from "@material-ui/core/MenuItem";
+import {api} from "../../../helpers";
 
 const useStyles = makeStyles({
     button: {
@@ -14,26 +15,73 @@ const useStyles = makeStyles({
 
 const actions = [
     {
-        value: 'withdraw',
-        label: 'Withdraw money',
+        value: 'WITHDRAW',
+        label: 'Withdraw',
     },
     {
-        value: 'transfer',
-        label: 'Transfer money',
+        value: 'TRANSFER',
+        label: 'Transfer',
     }]
 
 const PayForm = (props) => {
     const classes = useStyles();
-    const [amount, setAmount] = React.useState(null);
-
+    const [transferAmount, setTransferAmount] = React.useState({});
+    const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
     const amountChange = (event) => {
-        let amount = event.target.value;
-        setAmount(amount)
+        let currentAmount = event.target.value;
+        props.setAmount(currentAmount)
     }
 
     const actionChange = (event) => {
+        props.setSuccess(false);
+        props.setError(false);
+        props.setAmount('');
         props.setAction(event.target.value);
+    }
+
+    let postData = (transferData) => {
+        setTransferAmount(transferData);
+        setButtonDisabled(true);
+        api.post('/api/v1/owner/transaction', {...transferData}).then(
+            response => {
+                if (response.status === 200) {
+                    props.setSuccess(true)
+                    setButtonDisabled(false)
+                }
+            }
+        )
+    }
+
+    const transferHandler = () => {
+        let transferData = {
+            id: Number(props.data.id),
+            amount: Number(props.amount),
+            note: "3",
+            operationType: props.action,
+        }
+
+        props.setSuccess(false);
+        props.setError(false);
+
+        switch (props.action) {
+            case 'WITHDRAW': {
+                if (props.amount <= 0 || props.data.balance < props.amount) {
+                    props.setError(true)
+                } else {
+                    postData(transferData);
+                }
+            }
+                break;
+            case 'TRANSFER': {
+                if (props.amount <= 0) {
+                    props.setError(true)
+                } else {
+                    postData(transferData);
+                }
+            }
+            break;
+        }
     }
 
     return <div>
@@ -64,15 +112,45 @@ const PayForm = (props) => {
                         </TextField>
                     </div>
                     <div>
-                        {props.action === 'withdraw'
+                        {props.action === 'WITHDRAW'
                             ? <Box component="div" display="inline">
-                                <TextField id="withdraw" label="Withdraw amount" color="blue"/>
-                                <Button variant="contained" className={classes.button}>Withdraw</Button>
+                                <TextField
+                                    id="withdraw"
+                                    label="Withdraw amount"
+                                    color="blue"
+                                    value={props.amount}
+                                    onChange={amountChange}
+                                />
+                                <Button id="withdrawButton" variant="contained"
+                                        className={classes.button}
+                                        onClick={transferHandler}
+                                        disabled={buttonDisabled}
+                                >Withdraw</Button>
+                                {
+                                    props.success ? <div>The transaction is successful</div>
+                                        : props.error ? <div>Please enter correct amount.</div>
+                                        : null
+                                }
                             </Box>
-                            : props.action === 'transfer'
+                            : props.action === 'TRANSFER'
                                 ? <Box component="div" display="inline">
-                                    <TextField id="transfer" label="Transfer amount" color="blue"/>
-                                    <Button variant="contained" className={classes.button}>Transfer</Button>
+                                    <TextField
+                                        id="transfer"
+                                        label="Transfer amount"
+                                        color="blue"
+                                        value={props.amount}
+                                        onChange={amountChange}
+                                    />
+                                    <Button id="transferButton" variant="contained"
+                                            className={classes.button}
+                                            onClick={transferHandler}
+                                            disabled={buttonDisabled}
+                                    >Transfer</Button>
+                                    {
+                                        props.success ? <div>Transaction is successful!</div>
+                                            : props.error ? <div>Please enter correct amount.</div>
+                                            : null
+                                    }
                                 </Box>
                                 : null
                         }
