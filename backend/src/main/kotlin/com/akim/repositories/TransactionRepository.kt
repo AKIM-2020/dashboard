@@ -10,4 +10,6 @@ interface TransactionRepository : JpaRepository<Transaction, Long> {
 
     fun getAllBySourceOrDestination(source: User, destination: User): List<Transaction>
 
+    fun getAllBySourceOrDestinationIn(source: List<User>, destination: List<User>): List<Transaction>
+
 }

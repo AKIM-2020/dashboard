@@ -17,16 +17,19 @@ import java.time.LocalDateTime
 @Service
 class TransferService(
         private val transactionRepository: TransactionRepository,
-        private val operationRepository: OperationRepository,
-        private val userService: UserService
+        private val operationRepository: OperationRepository
 ) {
 
-    fun makeTransaction(request: TransferDto) {
+    fun makeTransaction(
+            request: TransferDto,
+            currentUser: User,
+            childUser: User
+    ) {
         when (request.operationType) {
             OperationType.TRANSFER ->
-                createTransaction(userService.getCurrentUser(), userService.getChildUserById(request.id), request)
+                createTransaction(currentUser, childUser, request)
             OperationType.WITHDRAW ->
-                createTransaction(userService.getChildUserById(request.id), userService.getCurrentUser(), request)
+                createTransaction(childUser, currentUser, request)
         }
     }
 
@@ -55,19 +58,16 @@ class TransferService(
         transactionRepository.save(transaction)
     }
 
-    fun getAllTransactionCurrentUser(): TransactionCollectionDto {
+    fun getAllTransactionsByUserList(users: List<User>): TransactionCollectionDto {
 
-        val user = userService.getCurrentUser()
-
-        val transactions = transactionRepository.getAllBySourceOrDestination(user, user)
-                .map { toTransactionInfo(it, user) }
-                .toCollection(arrayListOf())
-
-        val debit = operationRepository.getDebitByUser(user) ?: BigDecimal.ZERO
-        val credit = operationRepository.getCreditByUser(user) ?: BigDecimal.ZERO
+        val transactions =
+                transactionRepository.getAllBySourceOrDestinationIn(users, users)
+                        .map(::toTransactionInfo)
+                        .toCollection(arrayListOf())
+        val debit = operationRepository.getDebitByUser(users) ?: BigDecimal.ZERO
+        val credit = operationRepository.getCreditByUser(users) ?: BigDecimal.ZERO
 
         val balance = debit.minus(credit)
-
 
         return TransactionCollectionDto(
                 debit,
@@ -76,27 +76,9 @@ class TransferService(
                 transactions)
     }
 
-    private fun toTransactionInfo(
-            transaction: Transaction,
-            currentUser: User
-    ): TransactionInfo {
-
-        val type: OperationType
-        val destinationId: Long
-
-        when (currentUser.id) {
-            transaction.source.id -> {
-                type = OperationType.TRANSFER
-                destinationId = transaction.destination.id
-            }
-            else -> {
-                type = OperationType.WITHDRAW
-                destinationId = transaction.source.id
-            }
-        }
-
+    private fun toTransactionInfo(transaction: Transaction): TransactionInfo {
         return TransactionInfo(
-                destinationId, transaction.amount, type,
+                transaction.source.id, transaction.destination.id, transaction.amount,
                 transaction.note, transaction.created
         )
     }

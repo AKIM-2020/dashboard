@@ -1,6 +1,9 @@
 package com.akim.controllers
 
-import com.akim.dto.*
+import com.akim.dto.Roles
+import com.akim.dto.TransactionCollectionDto
+import com.akim.dto.TransferDto
+import com.akim.dto.UserInfo
 import com.akim.services.TransferService
 import com.akim.services.UserService
 import com.akim.services.toUserInfo
@@ -30,25 +33,42 @@ class OwnerController(
     @GetMapping("/admins")
     @ApiOperation("getting list of Admins")
     fun getAdmins(): ResponseEntity<List<UserInfo>> =
-            ResponseEntity.ok(userService.getUsersByRole(Roles.ADMIN))
+            ResponseEntity.ok(userService.getUsersByRole(Roles.ADMIN)
+                    .map { it.toUserInfo() }
+                    .toCollection(arrayListOf()))
 
     @GetMapping("/cashiers")
     @ApiOperation("getting list of cashiers")
     fun getCashiers(): ResponseEntity<List<UserInfo>> =
-            ResponseEntity.ok(userService.getUsersByRole(Roles.CASHIER))
+            ResponseEntity.ok(userService.getUsersByRole(Roles.CASHIER)
+                    .map { it.toUserInfo() }
+                    .toCollection(arrayListOf()))
 
     @GetMapping("/users")
     @ApiOperation("getting list of users")
     fun getUsers(): ResponseEntity<List<UserInfo>> =
-            ResponseEntity.ok(userService.getUsersByRole(Roles.USER))
+            ResponseEntity.ok(userService.getUsersByRole(Roles.USER)
+                    .map { it.toUserInfo() }
+                    .toCollection(arrayListOf()))
 
     @PostMapping("/transaction")
     fun transferWithSuperAdmin(@RequestBody request: TransferDto) {
-        transferService.makeTransaction(request)
+        val currentUser = userService.getCurrentUser()
+        val childUser = userService.getChildUserById(request.id)
+        transferService.makeTransaction(request, currentUser, childUser)
     }
 
     @GetMapping("/transactions")
-    fun getTransactionList():TransactionCollectionDto {
-        return transferService.getAllTransactionCurrentUser()
+    fun getTransactionList(
+            @RequestParam(required = false) role: Roles?
+    ): TransactionCollectionDto {
+            val users =
+                    role?.let { userService.getUsersByRole(it) }
+                            ?: listOf(userService.getCurrentUser())
+
+             return transferService.getAllTransactionsByUserList(users)
+
     }
+
+
 }

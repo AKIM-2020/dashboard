@@ -8,22 +8,24 @@ import java.math.BigDecimal
 
 interface OperationRepository : JpaRepository<Operation, Long> {
 
-    @Query("""select sum(tr.amount) 
+    @Query("""
+        select sum(tr.amount) 
         from Operation op
-        left join op.transaction tr
-         where op.user = ?1 
+        join op.transaction tr
+        where op.user in ?1 
         and op.operationType = 'WITHDRAW'
         """)
-    fun getDebitByUser(user: User): BigDecimal?
+    fun getDebitByUser(user: List<User>): BigDecimal?
 
 
-    @Query("""select sum(tr.amount) 
+    @Query("""
+        select sum(tr.amount) 
         from Operation op
-        left join op.transaction tr
-         where op.user = ?1 
+        join op.transaction tr
+        where op.user in ?1 
         and op.operationType = 'TRANSFER'
         """)
-    fun getCreditByUser(user: User): BigDecimal?
+    fun getCreditByUser(user: List<User>): BigDecimal?
 
 }
 

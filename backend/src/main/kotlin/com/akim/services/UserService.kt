@@ -68,10 +68,9 @@ class UserService(
                 .also(userRepository::delete)
     }
 
-    fun getUsersByRole(role: Roles): List<UserInfo> =
+    fun getUsersByRole(role: Roles): List<User> =
             userRepository.findAllByRole(role)
-                    .map { it.toUserInfo() }
-                    .toCollection(arrayListOf())
+
 
 
     fun getCurrentUser(): User {
