@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityNotFoundException
 
 @Service
-@Transactional
 class UserService(
         private val userRepository: UserRepository,
         private val uaaService: UaaService
@@ -24,6 +23,7 @@ class UserService(
 
     fun getAllChildUsersByUserList(users: List<User>) = userRepository.findAllByParentIn(users)
 
+    @Transactional
     fun createUser(createRequest: UserCreateRequest, role: Roles) {
 
         val authUser = createRequest

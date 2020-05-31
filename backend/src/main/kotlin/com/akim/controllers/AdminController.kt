@@ -33,7 +33,7 @@ class AdminController(
         val response = when (role) {
             Roles.CASHIER -> users
             Roles.USER -> userService.getAllChildUsersByUserList(users)
-            else -> throw BadRequestException()
+            else -> throw BadRequestException("Not enough permissions to view $role")
         }
 
         return ResponseEntity.ok(response
@@ -56,8 +56,8 @@ class AdminController(
             @RequestParam(required = false) role: Roles?
     ): TransactionCollectionDto {
 
-        if(role != Roles.CASHIER || role != Roles.USER) {
-            throw BadRequestException()
+        if(role != Roles.CASHIER && role != Roles.USER) {
+            throw BadRequestException("Not enough permissions to view $role") //TODO find a suitable exception
         }
         val users =
                 role?.let { userService.getUsersByRole(it) }

@@ -1,11 +1,11 @@
 package com.akim.exceptions
 
-import java.lang.RuntimeException
+class BadRequestException(message: String) : RuntimeException(message), HasHttpCodeException {
 
-class BadRequestException: RuntimeException {
+    private val code = 400
 
-    constructor() : super() {}
-
-    constructor(id: Long) : super("Wrong request")
+    override fun getCode(): Int {
+        return this.code
+    }
 
 }

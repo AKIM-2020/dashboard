@@ -35,7 +35,6 @@ class WebSecurityConfig(
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
                 .antMatchers("/api/v1/**").authenticated()
                 .and()
                 .exceptionHandling()

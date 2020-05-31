@@ -37,7 +37,7 @@ class SuperAdminController(
                 val cashiers = userService.getAllChildUsersByUserList(users)
                 userService.getAllChildUsersByUserList(cashiers)
             }
-            else -> throw BadRequestException()
+            else -> throw BadRequestException("Not enough permissions to view $role")
         }
 
         return ResponseEntity.ok(response
@@ -59,7 +59,7 @@ class SuperAdminController(
     ): TransactionCollectionDto {
 
         if(role == Roles.OWNER || role == Roles.SUPER_ADMIN) {
-            throw BadRequestException()
+            throw BadRequestException("Not enough permissions to view $role")
         }
         val users =
                 role?.let { userService.getUsersByRole(it) }

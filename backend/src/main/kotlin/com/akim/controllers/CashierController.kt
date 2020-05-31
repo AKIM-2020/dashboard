@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @Api("cashier-resource")
 @Controller
-@RequestMapping("/api/v1/cahier")
+@RequestMapping("/api/v1/cashier")
 class CashierController(
         private val userService: UserService,
         private val transferService: TransferService
@@ -23,9 +23,9 @@ class CashierController(
         return userService.getCurrentUser().toUserInfo()
     }
 
-    @GetMapping("/{role}/user-list")
+    @GetMapping("/user-list")
     @ApiOperation("getting list users")
-    fun getUsers(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
+    fun getUsers(): ResponseEntity<List<UserInfo>> {
         return ResponseEntity.ok(userService.getAllChildUsers()
                 .map { it.toUserInfo() }
                 .toCollection(arrayListOf()))
@@ -50,14 +50,14 @@ class CashierController(
     }
 
     @PostMapping("/user")
-    @ApiOperation("creating cashier")
+    @ApiOperation("creating user")
     fun createChild(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
         userService.createUser(createRequest, Roles.USER)
         return ResponseEntity.accepted().build()
     }
 
     @PutMapping("/user/{id}")
-    @ApiOperation("updating cashier")
+    @ApiOperation("updating user")
     fun updateChild(
             @PathVariable("id") id: Long,
             @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
@@ -66,14 +66,14 @@ class CashierController(
     }
 
     @DeleteMapping("/user/{id}")
-    @ApiOperation("deleting cashier")
+    @ApiOperation("deleting user")
     fun deleteChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
 
     @GetMapping("/user/{id}")
-    @ApiOperation("getting by id cashier")
+    @ApiOperation("getting by id user")
     fun getChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
     }
