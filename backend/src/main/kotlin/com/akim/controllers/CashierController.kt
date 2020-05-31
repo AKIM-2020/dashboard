@@ -6,6 +6,7 @@ import com.akim.services.UserService
 import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -19,8 +20,8 @@ class CashierController(
 ) {
 
     @GetMapping
-    fun getCurrentUserInfo(): UserInfo {
-        return userService.getCurrentUser().toUserInfo()
+    fun getCurrentUserInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
     @GetMapping("/user-list")
@@ -42,11 +43,11 @@ class CashierController(
 
     @GetMapping("/transaction-list")
     @ApiOperation("get transaction history")
-    fun getTransactionList(): TransactionCollectionDto {
+    fun getTransactionList(): ResponseEntity<TransactionCollectionDto> {
 
         val users = listOf(userService.getCurrentUser())
 
-        return transferService.getAllTransactionsByUserList(users)
+        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")

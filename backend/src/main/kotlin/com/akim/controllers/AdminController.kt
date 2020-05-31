@@ -7,6 +7,7 @@ import com.akim.services.UserService
 import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -20,8 +21,8 @@ class AdminController(
 ) {
 
     @GetMapping
-    fun getCurrentUserInfo(): UserInfo {
-        return userService.getCurrentUser().toUserInfo()
+    fun getCurrentUserInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
     @GetMapping("/{role}/user-list")
@@ -54,7 +55,7 @@ class AdminController(
     @ApiOperation("get transaction history")
     fun getTransactionList(
             @RequestParam(required = false) role: Roles?
-    ): TransactionCollectionDto {
+    ):  ResponseEntity<TransactionCollectionDto> {
 
         if(role != Roles.CASHIER && role != Roles.USER) {
             throw BadRequestException("Not enough permissions to view $role") //TODO find a suitable exception
@@ -63,7 +64,7 @@ class AdminController(
                 role?.let { userService.getUsersByRole(it) }
                         ?: listOf(userService.getCurrentUser())
 
-        return transferService.getAllTransactionsByUserList(users)
+        return  ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")
