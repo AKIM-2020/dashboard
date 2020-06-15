@@ -3,22 +3,13 @@ import Administrators from "../containers/Content/Administrators";
 import Cashier from "../containers/Content/Cashier";
 import Statistics from "../containers/Content/Statistics.js";
 import TreePage from '../containers/Content/TreePage.js'
-import {
-    AdminTransactions,
-    Bets,
-    CashReports,
-    Charge, Configuration, Inbet,
-    Mails, Pages, PromoActivation, Promocodes,
-    Rates, Report, Slider,
-    Transfers,
-    Withdraw
-} from "../containers/Content/Charge/Charge.js";
+import {Charge} from "../containers/Content/Charge/Charge.js";
 import Users from "../containers/Content/Users.js";
-import { treeData } from "../mocks";
-import { cashiersData } from "../mocks/cashiersData.js";
-import { statisticsData } from "../mocks/statisticsData.js";
-import { usersTableData } from "../mocks/usersTableData.js";
-import { Role } from "./roles.js";
+import {treeData} from "../mocks";
+import {cashiersData} from "../mocks/cashiersData.js";
+import {statisticsData} from "../mocks/statisticsData.js";
+import {usersTableData} from "../mocks/usersTableData.js";
+import {Role} from "./roles.js";
 
 const items = [
     {
@@ -31,7 +22,7 @@ const items = [
         link: '/tree',
         roles: [Role.Owner],
         data: treeData,
-        component: () => <TreePage data={ treeData }/>
+        component: () => <TreePage data={treeData}/>
     }, {
         name: 'Administrators',
         link: '/administrators',
@@ -42,14 +33,14 @@ const items = [
         link: '/cashiers',
         roles: [Role.Owner],
         data: cashiersData,
-        component: () => <Cashier data={ cashiersData }/>
+        component: () => <Cashier data={cashiersData}/>
+    }, {
+        name: 'Users',
+        link: '/users',
+        roles: [Role.Owner],
+        data: usersTableData,
+        component: () => <Users data={usersTableData}/>
         /*}, {
-            name: 'Users',
-            link: '/users',
-            roles: [Role.Owner],
-            data: usersTableData,
-            component: () => <Users data={ usersTableData }/>
-        }, {
             name: 'Admin_statistics',
             link: '/statistics',
             roles: [Role.Owner],
@@ -129,6 +120,7 @@ const items = [
 ];
 
 export const getUserItems = (user) => {
-    const authorities = user.authorities.map((it) => it.authority);
-    return items.filter(it => it.roles.filter(role => authorities.includes(role)).length === 1)
+const authorities = user.authorities.map((it) => it.authority);
+return items.filter(it => it.roles.filter(role => authorities.includes(role)).length === 1)
 };
+

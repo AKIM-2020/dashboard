@@ -1,10 +1,11 @@
 import Box from "@material-ui/core/Box";
-import React, {useEffect} from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import {api} from "../../../helpers";
+import {authenticationService} from "../../../service";
 
 const useStyles = makeStyles({
     button: {
@@ -29,8 +30,7 @@ const PayForm = (props) => {
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
     const amountChange = (event) => {
-        let currentAmount = event.target.value;
-        props.setAmount(currentAmount)
+        props.setAmount(event.target.value)
     }
 
     const actionChange = (event) => {
@@ -43,7 +43,11 @@ const PayForm = (props) => {
     let postData = (transferData) => {
         setTransferAmount(transferData);
         setButtonDisabled(true);
-        api.post('/api/v1/owner/transaction', {...transferData}).then(
+        api.post('/api/v1/owner/transaction', {...transferData}, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }).then(
             response => {
                 if (response.status === 200) {
                     props.setSuccess(true)
@@ -80,13 +84,13 @@ const PayForm = (props) => {
                     postData(transferData);
                 }
             }
-            break;
+                break;
         }
     }
 
     return <div>
         <Box component="div" display="flex" justifyContent="left">
-            {props.data != null ? <Box>
+            {props.responseStatus === 200 ? <Box>
                     <div>
                         <div>User ID: {props.data.id}</div>
                         <div>User login: {props.data.login}</div>
@@ -156,9 +160,10 @@ const PayForm = (props) => {
                         }
                     </div>
                 </Box>
-                : <div>
+                : props.responseStatus === 500 ? <div>                          //correct term is needed
                     <div>Wrong ID! Please enter valid ID.</div>
                 </div>
+                    : null
             }
         </Box>
     </div>

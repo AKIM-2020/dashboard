@@ -67,7 +67,10 @@ const SignIn = ({login}) => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <form className={classes.form} noValidate onSubmit={(event) => handleSubmit(event)}>
+                    <form className={classes.form} noValidate onSubmit={(event) => {
+                        handleSubmit(event)
+                        }}
+                    >
                         <TextField
                             variant="outlined"
                             margin="normal"

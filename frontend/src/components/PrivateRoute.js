@@ -10,7 +10,7 @@ export const PrivateRoute = ({ component: Component, roles, ...rest }) => (
         }
         const authorities = user.authorities.map((it) => it.authority);
         if (roles && roles.filter(it => authorities.includes(it)).length === 0) {
-            return <Redirect to={{ pathname: '/'}} />
+            return <Redirect to='/login' />
         }
         return <Component { ...props } />
     }}/>

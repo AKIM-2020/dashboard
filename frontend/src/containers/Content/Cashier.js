@@ -1,5 +1,4 @@
 import React from "react";
-import {cashiersData} from "../../mocks/cashiersData";
 import {api} from "../../helpers";
 import StatisticsTable from "./Tables/StatisticsTable";
 
@@ -12,7 +11,7 @@ const Cashier = ({ data }) => {
     }
 
     return <div>
-        <StatisticsTable columns={ cashiersData.columns } getFunc={ tableProps }/>
+        <StatisticsTable columns={ data.columns } getFunc={ tableProps }/>
     </div>
 }
 

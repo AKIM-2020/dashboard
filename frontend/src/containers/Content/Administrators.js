@@ -4,20 +4,33 @@ import AdminsTable from "./Tables/AdminsTable";
 import {authenticationService} from "../../service";
 
 const Administrators = () => {
-    const url = "/api/v1/owner/SUPER_ADMIN/user-list";
-    const postUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
+    const tableDataUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
+    const postUrl = '/api/v1/owner/user';
 
     const editingProps = {
-        getData: () => api.get(url, {
+        getData: () => api.get(tableDataUrl, {
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
         }),
-        addRow: () => api.post(postUrl),
-        deleteRow: (rowId) => api.delete(`${url}/${rowId}`),
+        addRow: (transferData) => api.post(postUrl, {...transferData}, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
+        deleteRow: (rowId) => api.delete(postUrl + `/${rowId}`, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
+        editRow: (transferData, rowId) => api.put(postUrl + `/${rowId}`, {...transferData}, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
     }
 
-    return <AdminsTable columns={ columns } editingFunc={ editingProps }/>
+    return <AdminsTable columns={columns} editingFunc={editingProps}/>
 };
 
 const columns = [

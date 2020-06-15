@@ -1,15 +1,14 @@
 import { userConstants } from "../constants";
-import { api, history } from '../helpers'
+import axios from 'axios';
 
 const login = (username, password) => {
     return dispatch => {
         dispatch(request({ username }));
-        api.post(`/api/auth/signin`, { login: username, password: password })
+        axios.post(`/api/auth/signin`, { login: username, password: password })
             .then(
                 response => {
                     localStorage.setItem('user', JSON.stringify(response.data))
                     dispatch(success(response.data));
-                    //history.push('/');
                 },
                 error => {
                     logout();
