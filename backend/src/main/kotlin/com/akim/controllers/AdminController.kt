@@ -7,6 +7,7 @@ import com.akim.services.UserService
 import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -20,8 +21,8 @@ class AdminController(
 ) {
 
     @GetMapping
-    fun getCurrentUserInfo(): UserInfo {
-        return userService.getCurrentUser().toUserInfo()
+    fun getCurrentUserInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
     @GetMapping("/{role}/user-list")
@@ -33,7 +34,7 @@ class AdminController(
         val response = when (role) {
             Roles.CASHIER -> users
             Roles.USER -> userService.getAllChildUsersByUserList(users)
-            else -> throw BadRequestException()
+            else -> throw BadRequestException("Not enough permissions to view $role")
         }
 
         return ResponseEntity.ok(response
@@ -54,16 +55,16 @@ class AdminController(
     @ApiOperation("get transaction history")
     fun getTransactionList(
             @RequestParam(required = false) role: Roles?
-    ): TransactionCollectionDto {
+    ):  ResponseEntity<TransactionCollectionDto> {
 
-        if(role != Roles.CASHIER || role != Roles.USER) {
-            throw BadRequestException()
+        if(role != Roles.CASHIER && role != Roles.USER) {
+            throw BadRequestException("Not enough permissions to view $role") //TODO find a suitable exception
         }
         val users =
                 role?.let { userService.getUsersByRole(it) }
                         ?: listOf(userService.getCurrentUser())
 
-        return transferService.getAllTransactionsByUserList(users)
+        return  ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")

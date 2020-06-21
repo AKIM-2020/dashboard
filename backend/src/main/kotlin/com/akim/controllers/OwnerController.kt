@@ -6,6 +6,7 @@ import com.akim.services.UserService
 import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -18,8 +19,8 @@ class OwnerController(
 ) {
 
     @GetMapping
-    fun getOwnerInfo(): UserInfo {
-        return userService.getCurrentUser().toUserInfo()
+    fun getOwnerInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
     @GetMapping("/{role}/user-list")
@@ -39,12 +40,12 @@ class OwnerController(
     @GetMapping("/transaction-list")
     fun getTransactionList(
             @RequestParam(required = false) role: Roles?
-    ): TransactionCollectionDto {
-            val users =
-                    role?.let { userService.getUsersByRole(it) }
-                            ?: listOf(userService.getCurrentUser())
+    ): ResponseEntity<TransactionCollectionDto> {
+        val users =
+                role?.let { userService.getUsersByRole(it) }
+                        ?: listOf(userService.getCurrentUser())
 
-             return transferService.getAllTransactionsByUserList(users)
+        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
 
     }
 

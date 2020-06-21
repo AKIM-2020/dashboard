@@ -6,26 +6,27 @@ import com.akim.services.UserService
 import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Api("cashier-resource")
 @Controller
-@RequestMapping("/api/v1/cahier")
+@RequestMapping("/api/v1/cashier")
 class CashierController(
         private val userService: UserService,
         private val transferService: TransferService
 ) {
 
     @GetMapping
-    fun getCurrentUserInfo(): UserInfo {
-        return userService.getCurrentUser().toUserInfo()
+    fun getCurrentUserInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
-    @GetMapping("/{role}/user-list")
+    @GetMapping("/user-list")
     @ApiOperation("getting list users")
-    fun getUsers(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
+    fun getUsers(): ResponseEntity<List<UserInfo>> {
         return ResponseEntity.ok(userService.getAllChildUsers()
                 .map { it.toUserInfo() }
                 .toCollection(arrayListOf()))
@@ -42,22 +43,22 @@ class CashierController(
 
     @GetMapping("/transaction-list")
     @ApiOperation("get transaction history")
-    fun getTransactionList(): TransactionCollectionDto {
+    fun getTransactionList(): ResponseEntity<TransactionCollectionDto> {
 
         val users = listOf(userService.getCurrentUser())
 
-        return transferService.getAllTransactionsByUserList(users)
+        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")
-    @ApiOperation("creating cashier")
+    @ApiOperation("creating user")
     fun createChild(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
         userService.createUser(createRequest, Roles.USER)
         return ResponseEntity.accepted().build()
     }
 
     @PutMapping("/user/{id}")
-    @ApiOperation("updating cashier")
+    @ApiOperation("updating user")
     fun updateChild(
             @PathVariable("id") id: Long,
             @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
@@ -66,14 +67,14 @@ class CashierController(
     }
 
     @DeleteMapping("/user/{id}")
-    @ApiOperation("deleting cashier")
+    @ApiOperation("deleting user")
     fun deleteChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
 
     @GetMapping("/user/{id}")
-    @ApiOperation("getting by id cashier")
+    @ApiOperation("getting by id user")
     fun getChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
     }

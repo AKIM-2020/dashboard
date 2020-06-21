@@ -61,7 +61,7 @@ class TransferService(
     fun getAllTransactionsByUserList(users: List<User>): TransactionCollectionDto {
 
         val transactions =
-                transactionRepository.getAllBySourceOrDestinationIn(users, users)
+                transactionRepository.getAllBySourceInOrDestinationIn(users, users)
                         .map(::toTransactionInfo)
                         .toCollection(arrayListOf())
         val debit = operationRepository.getDebitByUser(users) ?: BigDecimal.ZERO
