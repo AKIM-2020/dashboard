@@ -18,6 +18,7 @@ class BackendController() {
     @ResponseBody
     fun getUserContent(authentication: Authentication): String {
         val user = userRepository.findByUserName(authentication.name)
+        println("kostya_changes")
         return "Hello " + user?.firstName + " " + user?.lastName + "!"
     }
 
