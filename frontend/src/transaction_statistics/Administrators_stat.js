@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import StatisticsTable from "../containers/Content/Tables/StatisticsTable";
 import {authenticationService} from "../service/authService";
 import axios from 'axios';
+import Box from "@material-ui/core/Box";
 
 const Administrators_stat = () => {
     const tableDataUrl = "/api/v1/owner/transaction-list?role=OWNER";
-    let data = {};
+    const [data, setData] = useState({});
 
     useEffect(() => {
         axios.get(tableDataUrl, {
@@ -14,7 +15,7 @@ const Administrators_stat = () => {
             }
         }).then(
             response => {
-                data = {balance: response.data.balance, credit: response.data.credit, debit: response.data.debit};
+                setData({balance: response.data.balance, credit: response.data.credit, debit: response.data.debit});
             }
         )
     }, [])
@@ -35,7 +36,23 @@ const Administrators_stat = () => {
     }
     debugger
     if (data.length !== 0) {
-        return <StatisticsTable columns={columns} getFunc={gettingProps}/>
+        return <div>
+            <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+                <h3>Transfer INFO</h3>
+            </Box>
+            <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+                <Box p={1} color="primary.contrastText" bgcolor="primary.main">
+                    Debit: {data.debit}
+                </Box>
+                <Box p={1} color="primary.contrastText" bgcolor="primary.main">
+                    Credit: {data.credit}
+                </Box>
+                <Box p={1} color="primary.contrastText" bgcolor="primary.main">
+                    Balance: {data.balance}
+                </Box>
+            </Box>
+            <StatisticsTable columns={columns} getFunc={gettingProps}/>
+        </div>
     } else {
         return null
     }
@@ -45,10 +62,7 @@ const columns = [
     {title: 'AMOUNT', name: 'amount'},
     {title: 'PAYMENT RECEIVER', name: 'destinationId'},
     {title: 'PAYMENT SENDER', name: 'sourceId'},
-    {title: 'DATA', name: 'created'},
-    // { title: 'CITY', name: 'city' },
-    // { title: 'ROLE', name: 'role' },
-    // { title: 'BALANCE', name: 'balance' },
+    {title: 'DATA', name: 'created'}
 ];
 
 export default Administrators_stat;
