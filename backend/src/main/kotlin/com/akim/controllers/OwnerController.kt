@@ -50,7 +50,9 @@ class OwnerController(
 
     @PostMapping("/user")
     @ApiOperation("creating super admin")
-    fun createSuperAdmin(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
+    fun createSuperAdmin(
+            @RequestHeader headers : Map<String, String>,
+            @RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
         userService.createUser(createRequest, Roles.SUPER_ADMIN)
         return ResponseEntity.accepted().build()
     }
