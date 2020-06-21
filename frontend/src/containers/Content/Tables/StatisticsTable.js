@@ -50,12 +50,9 @@ const StatisticsTable = ({ columns, getFunc }) => {
     )))
 
     useEffect( () => {
-        getData().then(
-            response => { setRows(response.data) },
-            error => { setError(error) }
-        )
+        getData(setRows, setError)
     }, [])
-
+debugger
     return (
         <Paper>
             {error && <ErrorAlert open={!!error} setOpen={ setError } message={ error.message }/>}
@@ -88,6 +85,6 @@ const StatisticsTable = ({ columns, getFunc }) => {
             </Grid>
         </Paper>
     );
-};
+};debugger
 
 export default StatisticsTable;

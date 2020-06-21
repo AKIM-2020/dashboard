@@ -2,17 +2,17 @@ import React from "react";
 import { api } from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
 import {authenticationService} from "../../service";
+import StatisticsTable from "./Tables/StatisticsTable";
 
 const Administrators = () => {
-    const tableDataUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
+    const tableDataUrl = "/api/v1/owner/ADMIN/user-list";
     const postUrl = '/api/v1/owner/user';
 
     const editingProps = {
-        getData: () => api.get(tableDataUrl, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }),
+        getData: (setRows, setError) => api.get(tableDataUrl).then(
+            response => { setRows(response.data) },
+            error => { setError(error) }
+        ),
         addRow: (transferData) => api.post(postUrl, {...transferData}, {
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
@@ -30,7 +30,7 @@ const Administrators = () => {
         }),
     }
 
-    return <AdminsTable columns={columns} editingFunc={editingProps}/>
+    return <StatisticsTable columns={ columns } getFunc={ editingProps }/>
 };
 
 const columns = [
@@ -38,9 +38,8 @@ const columns = [
     { title: 'LOGIN', name: 'login' },
     { title: 'NAME', name: 'name' },
     { title: 'SURNAME', name: 'surname' },
-    { title: 'SUPERADMIN', name: 'superadmin_id' },
     { title: 'CITY', name: 'city' },
-    { title: 'ADMIN ROLE', name: 'role' },
+    { title: 'ROLE', name: 'role' },
     { title: 'BALANCE', name: 'balance' },
 ];
 

@@ -10,9 +10,15 @@ import {cashiersData} from "../mocks/cashiersData.js";
 import {statisticsData} from "../mocks/statisticsData.js";
 import {usersTableData} from "../mocks/usersTableData.js";
 import {Role} from "./roles.js";
+import SuperAdministrators from "../containers/Content/SuperAdministrators";
+import Administrators_stat from "../transaction_statistics/Administrators_stat";
 
 const items = [
     {
+        link: '/superadmins_stat',
+        roles: [Role.Owner],
+        component: () => <Administrators_stat/>
+    }, {
         name: 'Charge or discard balance',
         link: '/charge',
         roles: [Role.Owner],
@@ -23,6 +29,11 @@ const items = [
         roles: [Role.Owner],
         data: treeData,
         component: () => <TreePage data={treeData}/>
+    }, {
+        name: 'Super Administrators',
+        link: '/super_admins',
+        roles: [Role.Owner],
+        component: () => <SuperAdministrators/>
     }, {
         name: 'Administrators',
         link: '/administrators',

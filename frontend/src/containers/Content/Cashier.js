@@ -6,7 +6,10 @@ const Cashier = ({ data }) => {
     const url = "/api/v1/owner/CASHIER/user-list";
 
     const tableProps = {
-        getData: () => api.get(url),
+        getData: (setRows, setError) => api.get(url).then(
+            response => { setRows(response.data) },
+            error => { setError(error) }
+        ),
         getInfo: (id) => api.get(`${url}/${id}`),
     }
 
