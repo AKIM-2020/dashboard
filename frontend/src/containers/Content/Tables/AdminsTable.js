@@ -80,18 +80,11 @@ const AdminsTable = ({columns, editingFunc}) => {
 
     const [colExt] = useState(columns.map(it => (
         {columnName: it.name, width: 'auto'}
-    )))
+    )));
 
     useEffect(() => {
-        getData().then(
-            response => {
-                setRows(response.data)
-            },
-            error => {
-                setError(error)
-            }
-        )
-    }, [success])
+        getData(setRows, setError)
+    }, [success]);
 
     const EditComponent = ({row, ...restProps}) => (
         <TableEditColumn.Cell row={row} {...restProps}>
@@ -99,24 +92,24 @@ const AdminsTable = ({columns, editingFunc}) => {
                 id="Edit"
                 text="Edit"
                 onExecute={() => {
-                    setEdit(true)
-                    setRowId(row)
-                    setLogin(row.login)
-                    setFirstName(row.name)
-                    setLastName(row.surname)
-                    setCity(row.city)
+                    setEdit(true);
+                    setRowId(row);
+                    setLogin(row.login);
+                    setFirstName(row.name);
+                    setLastName(row.surname);
+                    setCity(row.city);
                 }}
             />
             <TableEditColumn.Command
                 id="Delete"
                 text="Delete"
                 onExecute={() => {
-                    setDeleted(true)
-                    setRowId(row)
+                    setDeleted(true);
+                    setRowId(row);
                 }}
             />
         </TableEditColumn.Cell>
-    )
+    );
 
     const AddComponent = ({column, ...restProps}) => (
         <TableEditColumn.HeaderCell column={column} {...restProps}>
@@ -128,7 +121,7 @@ const AdminsTable = ({columns, editingFunc}) => {
                 }}
             />
         </TableEditColumn.HeaderCell>
-    )
+    );
 
     let postData = (transferData) => {
         setTransferData({});
@@ -137,9 +130,9 @@ const AdminsTable = ({columns, editingFunc}) => {
             addRow(transferData).then(
                 response => {
                     if (response.status === 202 || response.status === 200) {
-                        setSuccess(true)
-                        setTransferData(transferData)
-                        setButtonDisabled(false)
+                        setSuccess(true);
+                        setTransferData(transferData);
+                        setButtonDisabled(false);
                     }
                 },
                 error => {
@@ -150,37 +143,37 @@ const AdminsTable = ({columns, editingFunc}) => {
             editRow(transferData, rowId.id).then(
                 response => {
                     if (response.status === 202 || response.status === 200) {
-                        setSuccess(true)
-                        setTransferData(transferData)
-                        setButtonDisabled(false)
+                        setSuccess(true);
+                        setTransferData(transferData);
+                        setButtonDisabled(false);
                     }
                 },
                 error => {
-                    setError(error)
+                    setError(error);
                 }
             )
         } else if (deleted) {
             deleteRow(rowId.id).then(
                 response => {
                     if (response.status === 202 || response.status === 200) {
-                        setSuccess(true)
-                        setButtonDisabled(false)
+                        setSuccess(true);
+                        setButtonDisabled(false);
                     }
                 },
                 error => {
                     setError(error)
                 })
         }
-    }
+    };
 
     const clickHandler = () => {
-        let transferData = {login, password, firstName, lastName, city, email}
+        let transferData = {login, password, firstName, lastName, city, email};
 
         setSuccess(false);
         setError(false);
 
-        postData(transferData)
-    }
+        postData(transferData);
+    };
 
     return (
         <div>

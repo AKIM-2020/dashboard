@@ -1,21 +1,69 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {api} from "../../helpers";
 import StatisticsTable from "./Tables/StatisticsTable";
+import {columns} from "../../helpers/tableColumns";
+import {NavLink} from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import AdminsTable from "./Tables/AdminsTable";
+import {connect} from "react-redux";
+import {cashierContentType} from "../../reducers/contentReducer";
+import {authenticationService} from "../../service";
 
-const Cashier = ({ data }) => {
-    const url = "/api/v1/owner/CASHIER/user-list";
+const Cashier = (props) => {
+    let tableDataUrl = "/api/v1/owner/CASHIER/user-list";
+    let postUrl = props.postUrl;
+    let user = props.user;
 
-    const tableProps = {
-        getData: (setRows, setError) => api.get(url).then(
-            response => { setRows(response.data) },
-            error => { setError(error) }
+    useEffect(() => {
+        props.cashierContentType()
+    }, []);
+
+    const editingProps = {
+        getData: (setRows, setError) => api.get(tableDataUrl, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }).then(
+            response => {
+                setRows(response.data)
+            },
+            error => {
+                setError(error)
+            }
         ),
-        getInfo: (id) => api.get(`${url}/${id}`),
-    }
+        addRow: (transferData) => api.post(postUrl, {...transferData}, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
+        deleteRow: (rowId) => api.delete(postUrl + `/${rowId}`, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
+        editRow: (transferData, rowId) => api.put(postUrl + `/${rowId}`, {...transferData}, {
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }),
+    };
 
     return <div>
-        <StatisticsTable columns={ data.columns } getFunc={ tableProps }/>
+        <NavLink to='/superadmins_stat'>
+            <Button variant="contained" color="primary" onClick={props.cashierContentType}>
+                Get transaction list
+            </Button>
+        </NavLink>
+        {user === "ADMIN" ? <AdminsTable columns={columns.cashiers} editingFunc={editingProps}/> :
+            <StatisticsTable columns={columns.cashiers} getFunc={editingProps}/>}
     </div>
-}
+};
 
-export default Cashier;
+let mapStateToProps = (state) => {
+    return {
+        user: state.authentication.user.authorities[0].authority,
+        postUrl: state.contentType.postUrl
+    }
+};
+
+export default connect(mapStateToProps, {cashierContentType})(Cashier);

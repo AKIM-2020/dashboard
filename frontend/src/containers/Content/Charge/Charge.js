@@ -14,6 +14,9 @@ const useStyles = makeStyles({
         marginLeft: '10px',
         marginTop: '5px'
     },
+    textField: {
+        marginLeft: '8px'
+    },
 });
 
 
@@ -37,8 +40,10 @@ export const Charge = () => {
             }
         }).then(response => {
             setData(response.data);
-            setResponseStatus(response.status);
-        })
+            response.status === 200 ? setResponseStatus(response.status) : setResponseStatus(response.message);
+        },
+            error => { setResponseStatus(error.response.data.message) }
+            )
     }, [id, success])
 
     let isClicked = () => {
@@ -56,8 +61,8 @@ export const Charge = () => {
 
     return <Box component="div" display="flex" justifyContent="center">
         <FormControl>
-            <Box component="div" display="inline">
-                <TextField value={name} onChange={event => setName(event.target.value)} id="idField" label="Enter user ID" color="blue" />
+            <Box component="div"  display="inline">
+                <TextField value={name} className={classes.textField} onChange={event => setName(event.target.value)} id="idField" label="Enter user ID" color="blue" />
                 <Button id="checkButton" variant="contained" className={classes.button} onClick={isClicked}>Check</Button>
                 {button
                     ? <PayForm id={id} data={data} setData={setData}

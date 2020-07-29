@@ -22,7 +22,7 @@ const actions = [
     {
         value: 'TRANSFER',
         label: 'Transfer',
-    }]
+    }];
 
 const PayForm = (props) => {
     const classes = useStyles();
@@ -31,14 +31,14 @@ const PayForm = (props) => {
 
     const amountChange = (event) => {
         props.setAmount(event.target.value)
-    }
+    };
 
     const actionChange = (event) => {
         props.setSuccess(false);
         props.setError(false);
         props.setAmount('');
         props.setAction(event.target.value);
-    }
+    };
 
     let postData = (transferData) => {
         setTransferAmount(transferData);
@@ -55,7 +55,7 @@ const PayForm = (props) => {
                 }
             }
         )
-    }
+    };
 
     const transferHandler = () => {
         let transferData = {
@@ -63,7 +63,7 @@ const PayForm = (props) => {
             amount: Number(props.amount),
             note: "3",
             operationType: props.action,
-        }
+        };
 
         props.setSuccess(false);
         props.setError(false);
@@ -86,87 +86,105 @@ const PayForm = (props) => {
             }
                 break;
         }
-    }
+    };
 
     return <div>
         <Box component="div" display="flex" justifyContent="left">
-            {props.responseStatus === 200 ? <Box>
-                    <div>
-                        <div>User ID: {props.data.id}</div>
-                        <div>User login: {props.data.login}</div>
-                        <div>User name: {props.data.name}</div>
-                        <div>User surname: {props.data.surname}</div>
-                        <div>User role: {props.data.role}</div>
-                        <div>User balance: {props.data.balance}</div>
-                    </div>
-                    <div>
-                        <TextField
-                            id="actionBox"
-                            select
-                            label="Action"
-                            value={props.action}
-                            onChange={actionChange}
-                            helperText="Please select action"
-                        >
-                            {actions.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </div>
-                    <div>
-                        {props.action === 'WITHDRAW'
-                            ? <Box component="div" display="inline">
-                                <TextField
-                                    id="withdraw"
-                                    label="Withdraw amount"
-                                    color="blue"
-                                    value={props.amount}
-                                    onChange={amountChange}
-                                />
-                                <Button id="withdrawButton" variant="contained"
-                                        className={classes.button}
-                                        onClick={transferHandler}
-                                        disabled={buttonDisabled}
-                                >Withdraw</Button>
-                                {
-                                    props.success ? <div>The transaction is successful</div>
-                                        : props.error ? <div>Please enter correct amount.</div>
-                                        : null
-                                }
+            {props.responseStatus === null ? null
+                : props.responseStatus === 200 ? <Box  width="290px">
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User ID: {props.data.id}
                             </Box>
-                            : props.action === 'TRANSFER'
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User login: {props.data.login}
+                            </Box>
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User name: {props.data.name}
+                            </Box>
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User surname: {props.data.surname}
+                            </Box>
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User role: {props.data.role}
+                            </Box>
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="primary.main">
+                                User balance: {props.data.balance}
+                            </Box>
+                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                                 bgcolor="background.paper">
+                            <TextField
+                                id="actionBox"
+                                select
+                                label="Action"
+                                value={props.action}
+                                onChange={actionChange}
+                                helperText="Please select action"
+                            >
+                                {actions.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            </Box>
+                        <div>
+                            {props.action === 'WITHDRAW'
                                 ? <Box component="div" display="inline">
                                     <TextField
-                                        id="transfer"
-                                        label="Transfer amount"
+                                        id="withdraw"
+                                        label="Withdraw amount"
                                         color="blue"
                                         value={props.amount}
                                         onChange={amountChange}
                                     />
-                                    <Button id="transferButton" variant="contained"
+                                    <Button id="withdrawButton" variant="contained"
                                             className={classes.button}
                                             onClick={transferHandler}
                                             disabled={buttonDisabled}
-                                    >Transfer</Button>
+                                    >Withdraw</Button>
                                     {
-                                        props.success ? <div>Transaction is successful!</div>
+                                        props.success ? <div>The transaction is successful</div>
                                             : props.error ? <div>Please enter correct amount.</div>
                                             : null
                                     }
                                 </Box>
-                                : null
-                        }
-                    </div>
-                </Box>
-                : props.responseStatus === 500 ? <div>                          //correct term is needed
-                    <div>Wrong ID! Please enter valid ID.</div>
-                </div>
-                    : null
+                                : props.action === 'TRANSFER'
+                                    ? <Box component="div" display="inline">
+                                        <TextField
+                                            id="transfer"
+                                            label="Transfer amount"
+                                            color="blue"
+                                            value={props.amount}
+                                            onChange={amountChange}
+                                        />
+                                        <Button id="transferButton" variant="contained"
+                                                className={classes.button}
+                                                onClick={transferHandler}
+                                                disabled={buttonDisabled}
+                                        >Transfer</Button>
+                                        {
+                                            props.success ? <div>Transaction is successful!</div>
+                                                : props.error ? <div>Please enter correct amount.</div>
+                                                : null
+                                        }
+                                    </Box>
+                                    : null
+                            }
+                        </div>
+                    </Box>
+                    : <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
+                        <Box p={1} color="error.contrastText" bgcolor="error.main">
+                            <div>{props.responseStatus}</div>
+                        </Box>
+                    </Box>
             }
         </Box>
     </div>
-}
-
+};
 export default PayForm;

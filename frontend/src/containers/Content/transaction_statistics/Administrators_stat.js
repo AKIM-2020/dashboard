@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
-import StatisticsTable from "../containers/Content/Tables/StatisticsTable";
-import {authenticationService} from "../service/authService";
+import StatisticsTable from "../Tables/StatisticsTable";
+import {authenticationService} from "../../../service/authService";
 import axios from 'axios';
 import Box from "@material-ui/core/Box";
+import {connect} from "react-redux";
 
-const Administrators_stat = () => {
-    const tableDataUrl = "/api/v1/owner/transaction-list?role=OWNER";
+const Administrators_stat = (props) => {
+    let tableDataUrl = props.url;
     const [data, setData] = useState({});
 
     useEffect(() => {
@@ -18,7 +19,7 @@ const Administrators_stat = () => {
                 setData({balance: response.data.balance, credit: response.data.credit, debit: response.data.debit});
             }
         )
-    }, [])
+    }, []);
 
     const gettingProps = {
         getData: (setRows, setError) => axios.get(tableDataUrl, {
@@ -34,7 +35,8 @@ const Administrators_stat = () => {
             }
         )
     }
-    debugger
+
+debugger
     if (data.length !== 0) {
         return <div>
             <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
@@ -65,4 +67,11 @@ const columns = [
     {title: 'DATA', name: 'created'}
 ];
 
-export default Administrators_stat;
+let mapStateToProps = (state) => {
+    return {
+        user: state.authentication.user.authorities[0].authority,
+        url: state.contentType.transactionUrl
+    }
+};
+debugger
+export default connect(mapStateToProps, null)(Administrators_stat);

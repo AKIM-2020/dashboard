@@ -1,20 +1,35 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {api} from "../../helpers";
 import AdminsTable from "./Tables/AdminsTable";
 import {authenticationService} from "../../service";
 import Button from "@material-ui/core/Button";
 import {NavLink} from "react-router-dom";
+import {columns} from "../../helpers/tableColumns";
+import {connect} from "react-redux";
+import {superadminContentType} from "../../reducers/contentReducer";
+import axios from "axios";
 
-const Administrators = () => {
+const SuperAdministrators = (props) => {
     const tableDataUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
-    const postUrl = '/api/v1/owner/user';
+    let postUrl = props.postUrl;
+
+    useEffect(() => {
+        props.superadminContentType()
+    }, []);
 
     const editingProps = {
-        getData: () => api.get(tableDataUrl, {
+        getData: (setRows, setError) => api.get(tableDataUrl, {
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
-        }),
+        }).then(
+            response => {
+                setRows(response.data)
+            },
+            error => {
+                setError(error)
+            }
+        ),
         addRow: (transferData) => api.post(postUrl, {...transferData}, {
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
@@ -30,7 +45,7 @@ const Administrators = () => {
                 'Authorization': `${authenticationService.currentToken}`
             }
         }),
-    }
+    };
 
     return <div>
         <NavLink to='/superadmins_stat'>
@@ -38,19 +53,14 @@ const Administrators = () => {
                 Get transaction list
             </Button>
         </NavLink>
-        <AdminsTable columns={columns} editingFunc={editingProps}/>
+        <AdminsTable columns={columns.superAdmin} editingFunc={editingProps}/>
     </div>
 };
 
-const columns = [
-    {title: 'ID', name: 'id'},
-    {title: 'LOGIN', name: 'login'},
-    {title: 'NAME', name: 'name'},
-    {title: 'SURNAME', name: 'surname'},
-    {title: 'SUPERADMIN', name: 'superadmin_id'},
-    {title: 'CITY', name: 'city'},
-    {title: 'ADMIN ROLE', name: 'role'},
-    {title: 'BALANCE', name: 'balance'},
-];
+let mapStateToProps = (state) => {
+    return {
+        postUrl: state.contentType.postUrl
+    }
+};
 
-export default Administrators;
+export default connect(mapStateToProps, {superadminContentType})(SuperAdministrators);
