@@ -7,7 +7,7 @@ import PayForm from './PayForm'
 import {api} from "../../../helpers";
 import TextField from "@material-ui/core/TextField";
 import {authenticationService} from "../../../service";
-
+import {connect} from "react-redux";
 
 const useStyles = makeStyles({
     button: {
@@ -19,8 +19,7 @@ const useStyles = makeStyles({
     },
 });
 
-
-export const Charge = () => {
+const Charge = (props) => {
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [data, setData] = React.useState(null);
@@ -32,9 +31,33 @@ export const Charge = () => {
     const [error, setError] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
 
+    let chargeUrl = "";
+
+    switch (props.user) {
+        case "OWNER": {
+            chargeUrl = "/api/v1/owner/user/"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            chargeUrl = "/api/v1/super-admin/user/"
+        }
+            break;
+        case "ADMIN": {
+            chargeUrl = "/api/v1/admin/user/"
+        }
+            break;
+        case "CASHIER": {
+            chargeUrl = "/api/v1/cashier/user/"
+        }
+            break;
+        default:
+            chargeUrl = ""
+
+    }
+
 
     useEffect(() => {
-        api.get(`/api/v1/owner/user/${id}`,{
+        api.get(`${chargeUrl} + ${id}`,{
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
@@ -58,7 +81,7 @@ export const Charge = () => {
             setResponseStatus(null)
         }
     }
-
+debugger
     return <Box component="div" display="flex" justifyContent="center">
         <FormControl>
             <Box component="div"  display="inline">
@@ -76,4 +99,12 @@ export const Charge = () => {
             </Box>
         </FormControl>
     </Box>
-}
+};
+
+let mapStateToProps = (state) => {
+    return {
+        user: state.authentication.user.authorities[0].authority
+    }
+};
+
+export default connect(mapStateToProps, null)(Charge)

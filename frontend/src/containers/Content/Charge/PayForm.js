@@ -6,6 +6,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuItem from "@material-ui/core/MenuItem";
 import {api} from "../../../helpers";
 import {authenticationService} from "../../../service";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles({
     button: {
@@ -29,6 +30,30 @@ const PayForm = (props) => {
     const [transferAmount, setTransferAmount] = React.useState({});
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
+    let payFormUrl = "";
+
+    switch (props.user) {
+        case "OWNER": {
+            payFormUrl = "/api/v1/owner/transaction"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            payFormUrl = "/api/v1/super-admin/transaction"
+        }
+            break;
+        case "ADMIN": {
+            payFormUrl = "/api/v1/admin/transaction"
+        }
+            break;
+        case "CASHIER": {
+            payFormUrl = "/api/v1/cashier/transaction"
+        }
+            break;
+        default:
+            payFormUrl = ""
+
+    }
+
     const amountChange = (event) => {
         props.setAmount(event.target.value)
     };
@@ -43,14 +68,14 @@ const PayForm = (props) => {
     let postData = (transferData) => {
         setTransferAmount(transferData);
         setButtonDisabled(true);
-        api.post('/api/v1/owner/transaction', {...transferData}, {
+        api.post(`${payFormUrl}`, {...transferData}, {
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
         }).then(
             response => {
                 if (response.status === 200) {
-                    props.setSuccess(true)
+                    props.setSuccess(true);
                     setButtonDisabled(false)
                 }
             }
@@ -87,37 +112,37 @@ const PayForm = (props) => {
                 break;
         }
     };
-
+debugger
     return <div>
         <Box component="div" display="flex" justifyContent="left">
             {props.responseStatus === null ? null
-                : props.responseStatus === 200 ? <Box  width="290px">
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User ID: {props.data.id}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User login: {props.data.login}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User name: {props.data.name}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User surname: {props.data.surname}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User role: {props.data.role}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="primary.main">
-                                User balance: {props.data.balance}
-                            </Box>
-                            <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
-                                 bgcolor="background.paper">
+                : props.responseStatus === 200 ? <Box width="290px">
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User ID: {props.data.id}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User login: {props.data.login}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User name: {props.data.name}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User surname: {props.data.surname}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User role: {props.data.role}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="primary.main">
+                            User balance: {props.data.balance}
+                        </Box>
+                        <Box display="flex" justifyContent="center" p={1} m={1} color="primary.contrastText"
+                             bgcolor="background.paper">
                             <TextField
                                 id="actionBox"
                                 select
@@ -132,7 +157,7 @@ const PayForm = (props) => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            </Box>
+                        </Box>
                         <div>
                             {props.action === 'WITHDRAW'
                                 ? <Box component="div" display="inline">
@@ -187,4 +212,11 @@ const PayForm = (props) => {
         </Box>
     </div>
 };
-export default PayForm;
+
+let mapStateToProps = (state) => {
+    return {
+        user: state.authentication.user.authorities[0].authority
+    }
+};
+
+export default connect(mapStateToProps, null)(PayForm);

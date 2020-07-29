@@ -2,7 +2,7 @@ import React from "react";
 import Administrators from "../containers/Content/Administrators";
 import Cashier from "../containers/Content/Cashier";
 import TreePage from '../containers/Content/TreePage.js'
-import {Charge} from "../containers/Content/Charge/Charge.js";
+import Charge from "../containers/Content/Charge/Charge.js";
 import Users from "../containers/Content/Users.js";
 import {treeData} from "../mocks";
 import {Role} from "./roles.js";
