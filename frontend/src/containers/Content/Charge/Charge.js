@@ -69,7 +69,8 @@ const Charge = (props) => {
             )
     }, [id, success])
 
-    let isClicked = () => {
+    const isClicked = (event) => {
+        event.preventDefault();
         setButton(true);
         if (id !== name) {
             setId(name);
@@ -81,12 +82,17 @@ const Charge = (props) => {
             setResponseStatus(null)
         }
     }
-debugger
+
     return <Box component="div" display="flex" justifyContent="center">
         <FormControl>
             <Box component="div"  display="inline">
+                <form onSubmit={(event) => {
+                    isClicked(event)
+                }}
+                >
                 <TextField value={name} className={classes.textField} onChange={event => setName(event.target.value)} id="idField" label="Enter user ID" color="blue" />
-                <Button id="checkButton" variant="contained" className={classes.button} onClick={isClicked}>Check</Button>
+                <Button id="checkButton" type="submit" variant="contained" className={classes.button}>Check</Button>
+                </form>
                 {button
                     ? <PayForm id={id} data={data} setData={setData}
                                action={action} setAction={setAction}

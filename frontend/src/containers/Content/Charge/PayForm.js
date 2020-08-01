@@ -82,7 +82,8 @@ const PayForm = (props) => {
         )
     };
 
-    const transferHandler = () => {
+    const transferHandler = (event) => {
+        event.preventDefault();
         let transferData = {
             id: Number(props.data.id),
             amount: Number(props.amount),
@@ -112,7 +113,7 @@ const PayForm = (props) => {
                 break;
         }
     };
-debugger
+
     return <div>
         <Box component="div" display="flex" justifyContent="left">
             {props.responseStatus === null ? null
@@ -161,6 +162,10 @@ debugger
                         <div>
                             {props.action === 'WITHDRAW'
                                 ? <Box component="div" display="inline">
+                                    <form onSubmit={(event) => {
+                                        transferHandler(event)
+                                    }}
+                                    >
                                     <TextField
                                         id="withdraw"
                                         label="Withdraw amount"
@@ -168,11 +173,11 @@ debugger
                                         value={props.amount}
                                         onChange={amountChange}
                                     />
-                                    <Button id="withdrawButton" variant="contained"
+                                    <Button id="withdrawButton" variant="contained" type="submit"
                                             className={classes.button}
-                                            onClick={transferHandler}
                                             disabled={buttonDisabled}
                                     >Withdraw</Button>
+                                    </form>
                                     {
                                         props.success ? <div>The transaction is successful</div>
                                             : props.error ? <div>Please enter correct amount.</div>
@@ -181,6 +186,10 @@ debugger
                                 </Box>
                                 : props.action === 'TRANSFER'
                                     ? <Box component="div" display="inline">
+                                        <form onSubmit={(event) => {
+                                            transferHandler(event)
+                                        }}
+                                        >
                                         <TextField
                                             id="transfer"
                                             label="Transfer amount"
@@ -188,11 +197,11 @@ debugger
                                             value={props.amount}
                                             onChange={amountChange}
                                         />
-                                        <Button id="transferButton" variant="contained"
+                                        <Button id="transferButton" variant="contained" type="submit"
                                                 className={classes.button}
-                                                onClick={transferHandler}
                                                 disabled={buttonDisabled}
                                         >Transfer</Button>
+                                        </form>
                                         {
                                             props.success ? <div>Transaction is successful!</div>
                                                 : props.error ? <div>Please enter correct amount.</div>
