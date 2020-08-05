@@ -20,7 +20,7 @@ export const contentType = (state = initialState, action) => {
             return state
     }
 }
-debugger
+
 export const ownerContentType = () => ({type: "OWNER"});
 export const superadminContentType = () => ({type: "SUPER_ADMIN"});
 export const adminContentType = () => ({type: "ADMIN"});

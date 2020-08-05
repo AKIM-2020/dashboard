@@ -4,25 +4,25 @@ import SignIn from "../LoginPage/SignInPage";
 import HomePage from "../HomePage";
 import {connect} from "react-redux";
 
-const App = ({user, isSignedIn}) => (
+const App = (props) => (
     <BrowserRouter>
         <div className="App">
-            {isSignedIn
+            {props.isSignedIn
                 ? <div>
-                    {/*<Redirect to={'/main'}/>*/}
-                    <HomePage user={user}/>
+                    <HomePage/>
                 </div>
                 : <SignIn/>
             }
         </div>
     </BrowserRouter>
 );
-
+debugger
 const mapStateToProps = state => {
     return {
         isSignedIn: state.authentication.loggedIn,
-        user: state.authentication.user
+        user: state.authentication.user,
+        goToMain: state.authentication.goToMain
     };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, null)(App);

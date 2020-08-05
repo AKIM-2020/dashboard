@@ -8,6 +8,8 @@ import {treeData} from "../mocks";
 import {Role} from "./roles.js";
 import SuperAdministrators from "../containers/Content/SuperAdministrators";
 import Administrators_stat from "../containers/Content/transaction_statistics/Administrators_stat";
+import HomePage from "../containers/HomePage";
+import SignIn from "../containers/LoginPage/SignInPage";
 
 const items = [
     {
@@ -15,7 +17,14 @@ const items = [
         link: '/superadmins_stat',
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
         component: () => <Administrators_stat/>
-    }, {
+    },
+    {
+        name: 0,
+        link: '/login',
+        roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
+        component: () => <SignIn/>
+    },
+    {
         name: 'Charge or discard balance',
         link: '/charge',
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
@@ -129,4 +138,3 @@ export const getUserItems = (user) => {
 const authorities = user.authorities.map((it) => it.authority);
 return items.filter(it => it.roles.filter(role => authorities.includes(role)).length === 1)
 };
-

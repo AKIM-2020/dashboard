@@ -50,7 +50,7 @@ const SignIn = ({login}) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         login(userName, userPassword);
-    }
+    };
 
     return (<>
             <Redirect to={'/login'}/>
@@ -65,7 +65,7 @@ const SignIn = ({login}) => {
                     </Typography>
                     <form className={classes.form} noValidate onSubmit={(event) => {
                         handleSubmit(event)
-                        }}
+                    }}
                     >
                         <TextField
                             variant="outlined"
@@ -112,6 +112,12 @@ const SignIn = ({login}) => {
     );
 };
 
+const mapStateToProps = state => {
+    return {
+        isSignedIn: state.authentication.loggedIn
+    };
+};
+
 const mapDispatchToProps = (dispatch) => bindActionCreators({...userActions}, dispatch);
 
-export default connect(null, mapDispatchToProps)(SignIn)
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

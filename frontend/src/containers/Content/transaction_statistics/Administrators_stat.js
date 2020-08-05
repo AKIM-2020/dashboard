@@ -73,5 +73,5 @@ let mapStateToProps = (state) => {
         url: state.contentType.transactionUrl
     }
 };
-debugger
+
 export default connect(mapStateToProps, null)(Administrators_stat);
