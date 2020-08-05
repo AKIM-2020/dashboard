@@ -11,6 +11,7 @@ import Administrators_stat from "../containers/Content/transaction_statistics/Ad
 
 const items = [
     {
+        name: 0,
         link: '/superadmins_stat',
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
         component: () => <Administrators_stat/>

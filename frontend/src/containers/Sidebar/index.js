@@ -35,11 +35,13 @@ const Sidebar = ({ classes, open, handleDrawerClose, items, logout }) => {
                 <Divider/>
                 <List>
                     { items && items.map((it, index) => (
-                        <NavLink to={ it.link } style={{ color: 'black' }} key={ index }>
-                            <ListItem button dense={ true }>
-                                <ListItemText primary={ it.name }/>
-                            </ListItem>
-                        </NavLink>
+                        it.name !== 0 ?
+                                <NavLink to={it.link} style={{color: 'black'}} key={index}>
+                                    <ListItem button dense={true}>
+                                        <ListItemText primary={it.name}/>
+                                    </ListItem>
+                                </NavLink>
+                                : null
                     )) }
                 </List>
                 <Divider/>
