@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/cashier")
 class CashierController(
-        private val userService: UserService,
-        private val transferService: TransferService
+        private val userService: UserService
 ) {
 
     @GetMapping
@@ -29,24 +28,6 @@ class CashierController(
         return ResponseEntity.ok(userService.getAllChildUsers()
                 .map { it.toUserInfo() }
                 .toCollection(arrayListOf()))
-    }
-
-
-    @PostMapping("/transaction")
-    @ApiOperation("make Transaction")
-    fun makeTransaction(@RequestBody request: TransferDto) {
-        val currentUser = userService.getCurrentUser()
-        val childUser = userService.getChildUserById(request.id)
-        transferService.makeTransaction(request, currentUser, childUser)
-    }
-
-    @GetMapping("/transaction-list")
-    @ApiOperation("get transaction history")
-    fun getTransactionList(): ResponseEntity<TransactionCollectionDto> {
-
-        val users = listOf(userService.getCurrentUser())
-
-        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")

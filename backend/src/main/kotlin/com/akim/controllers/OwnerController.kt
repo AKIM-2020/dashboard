@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/owner")
 class OwnerController(
-        private val userService: UserService,
-        private val transferService: TransferService
+        private val userService: UserService
 ) {
 
     @GetMapping
@@ -29,25 +28,6 @@ class OwnerController(
             ResponseEntity.ok(userService.getUsersByRole(role)
                     .map { it.toUserInfo() }
                     .toCollection(arrayListOf()))
-
-    @PostMapping("/transaction")
-    fun transferWithSuperAdmin(@RequestBody request: TransferDto) {
-        val currentUser = userService.getCurrentUser()
-        val childUser = userService.getChildUserById(request.id)
-        transferService.makeTransaction(request, currentUser, childUser)
-    }
-
-    @GetMapping("/transaction-list")
-    fun getTransactionList(
-            @RequestParam(required = false) role: Roles?
-    ): ResponseEntity<TransactionCollectionDto> {
-        val users =
-                role?.let { userService.getUsersByRole(it) }
-                        ?: listOf(userService.getCurrentUser())
-
-        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
-
-    }
 
     @PostMapping("/user")
     @ApiOperation("creating super admin")

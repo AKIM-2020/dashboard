@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/super-admin")
 class SuperAdminController(
-        private val userService: UserService,
-        private val transferService: TransferService
+        private val userService: UserService
 ) {
 
     @GetMapping
@@ -43,29 +42,6 @@ class SuperAdminController(
         return ResponseEntity.ok(response
                 .map { it.toUserInfo() }
                 .toCollection(arrayListOf()))
-    }
-
-
-    @PostMapping("/transaction")
-    fun transferWithSuperAdmin(@RequestBody request: TransferDto) {
-        val currentUser = userService.getCurrentUser()
-        val childUser = userService.getChildUserById(request.id)
-        transferService.makeTransaction(request, currentUser, childUser)
-    }
-
-    @GetMapping("/transaction-list")
-    fun getTransactionList(
-            @RequestParam(required = false) role: Roles?
-    ): ResponseEntity<TransactionCollectionDto> {
-
-        if (role == Roles.OWNER || role == Roles.SUPER_ADMIN) {
-            throw BadRequestException("Not enough permissions to view $role")
-        }
-        val users =
-                role?.let { userService.getUsersByRole(it) }
-                        ?: listOf(userService.getCurrentUser())
-
-        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")

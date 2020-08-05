@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/admin")
 class AdminController(
-        private val userService: UserService,
-        private val transferService: TransferService
+        private val userService: UserService
 ) {
 
     @GetMapping
@@ -39,31 +38,6 @@ class AdminController(
         return ResponseEntity.ok(response
                 .map { it.toUserInfo() }
                 .toCollection(arrayListOf()))
-    }
-
-
-    @PostMapping("/transaction")
-    @ApiOperation("make Transaction")
-    fun makeTransaction(@RequestBody request: TransferDto) {
-        val currentUser = userService.getCurrentUser()
-        val childUser = userService.getChildUserById(request.id)
-        transferService.makeTransaction(request, currentUser, childUser)
-    }
-
-    @GetMapping("/transaction-list")
-    @ApiOperation("get transaction history")
-    fun getTransactionList(
-            @RequestParam(required = false) role: Roles?
-    ):  ResponseEntity<TransactionCollectionDto> {
-
-        if(role != Roles.CASHIER && role != Roles.USER) {
-            throw BadRequestException("Not enough permissions to view $role") //TODO find a suitable exception
-        }
-        val users =
-                role?.let { userService.getUsersByRole(it) }
-                        ?: listOf(userService.getCurrentUser())
-
-        return  ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     @PostMapping("/user")

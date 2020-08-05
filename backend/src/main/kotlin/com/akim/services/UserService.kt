@@ -21,6 +21,8 @@ class UserService(
 
     fun getAllChildUsers() = userRepository.findAllByParent(getCurrentUser())
 
+    fun getAllChildUsersByRoleAndUsers(role: Roles, users: List<User>) = userRepository.findAllByRoleAndParentIn(role, users)
+
     fun getAllChildUsersByUserList(users: List<User>) = userRepository.findAllByParentIn(users)
 
     @Transactional
