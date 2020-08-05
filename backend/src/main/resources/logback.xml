@@ -14,7 +14,7 @@
 
 
     <!-- LOG everything at INFO level -->
-    <root level="DEBUG">
+    <root level="trace">
         <appender-ref ref="Console" />
     </root>
 

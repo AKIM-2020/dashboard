@@ -78,8 +78,11 @@ class TransferService(
 
     private fun toTransactionInfo(transaction: Transaction): TransactionInfo {
         return TransactionInfo(
-                transaction.source.id, transaction.destination.id, transaction.amount,
-                transaction.note, transaction.created
+                transaction.source.authUser.login,
+                transaction.destination.authUser.login,
+                transaction.amount,
+                transaction.note,
+                transaction.created
         )
     }
 
