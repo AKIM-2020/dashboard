@@ -30,29 +30,29 @@ const PayForm = (props) => {
     const [transferAmount, setTransferAmount] = React.useState({});
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
-    let payFormUrl = "";
+    let payFormUrl = "/api/v1/transaction";
 
-    switch (props.user) {
-        case "OWNER": {
-            payFormUrl = "/api/v1/owner/transaction"
-        }
-            break;
-        case "SUPER_ADMIN": {
-            payFormUrl = "/api/v1/super-admin/transaction"
-        }
-            break;
-        case "ADMIN": {
-            payFormUrl = "/api/v1/admin/transaction"
-        }
-            break;
-        case "CASHIER": {
-            payFormUrl = "/api/v1/cashier/transaction"
-        }
-            break;
-        default:
-            payFormUrl = ""
-
-    }
+    // switch (props.user) {
+    //     case "OWNER": {
+    //         payFormUrl = "/api/v1/owner/transaction"
+    //     }
+    //         break;
+    //     case "SUPER_ADMIN": {
+    //         payFormUrl = "/api/v1/super-admin/transaction"
+    //     }
+    //         break;
+    //     case "ADMIN": {
+    //         payFormUrl = "/api/v1/admin/transaction"
+    //     }
+    //         break;
+    //     case "CASHIER": {
+    //         payFormUrl = "/api/v1/cashier/transaction"
+    //     }
+    //         break;
+    //     default:
+    //         payFormUrl = ""
+    //
+    // }
 
     const amountChange = (event) => {
         props.setAmount(event.target.value)

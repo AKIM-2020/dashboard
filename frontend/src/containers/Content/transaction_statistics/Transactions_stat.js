@@ -5,7 +5,7 @@ import axios from 'axios';
 import Box from "@material-ui/core/Box";
 import {connect} from "react-redux";
 
-const Administrators_stat = (props) => {
+const Transactions_stat = (props) => {
     let tableDataUrl = props.url;
     const [data, setData] = useState({});
 
@@ -61,9 +61,9 @@ debugger
 };
 
 const columns = [
+    {title: 'PAYMENT SENDER', name: 'senderName'},
+    {title: 'PAYMENT RECEIVER', name: 'receiverName'},
     {title: 'AMOUNT', name: 'amount'},
-    {title: 'PAYMENT RECEIVER', name: 'destinationId'},
-    {title: 'PAYMENT SENDER', name: 'sourceId'},
     {title: 'DATA', name: 'created'}
 ];
 
@@ -74,4 +74,4 @@ let mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, null)(Administrators_stat);
+export default connect(mapStateToProps, null)(Transactions_stat);
