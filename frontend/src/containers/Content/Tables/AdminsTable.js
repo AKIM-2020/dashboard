@@ -73,6 +73,7 @@ const AdminsTable = ({columns, editingFunc}) => {
     const [lastName, setLastName] = React.useState('');
     const [city, setCity] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [errorMessage, setErrorMessage] = React.useState('');
     const [success, setSuccess] = React.useState(false);
     const [transferData, setTransferData] = React.useState({});
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
@@ -150,6 +151,8 @@ const AdminsTable = ({columns, editingFunc}) => {
                 },
                 error => {
                     setError(error);
+                    setErrorMessage(error.response.data.message);
+                    setButtonDisabled(false);
                 }
             )
         } else if (deleted) {
@@ -174,7 +177,7 @@ const AdminsTable = ({columns, editingFunc}) => {
 
         postData(transferData);
     };
-
+debugger
     return (
         <div>
             <Paper>
@@ -301,7 +304,7 @@ const AdminsTable = ({columns, editingFunc}) => {
                             <Box component="div" display="flex" justifyContent="center">
                                 {
                                     success ? <div>The operation is successful!</div>
-                                        : error ? <div>Error!</div>
+                                        : error ? <div> {errorMessage} </div>
                                         : null
                                 }
                             </Box>
@@ -333,5 +336,5 @@ const AdminsTable = ({columns, editingFunc}) => {
         </div>
     );
 };
-
+debugger
 export default AdminsTable;

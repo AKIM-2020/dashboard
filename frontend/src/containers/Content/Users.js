@@ -10,9 +10,30 @@ import {connect} from "react-redux";
 import {userContentType} from "../../reducers/contentReducer";
 
 const Users = (props) => {
-    let tableDataUrl = "/api/v1/owner/USER/user-list";
+    let tableDataUrl = "";
     let postUrl = props.postUrl;
     let user = props.user;
+
+    switch (user) {
+        case "OWNER": {
+            tableDataUrl = "/api/v1/owner/USER/user-list"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            tableDataUrl = "/api/v1/super-admin/USER/user-list"
+        }
+            break;
+        case "ADMIN": {
+            tableDataUrl = "/api/v1/admin/USER/user-list"
+        }
+            break;
+        case "CASHIER": {
+            tableDataUrl = "/api/v1/cashier/user-list"
+        }
+            break;
+        default:
+            tableDataUrl = ""
+    }
 
     useEffect(() => {
         props.userContentType()

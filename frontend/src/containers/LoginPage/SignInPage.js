@@ -42,14 +42,14 @@ const Copyright = () =>
     </Typography>
 
 
-const SignIn = ({login}) => {
+const SignIn = (props) => {
     const classes = useStyles();
     const [userName, setUserName] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        login(userName, userPassword);
+        props.login(userName, userPassword);
     };
 
     return (<>
@@ -104,6 +104,13 @@ const SignIn = ({login}) => {
                         </Button>
                     </form>
                 </div>
+                { props.error ?
+                <Box display="flex" justifyContent="center" p={1} m={1} color="white"
+                     bgcolor="red">
+                     Invalid login/password
+                </Box>
+                    : null
+                }
                 <Box mt={8}>
                     <Copyright/>
                 </Box>
@@ -114,7 +121,8 @@ const SignIn = ({login}) => {
 
 const mapStateToProps = state => {
     return {
-        isSignedIn: state.authentication.loggedIn
+        isSignedIn: state.authentication.loggedIn,
+        error: state.authentication.error
     };
 };
 

@@ -32,28 +32,6 @@ const PayForm = (props) => {
 
     let payFormUrl = "/api/v1/transaction";
 
-    // switch (props.user) {
-    //     case "OWNER": {
-    //         payFormUrl = "/api/v1/owner/transaction"
-    //     }
-    //         break;
-    //     case "SUPER_ADMIN": {
-    //         payFormUrl = "/api/v1/super-admin/transaction"
-    //     }
-    //         break;
-    //     case "ADMIN": {
-    //         payFormUrl = "/api/v1/admin/transaction"
-    //     }
-    //         break;
-    //     case "CASHIER": {
-    //         payFormUrl = "/api/v1/cashier/transaction"
-    //     }
-    //         break;
-    //     default:
-    //         payFormUrl = ""
-    //
-    // }
-
     const amountChange = (event) => {
         props.setAmount(event.target.value)
     };
@@ -76,6 +54,12 @@ const PayForm = (props) => {
             response => {
                 if (response.status === 200) {
                     props.setSuccess(true);
+                    setButtonDisabled(false)
+                }
+            },
+            error => {
+                if (error) {
+                    props.setError(true);
                     setButtonDisabled(false)
                 }
             }
@@ -204,7 +188,7 @@ const PayForm = (props) => {
                                         </form>
                                         {
                                             props.success ? <div>Transaction is successful!</div>
-                                                : props.error ? <div>Please enter correct amount.</div>
+                                                : props.error ? <div>Error! Check the balance/amount</div>
                                                 : null
                                         }
                                     </Box>

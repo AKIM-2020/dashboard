@@ -10,9 +10,26 @@ import {cashierContentType} from "../../reducers/contentReducer";
 import {authenticationService} from "../../service";
 
 const Cashier = (props) => {
-    let tableDataUrl = "/api/v1/owner/CASHIER/user-list";
+    let tableDataUrl = "";
     let postUrl = props.postUrl;
     let user = props.user;
+
+    switch (user) {
+        case "OWNER": {
+            tableDataUrl = "/api/v1/owner/CASHIER/user-list"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            tableDataUrl = "/api/v1/super-admin/CASHIER/user-list"
+        }
+            break;
+        case "ADMIN": {
+            tableDataUrl = "/api/v1/admin/CASHIER/user-list"
+        }
+            break;
+        default:
+            tableDataUrl = ""
+    }
 
     useEffect(() => {
         props.cashierContentType()

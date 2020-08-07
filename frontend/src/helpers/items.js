@@ -7,8 +7,7 @@ import Users from "../containers/Content/Users.js";
 import {treeData} from "../mocks";
 import {Role} from "./roles.js";
 import SuperAdministrators from "../containers/Content/SuperAdministrators";
-import Administrators_stat from "../containers/Content/transaction_statistics/Administrators_stat";
-import HomePage from "../containers/HomePage";
+import Administrators_stat from "../containers/Content/transaction_statistics/Transactions_stat";
 import SignIn from "../containers/LoginPage/SignInPage";
 
 const items = [
@@ -53,7 +52,7 @@ const items = [
     }, {
         name: 'Users',
         link: '/users',
-        roles: [Role.Owner, Role.SuperAdmin, Role.Admin],
+        roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
         component: () => <Users/>
         /*}, {
             name: 'Admin_statistics',
