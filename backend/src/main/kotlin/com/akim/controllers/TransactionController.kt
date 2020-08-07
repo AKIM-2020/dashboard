@@ -42,36 +42,35 @@ class TransactionController(
         role?.let { validateRoles(it, currentUser) }
 
         val users =
-                role?.let {getChildAdmins(it, currentUser) }
+                role?.let {getChildUsers(it, currentUser) }
                         ?: listOf(userService.getCurrentUser())
 
         return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
     }
 
     // need refactor costylization
-    private fun getChildAdmins(role: Roles, currentUser: User): List<User> {
-        return when (role) {
-            Roles.ADMIN -> userService.getAllChildUsersByRoleAndUsers(role, listOf(currentUser));
+    private fun getChildUsers(role: Roles, currentUser: User): List<User> {
+        if (currentUser.role == Roles.OWNER) {
+            return userService.getUsersByRole(role)
+        }
+        var predicateUsers = listOf(currentUser)
+        when (role) {
             Roles.CASHIER -> {
-                var allAdmins = userService.getAllChildUsersByRoleAndUsers(Roles.ADMIN, listOf(currentUser))
-                var allCashiers = userService.getAllChildUsersByRoleAndUsers(Roles.CASHIER, listOf(currentUser))
-                var response = ArrayList<User>()
-                response.addAll(allAdmins)
-                response.addAll(allCashiers)
-                return response
+                if (currentUser.role == Roles.SUPER_ADMIN) {
+                    predicateUsers = userService.getAllChildUsersByRoleAndUsers(role, listOf(currentUser))
+                }
             }
             Roles.USER -> {
-                var allAdmins = userService.getAllChildUsersByRoleAndUsers(Roles.ADMIN, listOf(currentUser))
-                var allCashiers = userService.getAllChildUsersByRoleAndUsers(Roles.CASHIER, allAdmins)
-                var allUsers = userService.getAllChildUsersByRoleAndUsers(Roles.USER, allCashiers)
-                var response = ArrayList<User>()
-                response.addAll(allAdmins)
-                response.addAll(allCashiers)
-                response.addAll(allUsers)
-                return response
+                if (currentUser.role == Roles.SUPER_ADMIN) {
+                    val allAdmins = userService.getAllChildUsersByRoleAndUsers(role, listOf(currentUser))
+                    predicateUsers = userService.getAllChildUsersByRoleAndUsers(role, allAdmins)
+                } else if (currentUser.role == Roles.ADMIN) {
+                    predicateUsers = userService.getAllChildUsersByRoleAndUsers(role, listOf(currentUser))
+                }
             }
-            else -> userService.getUsersByRole(role)
         }
+
+        return userService.getAllChildUsersByRoleAndUsers(role, predicateUsers)
     }
 
     private fun validateRoles(role: Roles, currentUser: User) {
