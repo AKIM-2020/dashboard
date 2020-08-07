@@ -35,6 +35,10 @@ class WebSecurityConfig(
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/v1/owner/**").hasAuthority("OWNER")
+                .antMatchers("/api/v1/super-admin/**").hasAuthority("SUPER_ADMIN")
+                .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/api/v1/cashier/**").hasAuthority("CASHIER")
                 .antMatchers("/api/v1/**").authenticated()
                 .and()
                 .exceptionHandling()
