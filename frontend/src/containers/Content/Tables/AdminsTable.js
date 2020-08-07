@@ -177,7 +177,7 @@ const AdminsTable = ({columns, editingFunc}) => {
 
         postData(transferData);
     };
-debugger
+
     return (
         <div>
             <Paper>
@@ -336,5 +336,5 @@ debugger
         </div>
     );
 };
-debugger
+
 export default AdminsTable;

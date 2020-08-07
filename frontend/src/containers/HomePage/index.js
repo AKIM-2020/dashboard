@@ -22,7 +22,7 @@ const HomePage = (props) => {
 
     return <div className={classes.root}>
         {props.user.goToMain ? <Redirect to={'/main'}/> : null}
-        <Header  classes={ classes } open={ open } handleDrawerOpen={ () => setOpen(true) }/>
+        <Header  classes={ classes } open={ open } handleDrawerOpen={ () => setOpen(true) } user={ user.authorities[0].authority }/>
         <Sidebar classes={ classes } open={ open } handleDrawerClose={ () => setOpen(false) } items={ items }/>
         <Content classes={ classes } open={ open } items={ items } user={ user } />
     </div>

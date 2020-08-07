@@ -24,8 +24,6 @@ export const columns = {
         { title: 'CASHIER ADDRESS', name: 'address' },
         { title: 'NAME', name: 'name' },
         { title: 'SURNAME', name: 'surname' },
-        { title: 'MAXIMUM OUTPUT', name: 'output' },
-        { title: 'MAXIMUM CASHIER BALANCE', name: 'max_balance' },
         { title: 'BALANCE', name: 'balance' },
     ],
     users: [
@@ -34,9 +32,7 @@ export const columns = {
         { title: 'Login', name: 'login' },
         { title: 'Name', name: 'name' },
         { title: 'Surname', name: 'surname' },
-        { title: 'Documents Number', name: 'doc_number' },
         { title: 'Currency', name: 'currency' },
-        { title: 'Balance', name: 'balance' },
-        { title: 'Active Promotional Code', name: 'active_promo' }
+        { title: 'Balance', name: 'balance' }
     ]
 };

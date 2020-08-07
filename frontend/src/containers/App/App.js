@@ -16,7 +16,7 @@ const App = (props) => (
         </div>
     </BrowserRouter>
 );
-debugger
+
 const mapStateToProps = state => {
     return {
         isSignedIn: state.authentication.loggedIn,
