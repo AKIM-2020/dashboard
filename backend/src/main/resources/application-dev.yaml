@@ -4,3 +4,4 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     userName: postgres
     password: postgres
+# check for automatic deploy, pls remove this comment
