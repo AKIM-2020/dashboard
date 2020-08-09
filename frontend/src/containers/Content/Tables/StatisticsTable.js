@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
     PagingState,
@@ -16,6 +16,7 @@ import {
     PagingPanel,
     TableFilterRow,
 } from '@devexpress/dx-react-grid-material-ui';
+import ErrorAlert from "../../Alert/Error";
 
 const TableHeaderContent = ({ column, ...restProps }) => {
     const classes = makeStyles({
@@ -31,7 +32,10 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />
 };
 
-const StatisticsTable = ({ columns, rows }) => {
+const StatisticsTable = ({ columns, getFunc }) => {
+    const {getData, getInfo} = getFunc;
+    const [rows, setRows] = useState([]);
+    const [error, setError] = useState(null);
     const [filteringStateColumnExtensions] = useState([
         { columnName: 'sa_to_admin', filteringEnabled: false },
         { columnName: 'admin_to_sa', filteringEnabled: false },
@@ -45,8 +49,13 @@ const StatisticsTable = ({ columns, rows }) => {
         { columnName: it.name, width: 'auto' }
     )))
 
+    useEffect( () => {
+        getData(setRows, setError)
+    }, [])
+
     return (
         <Paper>
+            {error && <ErrorAlert open={!!error} setOpen={ setError } message={ error.message }/>}
             <Grid
                 rows={ rows }
                 columns={ columns }

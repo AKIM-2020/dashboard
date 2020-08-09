@@ -1,6 +1,10 @@
 import axios from 'axios';
+import { authenticationService } from "../service";
 
 export const api = axios.create({
+    headers: {
+        'Authorization': `${authenticationService.currentToken}`
+    },
     responseType: "json"
 });
 

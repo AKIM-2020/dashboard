@@ -1,52 +1,76 @@
 package com.akim.controllers
 
-import com.akim.dto.AdminDto
-import com.akim.services.SuperAdminService
-import com.akim.dto.SuperAdminRequest
+import com.akim.dto.*
+import com.akim.exceptions.BadRequestException
+import com.akim.services.TransferService
+import com.akim.services.UserService
+import com.akim.services.toUserInfo
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
 @Api("superAdmin-resource")
-@Controller
-@RequestMapping("/api/v1/owner")
-class SuperAdminController(private val superAdminService: SuperAdminService) {
+@RestController
+@RequestMapping("/api/v1/super-admin")
+class SuperAdminController(
+        private val userService: UserService
+) {
 
-    @PostMapping("/super-admin")
-    @ApiOperation("creating super admin")
-    fun createSuperAdmin(@RequestBody request: SuperAdminRequest): ResponseEntity<Any> {
-        superAdminService.createSuperAdmin(request)
+    @GetMapping
+    fun getOwnerInfo(): ResponseEntity<UserInfo> {
+        return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
+    }
+
+    @GetMapping("/{role}/user-list")
+    @ApiOperation("getting list users")
+    fun getAdmins(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
+
+        val users = userService.getAllChildUsers()
+
+        val response = when (role) {
+            Roles.ADMIN -> users
+            Roles.CASHIER -> userService.getAllChildUsersByUserList(users)
+            Roles.USER -> {
+                val cashiers = userService.getAllChildUsersByUserList(users)
+                userService.getAllChildUsersByUserList(cashiers)
+            }
+            else -> throw BadRequestException("Not enough permissions to view $role")
+        }
+
+        return ResponseEntity.ok(response
+                .map { it.toUserInfo() }
+                .toCollection(arrayListOf()))
+    }
+
+    @PostMapping("/user")
+    @ApiOperation("creating admin")
+    fun createSuperAdmin(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
+        userService.createUser(createRequest, Roles.ADMIN)
         return ResponseEntity.accepted().build()
     }
 
-    @PutMapping("/super-admin/{id}")
-    @ApiOperation("updating")
+    @PutMapping("/user/{id}")
+    @ApiOperation("updating admin")
     fun updateSuperAdmin(
-        @PathVariable("id") id: Long,
-        @RequestBody request: SuperAdminRequest): ResponseEntity<Any> {
-        superAdminService.updateSuperAdmin(id, request)
-            ?: return ResponseEntity.notFound().build()
+            @PathVariable("id") id: Long,
+            @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
+        userService.updateUser(id, request)
         return ResponseEntity.accepted().build()
     }
 
-    @DeleteMapping("/super-admin/{id}")
-    @ApiOperation("deleting")
+    @DeleteMapping("/user/{id}")
+    @ApiOperation("deleting admin")
     fun deleteSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
-        superAdminService.deleteSuperAdmin(id)
+        userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
 
-    @GetMapping("/super-admin")
-    @ApiOperation("getting list of superAdmins")
-    fun getSuperAdmins(): ResponseEntity<List<AdminDto>> = ResponseEntity.ok(superAdminService.getSuperAdmins())
-
-
-
-
-
-
-
-
+    @GetMapping("/user/{id}")
+    @ApiOperation("getting by id admin")
+    fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+        return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
+    }
 }
+

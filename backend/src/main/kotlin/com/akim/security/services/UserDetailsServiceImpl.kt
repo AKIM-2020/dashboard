@@ -1,24 +1,29 @@
 package com.akim.security.services
 
-import com.akim.security.repositories.UserRepository
+import com.akim.security.repositories.RoleRepository
+import com.akim.security.repositories.AuthUserRepository
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsService {
+class UserDetailsServiceImpl(
+    private val authUserRepository: AuthUserRepository,
+    private val roleRepository: RoleRepository
+) : UserDetailsService {
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(userName: String): UserDetails {
-        val user = userRepository.findByLogin(userName)
+        val user = authUserRepository.findByLogin(userName)
             ?: throw UsernameNotFoundException("User '$userName' not found")
 
         val authorities: List<GrantedAuthority> =
-            user.roles!!
+            user.roles
                 .map { role -> SimpleGrantedAuthority(role.name.name) }
                 .toCollection(ArrayList<GrantedAuthority>())
         return User
@@ -31,4 +36,5 @@ class UserDetailsServiceImpl(val userRepository: UserRepository) : UserDetailsSe
             .disabled(false)
             .build()
     }
+
 }

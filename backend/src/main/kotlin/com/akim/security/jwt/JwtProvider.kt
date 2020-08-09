@@ -35,7 +35,7 @@ class JwtProvider {
     }
 
     fun getAuthentication(token: String): Authentication {
-        val claims = Jwts.parser().parseClaimsJwt(token).body
+        val claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).body
 
         val authorities = claims[AUTHORITIES_KEY]
             .toString()

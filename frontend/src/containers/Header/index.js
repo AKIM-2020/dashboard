@@ -5,11 +5,51 @@ import Typography from "@material-ui/core/Typography";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
+import AccountBalanceWalletRoundedIcon from '@material-ui/icons/AccountBalanceWalletRounded';
+import {api} from "../../helpers";
+import {authenticationService} from "../../service";
 
-const Header = ({ classes, open, logout, handleDrawerOpen }) => {
+
+const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
+    const [balance, setBalance] = useState(0);
+
+    let balanceUrl = "";
+
+    switch (user) {
+        case "OWNER": {
+            balanceUrl = "/api/v1/owner"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            balanceUrl = "/api/v1/super-admin"
+        }
+            break;
+        case "ADMIN": {
+            balanceUrl = "/api/v1/admin"
+        }
+            break;
+        case "CASHIER": {
+            balanceUrl = "/api/v1/cashier"
+        }
+            break;
+        default:
+            balanceUrl = ""
+    }
+
+    useEffect(() => {
+       user && api.get(`${balanceUrl}`,{
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }).then(response => {
+                setBalance(response.data.balance);
+            }
+        )
+    }, [open])
+debugger
     return (
         <AppBar
             position="fixed"
@@ -27,6 +67,10 @@ const Header = ({ classes, open, logout, handleDrawerOpen }) => {
                 </IconButton>
                 <Typography variant="h6" noWrap className={ classes.title }>
                     Menu
+                </Typography>
+                <AccountBalanceWalletRoundedIcon/>
+                <Typography variant="h6" noWrap >
+                    Balance: {balance}
                 </Typography>
                 <IconButton
                     aria-label="account of current user"
