@@ -5,13 +5,14 @@ import { userActions } from "../actions";
 export const PrivateRoute = ({ component: Component, roles, ...rest }) => (
     <Route { ...rest } render={props => {
         const { user } = rest;
-        if (!user) {
+        if (!user.accessToken) {
             userActions.logout();
         }
         const authorities = user.authorities.map((it) => it.authority);
+
         if (roles && roles.filter(it => authorities.includes(it)).length === 0) {
-            return <Redirect to={{ pathname: '/'}} />
+            return <Redirect to='/login' />
         }
-        return <Component { ...props } />
+        return <Component { ...roles } />
     }}/>
 );

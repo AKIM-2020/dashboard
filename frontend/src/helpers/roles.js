@@ -1,4 +1,6 @@
 export const Role = {
     Admin: 'ADMIN',
-    Owner: 'OWNER'
+    Owner: 'OWNER',
+    SuperAdmin: 'SUPER_ADMIN',
+    Cashier: 'CASHIER'
 };

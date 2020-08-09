@@ -5,8 +5,11 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "operations")
-class Operations(
+class Operation(
+
     val oldBalance: BigDecimal,
+
+    @Enumerated(EnumType.STRING)
     val operationType: OperationType,
 
     @ManyToOne(

@@ -1,38 +1,20 @@
 import React, {useEffect} from "react";
 import {api} from "../../helpers";
-import StatisticsTable from "./Tables/StatisticsTable";
-import {columns} from "../../helpers/tableColumns";
-import {NavLink} from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import AdminsTable from "./Tables/AdminsTable";
-import {connect} from "react-redux";
-import {cashierContentType} from "../../reducers/contentReducer";
 import {authenticationService} from "../../service";
+import Button from "@material-ui/core/Button";
+import {NavLink} from "react-router-dom";
+import {columns} from "../../helpers/tableColumns";
+import {connect} from "react-redux";
+import {superadminContentType} from "../../reducers/contentReducer";
+import axios from "axios";
 
-const Cashier = (props) => {
-    let tableDataUrl = "";
+const SuperAdministrators = (props) => {
+    const tableDataUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
     let postUrl = props.postUrl;
-    let user = props.user;
-
-    switch (user) {
-        case "OWNER": {
-            tableDataUrl = "/api/v1/owner/CASHIER/user-list"
-        }
-            break;
-        case "SUPER_ADMIN": {
-            tableDataUrl = "/api/v1/super-admin/CASHIER/user-list"
-        }
-            break;
-        case "ADMIN": {
-            tableDataUrl = "/api/v1/admin/CASHIER/user-list"
-        }
-            break;
-        default:
-            tableDataUrl = ""
-    }
 
     useEffect(() => {
-        props.cashierContentType()
+        props.superadminContentType()
     }, []);
 
     const editingProps = {
@@ -67,20 +49,18 @@ const Cashier = (props) => {
 
     return <div>
         <NavLink to='/superadmins_stat'>
-            <Button variant="contained" color="primary" onClick={props.cashierContentType}>
+            <Button variant="contained" color="primary">
                 Get transaction list
             </Button>
         </NavLink>
-        {user === "ADMIN" ? <AdminsTable columns={columns.cashiers} editingFunc={editingProps}/> :
-            <StatisticsTable columns={columns.cashiers} getFunc={editingProps}/>}
+        <AdminsTable columns={columns.superAdmin} editingFunc={editingProps}/>
     </div>
 };
 
 let mapStateToProps = (state) => {
     return {
-        user: state.authentication.user.authorities[0].authority,
         postUrl: state.contentType.postUrl
     }
 };
 
-export default connect(mapStateToProps, {cashierContentType})(Cashier);
+export default connect(mapStateToProps, {superadminContentType})(SuperAdministrators);

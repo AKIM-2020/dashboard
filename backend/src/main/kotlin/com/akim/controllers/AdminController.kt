@@ -11,31 +11,27 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@Api("superAdmin-resource")
+@Api("admin-resource")
 @RestController
-@RequestMapping("/api/v1/super-admin")
-class SuperAdminController(
+@RequestMapping("/api/v1/admin")
+class AdminController(
         private val userService: UserService
 ) {
 
     @GetMapping
-    fun getOwnerInfo(): ResponseEntity<UserInfo> {
+    fun getCurrentUserInfo(): ResponseEntity<UserInfo> {
         return ResponseEntity(userService.getCurrentUser().toUserInfo(), HttpStatus.OK)
     }
 
     @GetMapping("/{role}/user-list")
     @ApiOperation("getting list users")
-    fun getAdmins(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
+    fun getUsers(@PathVariable role: Roles): ResponseEntity<List<UserInfo>> {
 
         val users = userService.getAllChildUsers()
 
         val response = when (role) {
-            Roles.ADMIN -> users
-            Roles.CASHIER -> userService.getAllChildUsersByUserList(users)
-            Roles.USER -> {
-                val cashiers = userService.getAllChildUsersByUserList(users)
-                userService.getAllChildUsersByUserList(cashiers)
-            }
+            Roles.CASHIER -> users
+            Roles.USER -> userService.getAllChildUsersByUserList(users)
             else -> throw BadRequestException("Not enough permissions to view $role")
         }
 
@@ -45,15 +41,15 @@ class SuperAdminController(
     }
 
     @PostMapping("/user")
-    @ApiOperation("creating admin")
-    fun createSuperAdmin(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
-        userService.createUser(createRequest, Roles.ADMIN)
+    @ApiOperation("creating cashier")
+    fun createChild(@RequestBody createRequest: UserCreateRequest): ResponseEntity<Any> {
+        userService.createUser(createRequest, Roles.CASHIER)
         return ResponseEntity.accepted().build()
     }
 
     @PutMapping("/user/{id}")
-    @ApiOperation("updating admin")
-    fun updateSuperAdmin(
+    @ApiOperation("updating cashier")
+    fun updateChild(
             @PathVariable("id") id: Long,
             @RequestBody request: UserUpdateRequest): ResponseEntity<Any> {
         userService.updateUser(id, request)
@@ -61,15 +57,15 @@ class SuperAdminController(
     }
 
     @DeleteMapping("/user/{id}")
-    @ApiOperation("deleting admin")
-    fun deleteSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+    @ApiOperation("deleting cashier")
+    fun deleteChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         userService.deleteChildUser(id)
         return ResponseEntity.accepted().build()
     }
 
     @GetMapping("/user/{id}")
-    @ApiOperation("getting by id admin")
-    fun getSuperAdmin(@PathVariable("id") id: Long): ResponseEntity<Any> {
+    @ApiOperation("getting by id cashier")
+    fun getChild(@PathVariable("id") id: Long): ResponseEntity<Any> {
         return ResponseEntity.ok(userService.getChildUserById(id).toUserInfo())
     }
 }

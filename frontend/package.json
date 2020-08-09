@@ -28,7 +28,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "rxjs": "latest",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "react-router": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,5 +52,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "react-router": "latest"
+  }
 }
