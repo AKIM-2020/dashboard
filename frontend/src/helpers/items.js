@@ -9,6 +9,7 @@ import {Role} from "./roles.js";
 import SuperAdministrators from "../containers/Content/SuperAdministrators";
 import Administrators_stat from "../containers/Content/transaction_statistics/Transactions_stat";
 import SignIn from "../containers/LoginPage/SignInPage";
+import HomePage from "../containers/HomePage";
 
 const items = [
     {
@@ -16,6 +17,12 @@ const items = [
         link: '/superadmins_stat',
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
         component: () => <Administrators_stat/>
+    },
+    {
+        name: 0,
+        link: '/main',
+        roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
+        component: () => <HomePage/>
     },
     {
         name: 0,
