@@ -77,12 +77,19 @@ class TransferService(
     }
 
     private fun toTransactionInfo(transaction: Transaction): TransactionInfo {
+
+        val oldBalance = transaction.getOperations()[1].oldBalance
+
         return TransactionInfo(
+                transaction.source.id,
+                transaction.destination.id,
                 transaction.source.authUser.login,
                 transaction.destination.authUser.login,
                 transaction.amount,
                 transaction.note,
-                transaction.created
+                transaction.created,
+                oldBalance,
+                oldBalance + transaction.amount
         )
     }
 

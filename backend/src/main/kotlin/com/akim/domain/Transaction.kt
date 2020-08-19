@@ -48,5 +48,9 @@ class Transaction(
         }
 
     }
+
+    fun getOperations(): List<Operation> {
+        return operations
+    }
 }
 
