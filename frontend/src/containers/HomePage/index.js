@@ -18,7 +18,7 @@ const HomePage = (props) => {
     useEffect(() => {
         setItems(getUserItems(user));
         props.goToMain();
-    }, [open]);
+    }, []);
 
     return <div className={classes.root}>
         {props.user.goToMain ? <Redirect to={'/main'}/> : null}

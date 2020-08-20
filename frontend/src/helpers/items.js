@@ -18,12 +18,12 @@ const items = [
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
         component: () => <Administrators_stat/>
     },
-    {
-        name: 0,
-        link: '/main',
-        roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
-        component: () => <HomePage/>
-    },
+    // {
+    //     name: 0,
+    //     link: '/main',
+    //     roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
+    //     component: () => <HomePage/>
+    // },
     {
         name: 0,
         link: '/login',

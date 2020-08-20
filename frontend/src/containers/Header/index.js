@@ -48,7 +48,7 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
                 setBalance(response.data.balance);
             }
         )
-    }, [open])
+    }, []);
 debugger
     return (
         <AppBar
