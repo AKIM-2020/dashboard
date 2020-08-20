@@ -37,7 +37,9 @@ export const columns = {
     ],
     transactions: [
         {title: 'PAYMENT SENDER', name: 'senderName'},
+        {title: 'SENDER ID', name: 'senderId'},
         {title: 'PAYMENT RECEIVER', name: 'receiverName'},
+        {title: 'RECEIVER ID', name: 'receiverId'},
         {title: 'AMOUNT', name: 'amount'},
         {title: 'OLD BALANCE', name: 'oldBalance'},
         {title: 'NEW BALANCE', name: 'newBalance'},
