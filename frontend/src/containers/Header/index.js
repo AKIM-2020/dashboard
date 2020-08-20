@@ -40,7 +40,7 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
     }
 
     useEffect(() => {
-       user && api.get(`${balanceUrl}`,{
+       user !== "OWNER" && api.get(`${balanceUrl}`,{
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
@@ -48,7 +48,7 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
                 setBalance(response.data.balance);
             }
         )
-    }, []);
+    }, [open]);
 debugger
     return (
         <AppBar
@@ -70,7 +70,7 @@ debugger
                 </Typography>
                 <AccountBalanceWalletRoundedIcon/>
                 <Typography variant="h6" noWrap >
-                    Balance: {balance}
+                    Balance: {user === "OWNER" ? 99999999999 : balance}
                 </Typography>
                 <IconButton
                     aria-label="account of current user"
