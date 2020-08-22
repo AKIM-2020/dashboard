@@ -1,5 +1,5 @@
 import Box from "@material-ui/core/Box";
-import React from "react";
+import React, {useEffect} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {api} from "../../../helpers";
 import {authenticationService} from "../../../service";
 import {connect} from "react-redux";
+import {changeBalance} from "../../../reducers/balanceReducer";
 
 const useStyles = makeStyles({
     button: {
@@ -27,8 +28,42 @@ const actions = [
 
 const PayForm = (props) => {
     const classes = useStyles();
-    const [transferAmount, setTransferAmount] = React.useState({});
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
+    let transferData = {};
+
+    useEffect(() => {
+        props.user !== "OWNER" && api.get(`${balanceUrl}`,{
+            headers: {
+                'Authorization': `${authenticationService.currentToken}`
+            }
+        }).then(response => {
+                props.change(response.data.balance);
+            }
+        )
+    }, [props.success]);
+
+    let balanceUrl = "";
+
+    switch (props.user) {
+        case "OWNER": {
+            balanceUrl = "/api/v1/owner"
+        }
+            break;
+        case "SUPER_ADMIN": {
+            balanceUrl = "/api/v1/super-admin"
+        }
+            break;
+        case "ADMIN": {
+            balanceUrl = "/api/v1/admin"
+        }
+            break;
+        case "CASHIER": {
+            balanceUrl = "/api/v1/cashier"
+        }
+            break;
+        default:
+            balanceUrl = ""
+    }
 
     let payFormUrl = "/api/v1/transaction";
 
@@ -44,7 +79,6 @@ const PayForm = (props) => {
     };
 
     let postData = (transferData) => {
-        setTransferAmount(transferData);
         setButtonDisabled(true);
         api.post(`${payFormUrl}`, {...transferData}, {
             headers: {
@@ -68,7 +102,7 @@ const PayForm = (props) => {
 
     const transferHandler = (event) => {
         event.preventDefault();
-        let transferData = {
+        transferData = {
             id: Number(props.data.id),
             amount: Number(props.amount),
             note: "3",
@@ -212,4 +246,12 @@ let mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, null)(PayForm);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        change: (balance) => {
+            dispatch(changeBalance(balance))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PayForm);

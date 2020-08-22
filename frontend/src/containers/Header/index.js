@@ -11,10 +11,10 @@ import { userActions } from "../../actions";
 import AccountBalanceWalletRoundedIcon from '@material-ui/icons/AccountBalanceWalletRounded';
 import {api} from "../../helpers";
 import {authenticationService} from "../../service";
+import {changeBalance} from "../../reducers/balanceReducer";
 
 
-const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
-    const [balance, setBalance] = useState(0);
+const Header = ({ classes, open, logout, handleDrawerOpen, user, balance, change }) => {
 
     let balanceUrl = "";
 
@@ -45,11 +45,11 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
                 'Authorization': `${authenticationService.currentToken}`
             }
         }).then(response => {
-                setBalance(response.data.balance);
+           change(response.data.balance);
             }
         )
     }, [open]);
-debugger
+
     return (
         <AppBar
             position="fixed"
@@ -86,8 +86,17 @@ debugger
     );
 };
 
-const mapDispatchToProps = {
-    ...userActions
+const mapStateToProps = (state) => {
+   return { balance: state.balanceReducer.balance }
 };
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        ...userActions,
+        change: (balance) => {
+            dispatch(changeBalance(balance))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -17,7 +17,7 @@ const HomePage = (props) => {
 
     useEffect(() => {
         setItems(getUserItems(user));
-        props.goToMain();
+        props.user.goToMain && props.goToMain();
     }, []);
 
     return <div className={classes.root}>
