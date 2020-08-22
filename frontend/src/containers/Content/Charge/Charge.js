@@ -57,7 +57,7 @@ const Charge = (props) => {
 
 
     useEffect(() => {
-        api.get(`${chargeUrl} + ${id}`,{
+       id && api.get(`${chargeUrl}${id}`,{
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }

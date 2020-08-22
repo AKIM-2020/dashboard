@@ -4,6 +4,7 @@ import {authenticationService} from "../../../service/authService";
 import axios from 'axios';
 import Box from "@material-ui/core/Box";
 import {connect} from "react-redux";
+import {columns} from "../../../helpers/tableColumns";
 
 const Transactions_stat = (props) => {
     let tableDataUrl = props.url;
@@ -53,19 +54,12 @@ debugger
                     Balance: {data.balance}
                 </Box>
             </Box>
-            <StatisticsTable columns={columns} getFunc={gettingProps}/>
+            <StatisticsTable columns={columns.transactions} getFunc={gettingProps}/>
         </div>
     } else {
         return null
     }
 };
-
-const columns = [
-    {title: 'PAYMENT SENDER', name: 'senderName'},
-    {title: 'PAYMENT RECEIVER', name: 'receiverName'},
-    {title: 'AMOUNT', name: 'amount'},
-    {title: 'DATA', name: 'created'}
-];
 
 let mapStateToProps = (state) => {
     return {

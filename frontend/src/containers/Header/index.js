@@ -11,10 +11,10 @@ import { userActions } from "../../actions";
 import AccountBalanceWalletRoundedIcon from '@material-ui/icons/AccountBalanceWalletRounded';
 import {api} from "../../helpers";
 import {authenticationService} from "../../service";
+import {changeBalance} from "../../reducers/balanceReducer";
 
 
-const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
-    const [balance, setBalance] = useState(0);
+const Header = ({ classes, open, logout, handleDrawerOpen, user, balance, change }) => {
 
     let balanceUrl = "";
 
@@ -40,16 +40,16 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user }) => {
     }
 
     useEffect(() => {
-       user && api.get(`${balanceUrl}`,{
+       user !== "OWNER" && api.get(`${balanceUrl}`,{
             headers: {
                 'Authorization': `${authenticationService.currentToken}`
             }
         }).then(response => {
-                setBalance(response.data.balance);
+           change(response.data.balance);
             }
         )
-    }, [open])
-debugger
+    }, [open]);
+
     return (
         <AppBar
             position="fixed"
@@ -70,7 +70,7 @@ debugger
                 </Typography>
                 <AccountBalanceWalletRoundedIcon/>
                 <Typography variant="h6" noWrap >
-                    Balance: {balance}
+                    Balance: {user === "OWNER" ? 99999999999 : balance}
                 </Typography>
                 <IconButton
                     aria-label="account of current user"
@@ -86,8 +86,17 @@ debugger
     );
 };
 
-const mapDispatchToProps = {
-    ...userActions
+const mapStateToProps = (state) => {
+   return { balance: state.balanceReducer.balance }
 };
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        ...userActions,
+        change: (balance) => {
+            dispatch(changeBalance(balance))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
