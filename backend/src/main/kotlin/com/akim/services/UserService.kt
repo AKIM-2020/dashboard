@@ -75,4 +75,7 @@ class UserService(
     fun getCurrentUser(): User {
         return userRepository.findByAuthUser(uaaService.getCurrentUser())
     }
+
+    fun getUserById(id: Long): User = userRepository.findById(id)
+            .orElseThrow { EntityNotFoundException("You don't have user with id=$id") }
 }
