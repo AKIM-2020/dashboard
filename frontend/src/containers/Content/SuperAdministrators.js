@@ -7,7 +7,7 @@ import {NavLink} from "react-router-dom";
 import {columns} from "../../helpers/tableColumns";
 import {connect} from "react-redux";
 import {superadminContentType} from "../../reducers/contentReducer";
-import axios from "axios";
+import {TableFilter} from "../../components";
 
 const SuperAdministrators = (props) => {
     const tableDataUrl = "/api/v1/owner/SUPER_ADMIN/user-list";
@@ -48,7 +48,7 @@ const SuperAdministrators = (props) => {
     };
 
     return <div>
-        <NavLink to='/superadmins_stat'>
+        <NavLink to='/transactions_stat'>
             <Button variant="contained" color="primary">
                 Get transaction list
             </Button>

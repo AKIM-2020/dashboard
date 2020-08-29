@@ -3,15 +3,21 @@ package com.akim.controllers
 import com.akim.domain.User
 import com.akim.dto.Roles
 import com.akim.dto.TransactionCollectionDto
+import com.akim.dto.TransactionRequest
 import com.akim.dto.TransferDto
 import com.akim.exceptions.BadRequestException
 import com.akim.services.TransferService
 import com.akim.services.UserService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 
 //todo rewrite better all service))
@@ -25,7 +31,7 @@ class TransactionController(
 
 
     @PostMapping("/transaction")
-    fun transfer(@RequestBody request: TransferDto) {
+    fun transfer(@Valid @RequestBody request: TransferDto) {
         val currentUser = userService.getCurrentUser()
         val childUser = userService.getChildUserById(request.id)
         transferService.makeTransaction(request, currentUser, childUser)
@@ -35,7 +41,9 @@ class TransactionController(
     @GetMapping("/transaction-list")
     @ApiOperation("get transaction history")
     fun getTransactionList(
-            @RequestParam(required = false) role: Roles?
+            @ApiParam @PageableDefault(size = 20) pageable: Pageable,
+            @RequestParam(required = false) role: Roles?,
+            request: TransactionRequest
     ): ResponseEntity<TransactionCollectionDto> {
         val currentUser = userService.getCurrentUser()
 
@@ -45,7 +53,7 @@ class TransactionController(
                 role?.let {getChildUsers(it, currentUser) }
                         ?: listOf(userService.getCurrentUser())
 
-        return ResponseEntity(transferService.getAllTransactionsByUserList(users), HttpStatus.OK)
+        return ResponseEntity(transferService.getAllTransactionsByUserList(request, users, pageable), HttpStatus.OK)
     }
 
     // need refactor costylization

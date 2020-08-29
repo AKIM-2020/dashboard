@@ -5,10 +5,13 @@ import axios from 'axios';
 import Box from "@material-ui/core/Box";
 import {connect} from "react-redux";
 import {columns} from "../../../helpers/tableColumns";
+import {TableFilter} from "../../../components";
 
 const Transactions_stat = (props) => {
     let tableDataUrl = props.url;
-    const [data, setData] = useState({});
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [rows, setRows] = useState(null);
 
     useEffect(() => {
         axios.get(tableDataUrl, {
@@ -18,28 +21,24 @@ const Transactions_stat = (props) => {
         }).then(
             response => {
                 setData({balance: response.data.balance, credit: response.data.credit, debit: response.data.debit});
-            }
-        )
-    }, []);
-
-    const gettingProps = {
-        getData: (setRows, setError) => axios.get(tableDataUrl, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }).then(
-            response => {
-                setRows(response.data.transactions)
+                setRows(response.data.transactions);
             },
             error => {
                 setError(error)
             }
         )
+    }, []);
+
+    const gettingProps = {
+        getData: (setRows, setError) => {
+            setRows(rows);
+            setError(error)
+        }
     }
 
-debugger
-    if (data.length !== 0) {
+    if (rows !== null) {
         return <div>
+            <div><TableFilter tableDataUrl={tableDataUrl} setRows={setRows} setError={setError}/></div>
             <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
                 <h3>Transfer INFO</h3>
             </Box>

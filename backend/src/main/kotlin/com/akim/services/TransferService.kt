@@ -6,10 +6,14 @@ import com.akim.domain.Transaction
 import com.akim.domain.User
 import com.akim.dto.TransactionCollectionDto
 import com.akim.dto.TransactionInfo
+import com.akim.dto.TransactionRequest
 import com.akim.dto.TransferDto
 import com.akim.exceptions.LowBalanceException
 import com.akim.repositories.OperationRepository
 import com.akim.repositories.TransactionRepository
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -17,7 +21,8 @@ import java.time.LocalDateTime
 @Service
 class TransferService(
         private val transactionRepository: TransactionRepository,
-        private val operationRepository: OperationRepository
+        private val operationRepository: OperationRepository,
+        private val userSerivce: UserService
 ) {
 
     fun makeTransaction(
@@ -58,10 +63,14 @@ class TransferService(
         transactionRepository.save(transaction)
     }
 
-    fun getAllTransactionsByUserList(users: List<User>): TransactionCollectionDto {
+    fun getAllTransactionsByUserList(
+            request: TransactionRequest,
+            users: List<User>,
+            pageable: Pageable
+    ): TransactionCollectionDto {
 
         val transactions =
-                transactionRepository.getAllBySourceInOrDestinationIn(users, users)
+                transactionRepository.findAll(createSpecification(request, users), pageable)
                         .map(::toTransactionInfo)
                         .toCollection(arrayListOf())
         val debit = operationRepository.getDebitByUser(users) ?: BigDecimal.ZERO
@@ -74,6 +83,39 @@ class TransferService(
                 credit,
                 balance,
                 transactions)
+    }
+
+    private fun createSpecification(request: TransactionRequest, users: List<User>): Specification<Transaction> {
+        return Specification { root, query, cb ->
+
+            var predicate = cb.and()
+
+            predicate = cb.or(
+                    cb.`in`(root.get<List<User>>("source")).value(users),
+                    cb.`in`(root.get<List<User>>("destination")).value(users))
+
+
+            request.senderId?.let {
+                val userById = userSerivce.getUserById(request.senderId)
+                predicate = cb.and(predicate, cb.equal(root.get<User>("source"), userById))
+            }
+
+            request.receiverId?.let {
+                val userById = userSerivce.getUserById(request.receiverId)
+                predicate = cb.and(predicate, cb.equal(root.get<User>("destination"), userById))
+            }
+
+            request.dateFrom?.let {
+                predicate = cb.and(predicate, cb.greaterThanOrEqualTo(root.get("created"), request.dateFrom))
+            }
+
+            request.dateTo?.let {
+                predicate = cb.and(predicate, cb.lessThanOrEqualTo(root.get("created"), request.dateTo))
+            }
+
+            predicate
+        }
+
     }
 
     private fun toTransactionInfo(transaction: Transaction): TransactionInfo {

@@ -66,7 +66,7 @@ const Cashier = (props) => {
     };
 
     return <div>
-        <NavLink to='/superadmins_stat'>
+        <NavLink to='/transactions_stat'>
             <Button variant="contained" color="primary" onClick={props.cashierContentType}>
                 Get transaction list
             </Button>
