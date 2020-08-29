@@ -7,16 +7,16 @@ import Users from "../containers/Content/Users.js";
 import {treeData} from "../mocks";
 import {Role} from "./roles.js";
 import SuperAdministrators from "../containers/Content/SuperAdministrators";
-import Administrators_stat from "../containers/Content/transaction_statistics/Transactions_stat";
 import SignIn from "../containers/LoginPage/SignInPage";
 import HomePage from "../containers/HomePage";
+import Transactions_stat from "../containers/Content/transaction_statistics/Transactions_stat";
 
 const items = [
     {
         name: 0,
-        link: '/superadmins_stat',
+        link: '/transactions_stat',
         roles: [Role.Owner, Role.SuperAdmin, Role.Admin, Role.Cashier],
-        component: () => <Administrators_stat/>
+        component: () => <Transactions_stat/>
     },
     // {
     //     name: 0,

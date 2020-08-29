@@ -51,7 +51,7 @@ const StatisticsTable = ({ columns, getFunc }) => {
 
     useEffect( () => {
         getData(setRows, setError)
-    }, [])
+    }, [getFunc])
 
     return (
         <Paper>

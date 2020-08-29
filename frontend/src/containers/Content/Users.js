@@ -70,7 +70,7 @@ const editingProps = {
 };
 
 return <div>
-    <NavLink to='/superadmins_stat'>
+    <NavLink to='/transactions_stat'>
         <Button variant="contained" color="primary" onClick={props.userContentType}>
             Get transaction list
         </Button>
