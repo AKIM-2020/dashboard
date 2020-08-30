@@ -1,11 +1,11 @@
 import React from 'react';
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 import SignIn from "../LoginPage/SignInPage";
 import HomePage from "../HomePage";
 import {connect} from "react-redux";
 
 const App = (props) => (
-    <BrowserRouter>
+    <HashRouter>
         <div className="App">
             {props.isSignedIn
                 ? <div>
@@ -14,7 +14,7 @@ const App = (props) => (
                 : <SignIn/>
             }
         </div>
-    </BrowserRouter>
+    </HashRouter>
 );
 
 const mapStateToProps = state => {
