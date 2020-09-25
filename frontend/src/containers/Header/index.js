@@ -9,7 +9,7 @@ import React, {useEffect, useState} from "react";
 import { connect } from "react-redux";
 import { userActions } from "../../actions";
 import AccountBalanceWalletRoundedIcon from '@material-ui/icons/AccountBalanceWalletRounded';
-import {api} from "../../helpers";
+import {api} from "../../DAL/api";
 import {authenticationService} from "../../service";
 import {changeBalance} from "../../reducers/balanceReducer";
 
@@ -68,10 +68,14 @@ const Header = ({ classes, open, logout, handleDrawerOpen, user, balance, change
                 <Typography variant="h6" noWrap className={ classes.title }>
                     Menu
                 </Typography>
-                <AccountBalanceWalletRoundedIcon/>
-                <Typography variant="h6" noWrap >
-                    Balance: {user === "OWNER" ? 99999999999 : balance}
-                </Typography>
+                {user === "OWNER" ? null :
+                    <>
+                        <AccountBalanceWalletRoundedIcon/>
+                        <Typography variant="h6" noWrap>
+                        Balance: {balance}
+                        </Typography>
+                    </>
+                }
                 <IconButton
                     aria-label="account of current user"
                     aria-controls="menu-appbar"

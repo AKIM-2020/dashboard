@@ -13,7 +13,6 @@ export const columns = {
         {title: 'LOGIN', name: 'login'},
         {title: 'NAME', name: 'name'},
         {title: 'SURNAME', name: 'surname'},
-        {title: 'SUPERADMIN', name: 'superadmin_id'},
         {title: 'CITY', name: 'city'},
         {title: 'ADMIN ROLE', name: 'role'},
         {title: 'BALANCE', name: 'balance'},
@@ -28,7 +27,6 @@ export const columns = {
     ],
     users: [
         { title: 'Id', name: 'id' },
-        { title: 'Remote Email', name: 'email' },
         { title: 'Login', name: 'login' },
         { title: 'Name', name: 'name' },
         { title: 'Surname', name: 'surname' },

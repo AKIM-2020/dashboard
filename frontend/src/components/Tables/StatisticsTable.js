@@ -16,7 +16,8 @@ import {
     PagingPanel,
     TableFilterRow,
 } from '@devexpress/dx-react-grid-material-ui';
-import ErrorAlert from "../../Alert/Error";
+import ErrorAlert from "../../containers/Alert/Error";
+import {api} from "../../DAL/api";
 
 const TableHeaderContent = ({ column, ...restProps }) => {
     const classes = makeStyles({

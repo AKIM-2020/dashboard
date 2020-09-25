@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
-import StatisticsTable from "../Tables/StatisticsTable";
-import {authenticationService} from "../../../service/authService";
-import axios from 'axios';
+import StatisticsTable from "./StatisticsTable";
 import Box from "@material-ui/core/Box";
 import {connect} from "react-redux";
-import {columns} from "../../../helpers/tableColumns";
-import {TableFilter} from "../../../components";
+import {columns} from "../../helpers/tableColumns";
+import {TableFilter} from "../index";
+import {api} from "../../DAL/api";
 
 const Transactions_stat = (props) => {
     let tableDataUrl = props.url;
@@ -14,11 +13,7 @@ const Transactions_stat = (props) => {
     const [rows, setRows] = useState(null);
 
     useEffect(() => {
-        axios.get(tableDataUrl, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }).then(
+        api.get(tableDataUrl).then(
             response => {
                 setData({balance: response.data.balance, credit: response.data.credit, debit: response.data.debit});
                 setRows(response.data.transactions);
@@ -53,7 +48,7 @@ const Transactions_stat = (props) => {
                     Balance: {data.balance}
                 </Box>
             </Box>
-            <StatisticsTable columns={columns.transactions} getFunc={gettingProps}/>
+            <StatisticsTable columns={columns.transactions} getFunc={gettingProps} tableDataUrl={tableDataUrl}/>
         </div>
     } else {
         return null

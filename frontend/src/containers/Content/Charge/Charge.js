@@ -4,10 +4,10 @@ import FormControl from "@material-ui/core/FormControl";
 import makeStyles from "@material-ui/core/styles/makeStyles.js";
 import React, {useEffect} from "react";
 import PayForm from './PayForm'
-import {api} from "../../../helpers";
 import TextField from "@material-ui/core/TextField";
 import {authenticationService} from "../../../service";
 import {connect} from "react-redux";
+import {api} from "../../../DAL/api";
 
 const useStyles = makeStyles({
     button: {

@@ -1,13 +1,12 @@
 import React, {useEffect} from "react";
-import {api} from "../../helpers";
-import StatisticsTable from "./Tables/StatisticsTable";
+import StatisticsTable from "../../components/Tables/StatisticsTable";
 import {columns} from "../../helpers/tableColumns";
 import {NavLink} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import AdminsTable from "./Tables/AdminsTable";
+import AdminsTable from "../../components/Tables/AdminsTable";
 import {connect} from "react-redux";
 import {cashierContentType} from "../../reducers/contentReducer";
-import {authenticationService} from "../../service";
+import {editingProps} from "../../DAL/tableDAL";
 
 const Cashier = (props) => {
     let tableDataUrl = "";
@@ -35,44 +34,14 @@ const Cashier = (props) => {
         props.cashierContentType()
     }, []);
 
-    const editingProps = {
-        getData: (setRows, setError) => api.get(tableDataUrl, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }).then(
-            response => {
-                setRows(response.data)
-            },
-            error => {
-                setError(error)
-            }
-        ),
-        addRow: (transferData) => api.post(postUrl, {...transferData}, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }),
-        deleteRow: (rowId) => api.delete(postUrl + `/${rowId}`, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }),
-        editRow: (transferData, rowId) => api.put(postUrl + `/${rowId}`, {...transferData}, {
-            headers: {
-                'Authorization': `${authenticationService.currentToken}`
-            }
-        }),
-    };
-
     return <div>
         <NavLink to='/transactions_stat'>
             <Button variant="contained" color="primary" onClick={props.cashierContentType}>
                 Get transaction list
             </Button>
         </NavLink>
-        {user === "ADMIN" ? <AdminsTable columns={columns.cashiers} editingFunc={editingProps}/> :
-            <StatisticsTable columns={columns.cashiers} getFunc={editingProps}/>}
+        {user === "ADMIN" ? <AdminsTable columns={columns.cashiers} editingFunc={editingProps(tableDataUrl, postUrl)}/> :
+            <StatisticsTable columns={columns.cashiers} getFunc={editingProps(tableDataUrl, postUrl)}/>}
     </div>
 };
 

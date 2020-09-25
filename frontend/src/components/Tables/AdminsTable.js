@@ -19,7 +19,7 @@ import {
     TableEditRow,
     TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui';
-import ErrorAlert from "../../Alert/Error.js";
+import ErrorAlert from "../../containers/Alert/Error.js";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -133,7 +133,6 @@ const AdminsTable = ({columns, editingFunc}) => {
                     if (response.status === 202 || response.status === 200) {
                         setSuccess(true);
                         setTransferData(transferData);
-                        setButtonDisabled(false);
                     }
                 },
                 error => {
@@ -146,7 +145,6 @@ const AdminsTable = ({columns, editingFunc}) => {
                     if (response.status === 202 || response.status === 200) {
                         setSuccess(true);
                         setTransferData(transferData);
-                        setButtonDisabled(false);
                     }
                 },
                 error => {
@@ -160,7 +158,6 @@ const AdminsTable = ({columns, editingFunc}) => {
                 response => {
                     if (response.status === 202 || response.status === 200) {
                         setSuccess(true);
-                        setButtonDisabled(false);
                     }
                 },
                 error => {
@@ -320,6 +317,7 @@ const AdminsTable = ({columns, editingFunc}) => {
                                     <Button id="deleteUserNo" variant="contained"
                                             className={classes.button}
                                             onClick={() => setDeleted(false)}
+                                            disabled={buttonDisabled}
                                     >No</Button>
                                 </Box>
                                 <Box component="div" display="flex" justifyContent="center">

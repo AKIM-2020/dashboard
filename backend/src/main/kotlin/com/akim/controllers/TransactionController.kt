@@ -10,10 +10,7 @@ import com.akim.services.TransferService
 import com.akim.services.UserService
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiParam
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -41,7 +38,6 @@ class TransactionController(
     @GetMapping("/transaction-list")
     @ApiOperation("get transaction history")
     fun getTransactionList(
-            @ApiParam @PageableDefault(size = 20) pageable: Pageable,
             @RequestParam(required = false) role: Roles?,
             request: TransactionRequest
     ): ResponseEntity<TransactionCollectionDto> {
@@ -53,7 +49,13 @@ class TransactionController(
                 role?.let {getChildUsers(it, currentUser) }
                         ?: listOf(userService.getCurrentUser())
 
-        return ResponseEntity(transferService.getAllTransactionsByUserList(request, users, pageable), HttpStatus.OK)
+        return ResponseEntity(
+                transferService.getAllTransactionsByUserList(
+                        request,
+                        users,
+                        PageRequest.of(request.pageNumber, request.pageSize)),
+                HttpStatus.OK
+        )
     }
 
     // need refactor costylization

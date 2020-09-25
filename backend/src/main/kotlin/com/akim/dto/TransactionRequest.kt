@@ -9,5 +9,7 @@ data class TransactionRequest (
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val dateFrom: LocalDateTime?,
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        val dateTo: LocalDateTime?
+        val dateTo: LocalDateTime?,
+        var pageNumber: Int = 0,
+        var pageSize: Int = 20
 )
