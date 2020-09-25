@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import AdminsTable from "./Tables/AdminsTable";
+import AdminsTable from "../../components/Tables/AdminsTable";
 import Button from "@material-ui/core/Button";
 import {NavLink} from "react-router-dom";
 import {columns} from "../../helpers/tableColumns";

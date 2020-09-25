@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import AdminsTable from "./Tables/AdminsTable";
-import StatisticsTable from "./Tables/StatisticsTable";
+import AdminsTable from "../../components/Tables/AdminsTable";
+import StatisticsTable from "../../components/Tables/StatisticsTable";
 import {connect} from "react-redux";
 import {columns} from "../../helpers/tableColumns";
 import {adminContentType} from "../../reducers/contentReducer";

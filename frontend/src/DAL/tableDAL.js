@@ -1,5 +1,4 @@
-import {api} from "../helpers";
-import {authenticationService} from "../service";
+import {api} from "../DAL/api";
 
 export const editingProps = (tableDataUrl, postUrl) => {
    return {

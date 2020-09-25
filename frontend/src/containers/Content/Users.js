@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
-import StatisticsTable from "./Tables/StatisticsTable";
+import StatisticsTable from "../../components/Tables/StatisticsTable";
 import {columns} from "../../helpers/tableColumns";
 import {NavLink} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import AdminsTable from "./Tables/AdminsTable";
+import AdminsTable from "../../components/Tables/AdminsTable";
 import {connect} from "react-redux";
 import {userContentType} from "../../reducers/contentReducer";
 import {editingProps} from "../../DAL/tableDAL";

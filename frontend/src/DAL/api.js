@@ -17,13 +17,3 @@ api.interceptors.response.use(response => {
     console.log('Response:', response)
     return response
 })
-
-export const getAdminRows = (data) => {
-    return fakeApi(data)
-};
-
-const fakeApi = (data) => new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve(data);
-    } ,100)
-});

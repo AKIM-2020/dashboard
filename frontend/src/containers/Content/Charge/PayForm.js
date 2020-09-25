@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import MenuItem from "@material-ui/core/MenuItem";
-import {api} from "../../../helpers";
+import {api} from "../../../DAL/api";
 import {authenticationService} from "../../../service";
 import {connect} from "react-redux";
 import {changeBalance} from "../../../reducers/balanceReducer";
