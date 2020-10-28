@@ -3,11 +3,7 @@ import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
     PagingState,
-    IntegratedPaging,
-    SortingState,
-    IntegratedSorting,
-    FilteringState,
-    IntegratedFiltering,
+    IntegratedPaging
 } from '@devexpress/dx-react-grid';
 import {EditingState} from '@devexpress/dx-react-grid';
 import {
@@ -15,7 +11,6 @@ import {
     Table,
     TableHeaderRow,
     PagingPanel,
-    TableFilterRow,
     TableEditRow,
     TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui';
@@ -67,21 +62,29 @@ const AdminsTable = ({columns, editingFunc}) => {
     const [edit, setEdit] = React.useState(false);
     const [deleted, setDeleted] = React.useState(false);
     const [add, setAdd] = React.useState(false);
-    const [login, setLogin] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [city, setCity] = React.useState('');
-    const [email, setEmail] = React.useState('');
+    const [login, setLogin] = React.useState(null);
+    const [password, setPassword] = React.useState(null);
+    const [firstName, setFirstName] = React.useState(null);
+    const [lastName, setLastName] = React.useState(null);
+    const [city, setCity] = React.useState(null);
+    const [email, setEmail] = React.useState(null);
     const [errorMessage, setErrorMessage] = React.useState('');
     const [success, setSuccess] = React.useState(false);
     const [transferData, setTransferData] = React.useState({});
     const [buttonDisabled, setButtonDisabled] = React.useState(false);
     const getRowId = row => row.id;
 
-    const [colExt] = useState(columns.map(it => (
-        {columnName: it.name, width: 'auto'}
-    )));
+    const filteredColumns = columns.map(it => {
+        if (it.name === 'balance') {
+            return {columnName: 'balance', width: '10%'}
+        } else if (it.name === 'id') {
+            return {columnName: 'id', width: '10%'}
+        } else {
+            return { columnName: it.name, width: 'auto' }
+        }
+    })
+
+    const [colExt] = useState(filteredColumns);
 
     useEffect(() => {
         getData(setRows, setError)
@@ -190,25 +193,15 @@ const AdminsTable = ({columns, editingFunc}) => {
                         pageSize={pageSize}
                         onPageSizeChange={setPageSize}
                     />
-                    <SortingState
-                        defaultSorting={[]}
-                    />
-                    <FilteringState
-                        defaultFilters={[]}
-                    />
                     <EditingState
                         editingRowIds={editingRowIds}
                         onEditingRowIdsChange={setEditingRowIds}
                         rowChanges={rowChanges}
                         onRowChangesChange={setRowChanges}
-
                     />
-                    <IntegratedFiltering/>
-                    <IntegratedSorting/>
                     <IntegratedPaging/>
                     <Table columnExtensions={colExt}/>
-                    <TableHeaderRow showSortingControls contentComponent={TableHeaderContent}/>
-                    <TableFilterRow/>
+                    <TableHeaderRow contentComponent={TableHeaderContent}/>
                     <TableEditRow/>
                     <TableEditColumn
                         cellComponent={EditComponent}
