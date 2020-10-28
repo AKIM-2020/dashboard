@@ -3,21 +3,15 @@ import React, {useEffect, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {
     PagingState,
-    IntegratedPaging,
-    SortingState,
-    IntegratedSorting,
-    FilteringState,
-    IntegratedFiltering,
+    IntegratedPaging
 } from '@devexpress/dx-react-grid';
 import {
     Grid,
     Table,
     TableHeaderRow,
-    PagingPanel,
-    TableFilterRow,
+    PagingPanel
 } from '@devexpress/dx-react-grid-material-ui';
 import ErrorAlert from "../../containers/Alert/Error";
-import {api} from "../../DAL/api";
 
 const TableHeaderContent = ({ column, ...restProps }) => {
     const classes = makeStyles({
@@ -33,26 +27,37 @@ const TableHeaderContent = ({ column, ...restProps }) => {
     />
 };
 
-const StatisticsTable = ({ columns, getFunc }) => {
+const StatisticsTable = ({ columns, getFunc, tableDataUrl }) => {
     const {getData, getInfo} = getFunc;
     const [rows, setRows] = useState([]);
     const [error, setError] = useState(null);
-    const [filteringStateColumnExtensions] = useState([
-        { columnName: 'sa_to_admin', filteringEnabled: false },
-        { columnName: 'admin_to_sa', filteringEnabled: false },
-        { columnName: 'total', filteringEnabled: false },
-    ]);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [pageSize, setPageSize] = useState(30);
-    const [pageSizes] = useState([30, 50, 100]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [pageSizes] = useState([10, 15, 20]);
 
-    const [colExt] = useState(columns.map(it => (
-        { columnName: it.name, width: 'auto' }
-    )))
+    const filteredColumns = columns.map(it => {
+        if (it.name === 'balance') {
+            return {columnName: 'balance', width: '8%'}
+        } else if (it.name === 'id') {
+            return {columnName: 'id', width: '8%'}
+        } else {
+           return { columnName: it.name, width: 'auto' }
+        }
+    })
+
+    const [colExt] = useState(filteredColumns)
 
     useEffect( () => {
-        getData(setRows, setError)
-    }, [getFunc])
+        getData(setRows, setError);
+        // tableDataUrl && api.get(`${tableDataUrl}&pageNumber=${currentPage}&pageSize=${pageSize}`).then(
+        //         response => {
+        //             setRows(response.data.transactions);
+        //         },
+        //         error => {
+        //             setError(error)
+        //         }
+        //     )
+    }, [getFunc, currentPage, pageSize])
 
     return (
         <Paper>
@@ -67,19 +72,9 @@ const StatisticsTable = ({ columns, getFunc }) => {
                     pageSize={ pageSize }
                     onPageSizeChange={ setPageSize }
                 />
-                <SortingState
-                    defaultSorting={ [] }
-                />
-                <FilteringState
-                    defaultFilters={ [] }
-                    columnExtensions={ filteringStateColumnExtensions }
-                />
-                <IntegratedFiltering/>
-                <IntegratedSorting/>
                 <IntegratedPaging/>
                 <Table columnExtensions={ colExt }/>
                 <TableHeaderRow contentComponent={ TableHeaderContent }/>
-                <TableFilterRow/>
                 <PagingPanel
                     pageSizes={ pageSizes }
                 />

@@ -26,12 +26,12 @@ export const columns = {
         { title: 'BALANCE', name: 'balance' },
     ],
     users: [
-        { title: 'Id', name: 'id' },
-        { title: 'Login', name: 'login' },
-        { title: 'Name', name: 'name' },
-        { title: 'Surname', name: 'surname' },
-        { title: 'Currency', name: 'currency' },
-        { title: 'Balance', name: 'balance' }
+        { title: 'ID', name: 'id' },
+        { title: 'LOGIN', name: 'login' },
+        { title: 'NAME', name: 'name' },
+        { title: 'SURNAME', name: 'surname' },
+        { title: 'CURRENCY', name: 'currency' },
+        { title: 'BALANCE', name: 'balance' }
     ],
     transactions: [
         {title: 'PAYMENT SENDER', name: 'senderName'},
