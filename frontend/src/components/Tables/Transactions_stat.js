@@ -5,24 +5,30 @@ import {connect} from "react-redux";
 import {columns} from "../../helpers/tableColumns";
 import {TableFilter} from "../index";
 import {api} from "../../DAL/api";
+import { useCookies } from 'react-cookie';
 
 const Transactions_stat = (props) => {
-    let tableDataUrl = props.url;
+    let tableDataUrl= props.url;
+    const [cookies, setCookie] = useCookies(['url'])
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [rows, setRows] = useState(null);
 
     useEffect(() => {
-        api.get(tableDataUrl).then(
+        api.get(!!tableDataUrl ? tableDataUrl : cookies.url).then(
             response => {
                 setData({balance: response.data.balance, credit: response.data.credit, debit: response.data.debit});
                 setRows(response.data.transactions);
+                if(props.url !== ""){
+                    setCookie('url', props.url, { path: '/' })
+                    console.log(cookies)
+                }
             },
             error => {
                 setError(error)
             }
         )
-    }, []);
+    }, [tableDataUrl]);
 
     const gettingProps = {
         getData: (setRows, setError) => {
@@ -33,7 +39,7 @@ const Transactions_stat = (props) => {
 
     if (rows !== null) {
         return <div>
-            <div><TableFilter tableDataUrl={tableDataUrl} setRows={setRows} setError={setError}/></div>
+            <div><TableFilter tableDataUrl={!!tableDataUrl ? tableDataUrl : cookies.url} setRows={setRows} setError={setError}/></div>
             <Box display="flex" justifyContent="center" m={1} p={1} bgcolor="background.paper">
                 <h3>Transfer INFO</h3>
             </Box>

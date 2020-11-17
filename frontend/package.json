@@ -14,13 +14,16 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.2",
     "clsx": "latest",
+    "formik": "^2.2.4",
     "history": "latest",
     "match-sorter": "^4.1.0",
     "material-table": "^1.57.2",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
+    "react-router": "latest",
     "react-router-dom": "latest",
     "react-scripts": "3.4.1",
     "react-table": "^7.0.4",
@@ -29,7 +32,7 @@
     "redux-thunk": "^2.3.0",
     "rxjs": "latest",
     "styled-components": "^5.1.0",
-    "react-router": "latest"
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
